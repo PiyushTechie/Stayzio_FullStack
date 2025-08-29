@@ -3,9 +3,9 @@ const router = express.Router();
 import User from "../models/user.js";
 import wrapAsync from "../utils/wrapAsync.js";
 import passport from "passport";
-import { saveRedirectUrl } from "../utils/isLoggedin.js";
+import { saveRedirectUrl } from "../utils/isLoggedIn.js";
 import userController from "../controllers/users.js";
-import isLoggedIn from "../utils/isLoggedin.js";
+import isLoggedIn from "../utils/isLoggedIn.js";
 
 // Auth routes
 router.route("/signup")

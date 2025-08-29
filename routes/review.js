@@ -5,7 +5,7 @@ import {reviewSchema} from "../schema.js"
 import ExpressError from "../utils/ExpressError.js";
 import Listing from "../models/listing.js";
 import Review from "../models/reviews.js";
-import isLoggedIn from "../utils/isLoggedin.js";
+import isLoggedIn from "../utils/isLoggedIn.js";
 import isReviewAuthor from "../utils/isreviewAuthor.js";
 import reviewControlller from "../controllers/reviews.js";
 
