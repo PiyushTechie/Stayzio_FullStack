@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stayzio</title>
+
+  <!-- CSS & Fonts -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">  
+</head>
+<body class="bg-light">
+
+  <%- include("../includes/navbar.ejs") %>
+
+  <div class="container py-5">
+    <div class="card mx-auto shadow-sm" style="max-width: 650px; border-radius: 12px;">
+      <div class="card-body">
+        <h2 id="h2" class="text-center mb-4">Create Listing</h2>
+
+        <form method="post" action="/listings" class="needs-validation" novalidate enctype="multipart/form-data">
+
+          <!-- Title -->
+          <div class="mb-3">
+            <input type="text" name="listing[title]" class="form-control" placeholder="Title" required>
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please enter a title.</div>
+          </div>
+
+          <!-- Description -->
+          <div class="mb-3">
+            <textarea name="listing[description]" class="form-control" rows="3" placeholder="Description" required></textarea>
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please provide a description.</div>
+          </div>
+
+          <!-- Image Upload -->
+          <div class="mb-3">
+            <input type="file" name="listing[image]" class="form-control" accept="image/*" required>
+            <div class="invalid-feedback">Please upload an image.</div>
+          </div>
+
+          <!-- Price -->
+          <div class="mb-3">
+            <input type="number" id="price" name="listing[price]" class="form-control" placeholder="Price per night" required min="0" step="0.01">
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please enter a valid price.</div>
+          </div>
+
+          <!-- Location -->
+          <div class="mb-3">
+            <input type="text" name="listing[location]" class="form-control" placeholder="Location" required>
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please provide a location.</div>
+          </div>
+
+          <!-- Country -->
+          <div class="mb-3">
+            <input type="text" name="listing[country]" class="form-control" placeholder="Country" required>
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please provide a country.</div>
+          </div>
+
+          <!-- Category -->
+          <div class="mb-4">
+            <label for="category" class="form-label fw-semibold">Category</label>
+            <select class="form-select" id="category" name="listing[category]" required>
+              <option selected disabled value="">Choose...</option>
+              <option value="rooms">Rooms</option>
+              <option value="cities">Iconic Cities</option>
+              <option value="mountains">Mountains</option>
+              <option value="castles">Castles</option>
+              <option value="pools">Amazing Pools</option>
+              <option value="camping">Camping</option>
+              <option value="farms">Farms</option>
+              <option value="beach">Beachfront</option>
+              <option value="luxury">Luxury</option>
+              <option value="cabins">Cabins</option>
+              <option value="boats">Boats</option>
+            </select>
+            <div class="valid-feedback">Category selected!</div>
+            <div class="invalid-feedback">Please select a category.</div>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" id="btn" class="btn w-100 btn-primary">Create Listing</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <%- include("../includes/footer.ejs") %>
+
+  <!-- Scripts -->
+  <script>
+    // Ensure only numbers for price
+    document.getElementById("price").addEventListener("input", function(e) {
+      this.value = this.value.replace(/[^0-9.]/g, ""); 
+    });
+
+    // Bootstrap validation
+    (() => {
+      'use strict';
+      const forms = document.querySelectorAll('.needs-validation');
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+            console.log("❌ Form blocked by client-side validation");
+          } else {
+            console.log("✅ Form is valid, submitting");
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    })();
+  </script>
+
+  <!-- Bootstrap Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

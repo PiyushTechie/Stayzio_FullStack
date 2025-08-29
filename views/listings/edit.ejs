@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stayzio</title>
+<link rel="stylesheet" href="/css/style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">  
+<link rel="stylesheet" href="/css/editlisting.css">
+
+</head>
+<body>
+  <div class="floating-elements"></div>
+  
+  <%- include("../includes/navbar.ejs") %>
+  
+  <div class="container edit-container">
+    <!-- Header Section -->
+    <div class="edit-header">
+      <h2 class="edit-title">
+        <i class="fas fa-edit me-3" style="color: var(--primary-color);"></i>
+        Edit Listing
+      </h2>
+      <p class="edit-subtitle">Update your property details</p>
+    </div>
+
+    <!-- Progress Indicator -->
+    <div class="form-step-indicator">
+      <div class="step-dot active"></div>
+      <div class="step-dot active"></div>
+      <div class="step-dot active"></div>
+      <div class="step-dot active"></div>
+      <div class="step-dot active"></div>
+      <div class="step-dot active"></div>
+    </div>
+
+    <!-- Form Container -->
+    <div class="form-container">
+      <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" class="needs-validation" novalidate enctype="multipart/form-data">
+        
+        <div class="form-group-enhanced mb-3">
+          <label for="title" class="form-label form-label-enhanced">
+            <i class="fas fa-heading label-icon"></i>
+            Title:
+          </label>
+          <input type="text" name="listing[title]" value="<%= listing.title %>" id="title" class="form-control form-control-enhanced input-hover" required>
+          <div class="valid-feedback valid-feedback-enhanced">
+            <i class="fas fa-check-circle"></i>
+            Looks good!
+          </div>
+          <div class="invalid-feedback invalid-feedback-enhanced">
+            <i class="fas fa-exclamation-circle"></i>
+            Please enter a title.
+          </div>
+        </div>
+
+        <div class="form-group-enhanced mb-3">
+          <label for="description" class="form-label form-label-enhanced">
+            <i class="fas fa-align-left label-icon"></i>
+            Description:
+          </label>
+          <input type="text" name="listing[description]" value="<%= listing.description %>" class="form-control form-control-enhanced input-hover" required>
+          <div class="valid-feedback valid-feedback-enhanced">
+            <i class="fas fa-check-circle"></i>
+            Looks good!
+          </div>
+          <div class="invalid-feedback invalid-feedback-enhanced">
+            <i class="fas fa-exclamation-circle"></i>
+            Please enter a description.
+          </div>
+        </div>
+
+                <div class="form-group-enhanced mb-3">
+          <label for="category" class="form-label form-label-enhanced">
+            <i class="fas fa-layer-group label-icon"></i>
+            Category:
+          </label>
+          <select name="listing[category]" id="category" class="form-control form-control-enhanced input-hover" required>
+            <option value="rooms" <%= listing.category === "rooms" ? "selected" : "" %>>Rooms</option>
+            <option value="cities" <%= listing.category === "cities" ? "selected" : "" %>>Iconic Cities</option>
+            <option value="mountains" <%= listing.category === "mountains" ? "selected" : "" %>>Mountains</option>
+            <option value="castles" <%= listing.category === "castles" ? "selected" : "" %>>Castles</option>
+            <option value="pools" <%= listing.category === "pools" ? "selected" : "" %>>Amazing Pools</option>
+            <option value="camping" <%= listing.category === "camping" ? "selected" : "" %>>Camping</option>
+            <option value="farms" <%= listing.category === "farms" ? "selected" : "" %>>Farms</option>
+            <option value="beach" <%= listing.category === "beach" ? "selected" : "" %>>Beachfront</option>
+            <option value="luxury" <%= listing.category === "luxury" ? "selected" : "" %>>Luxury</option>
+            <option value="cabins" <%= listing.category === "cabins" ? "selected" : "" %>>Cabins</option>
+            <option value="boats" <%= listing.category === "boats" ? "selected" : "" %>>Boats</option>
+          </select>
+          <div class="invalid-feedback invalid-feedback-enhanced">
+            <i class="fas fa-exclamation-circle"></i>
+            Please select a category.
+          </div>
+        </div>
+
+
+         <div class="form-group-enhanced mb-3">
+          <label for="imageUrl" class="form-label form-label-enhanced">
+            <i class="fas fa-image label-icon"></i>
+            Original Image:
+          </label>
+          <img src="<%= listing.image.url %>" alt="Old Preview" class="img-fluid">
+        </div>
+
+        <div class="form-group-enhanced mb-3">
+          <label for="imageUrl" class="form-label form-label-enhanced">
+            <i class="fas fa-image label-icon"></i>
+            Upload Image:
+          </label>
+          <input type="file" name="listing[image]" class="form-control form-control-enhanced input-hover">
+          <div class="invalid-feedback invalid-feedback-enhanced">
+            <i class="fas fa-exclamation-circle"></i>
+            Please upload a valid image .
+          </div>
+        </div>
+
+        <div class="form-group-enhanced mb-3">
+          <label for="price" class="form-label form-label-enhanced">
+            <i class="fas fa-rupee-sign label-icon"></i>
+            Price:
+          </label>
+          <div class="input-group-enhanced">
+            <span class="input-prefix">₹</span>
+            <input type="number" name="listing[price]" value="<%= listing.price %>" class="form-control form-control-enhanced with-prefix input-hover" required min="0" step="0.01" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode === 46">
+          </div>
+          <div class="valid-feedback valid-feedback-enhanced">
+            <i class="fas fa-check-circle"></i>
+            Looks good!
+          </div>
+          <div class="invalid-feedback invalid-feedback-enhanced">
+            <i class="fas fa-exclamation-circle"></i>
+            Please enter a valid price.
+          </div>
+        </div>
+
+        <div class="form-group-enhanced mb-3">
+          <label for="location" class="form-label form-label-enhanced">
+            <i class="fas fa-map-marker-alt label-icon"></i>
+            Location:
+          </label>
+          <input type="text" name="listing[location]" value="<%= listing.location %>" class="form-control form-control-enhanced input-hover" required>
+          <div class="valid-feedback valid-feedback-enhanced">
+            <i class="fas fa-check-circle"></i>
+            Looks good!
+          </div>
+          <div class="invalid-feedback invalid-feedback-enhanced">
+            <i class="fas fa-exclamation-circle"></i>
+            Please enter a location.
+          </div>
+        </div>
+
+        <div class="form-group-enhanced mb-4">
+          <label for="country" class="form-label form-label-enhanced">
+            <i class="fas fa-flag label-icon"></i>
+            Country:
+          </label>
+          <input type="text" name="listing[country]" value="<%= listing.country %>" class="form-control form-control-enhanced input-hover" required>
+          <div class="valid-feedback valid-feedback-enhanced">
+            <i class="fas fa-check-circle"></i>
+            Looks good!
+          </div>
+          <div class="invalid-feedback invalid-feedback-enhanced">
+            <i class="fas fa-exclamation-circle"></i>
+            Please enter a country.
+          </div>
+        </div>
+
+        <button type="submit" class="btn submit-button">
+          <i class="fas fa-save me-2"></i>
+          Update Listing
+        </button>
+      </form>
+    </div>
+  </div>
+   
+   <script>
+      document.getElementById("price").addEventListener("input", function(e) {
+      this.value = this.value.replace(/[^0-9.]/g, ""); // strip non-numeric chars
+    });
+    </script>
+<script>
+(() => {
+  'use strict';
+  const forms = document.querySelectorAll('.needs-validation');
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault();   // stop submission
+        event.stopPropagation();
+        console.log("❌ Form blocked by client-side validation");
+      } else {
+        console.log("✅ Form is valid, submitting");
+        // Add success animation
+        form.classList.add('success-animation');
+      }
+      form.classList.add('was-validated');
+    }, false);
+  });
+
+  // Add real-time validation feedback
+  const inputs = document.querySelectorAll('.form-control-enhanced');
+  inputs.forEach(input => {
+    input.addEventListener('input', function() {
+      if (this.checkValidity()) {
+        this.classList.add('is-valid');
+        this.classList.remove('is-invalid');
+      } else {
+        this.classList.add('is-invalid');
+        this.classList.remove('is-valid');
+      }
+    });
+  });
+})();
+</script>
+   
+   <%- include("../includes/footer.ejs") %>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    
+</body>
+</html>
