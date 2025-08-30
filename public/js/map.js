@@ -13,7 +13,7 @@ const marker1 = new mapboxgl.Marker({ color: "red" })
     new mapboxgl.Popup({ offset: 25 })
       .setHTML(`
         <h3>Stayzio Listing</h3>
-        <small>📍 ${listing.location}, ${listing.country}</small>
+        <small>📍 ${listingDataforMap.location}, ${listingDataforMap.country}</small>
         <p>This place is available for booking. Click to know more!</p>
       `)
   )

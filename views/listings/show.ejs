@@ -13,7 +13,7 @@
  <script>
   const mapToken = "<%= process.env.MAP_TOKEN%>";
   const coordinates = <%-JSON.stringify(listing.geometry.coordinates)%>;
-  const listing = {
+  const listingDataforMap = {
     title: "<%= listing.title %>",
     location: "<%= listing.location %>",
     country: "<%= listing.country %>"
@@ -62,7 +62,7 @@
         <i class="fa-solid fa-user detail-icon"></i>
         <span class="detail-label">Owned By:</span>
         <span class="detail-value">
-          <i><%= listing.owner.username%></i>
+          <a href="#" class="owner-link"><%= listing.owner.username%></a>
         </span>
       </div>
       
