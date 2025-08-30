@@ -62,7 +62,7 @@ store.on("error", () =>{
 // Session Config
 const sessionOptions = {
   store,
-  secret: process.env.SECRET,   // 🔑 use a strong random string in production
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -93,6 +93,10 @@ app.use((req, res, next) => {
 });
 
 // Routes
+app.get("/", (req, res) => {
+  res.redirect("/listings");
+});
+
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
