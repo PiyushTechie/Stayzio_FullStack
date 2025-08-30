@@ -3,8 +3,12 @@ import User from "../models/user.js";
 import cloudinary from "../cloudConfig.js";
 import DatauriParser from "datauri/parser.js";
 import path from "path";
-
 const parser = new DatauriParser();
+import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding.js';
+import mbxTilesets from '@mapbox/mapbox-sdk/services/tilesets.js';
+
+const mapToken = process.env.MAP_TOKEN;
+const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 
 // Get all listings with average rating
 // Get all listings with average rating (and search functionality)
@@ -63,7 +67,11 @@ const showListing = async (req, res) => {
     req.flash("error", "❌ Listing not found");
     return res.redirect("/listings");
   }
-  res.render("listings/show", { listing });
+  res.render("listings/show", { 
+  listing, 
+  mapToken: process.env.MAP_TOKEN 
+});
+
 };
 
 // Create a new listing (with Cloudinary upload)
@@ -73,41 +81,62 @@ const createListing = async (req, res) => {
     return res.redirect("/login");
   }
 
+  let response;
+  try {
+    response = await geocodingClient.forwardGeocode({
+      query: req.body.listing?.location,
+      limit: 1,
+    }).send();
+  } catch (geoErr) {
+    req.flash("error", "Location lookup failed. Try again.");
+    return res.redirect("/listings/new");
+  }
+
+  if (!response.body.features.length) {
+    req.flash("error", "Invalid location. Try again!");
+    return res.redirect("/listings/new");
+  }
+
   if (!req.file) {
     req.flash("error", "Please upload an image.");
-    return res.redirect(req.get("referer") || "/listings/new"); // ✅ safer than "back"
+    return res.redirect(req.get("referer") || "/listings/new");
   }
 
   try {
-    const base64File = parser.format(
-      path.extname(req.file.originalname).toString(),
-      req.file.buffer
-    ).content;
+    const fileExt = path.extname(req.file.originalname).toString();
+    const base64File = parser.format(fileExt, req.file.buffer).content;
 
     const result = await cloudinary.uploader.upload(base64File, {
       folder: "stayzio_DEV",
       resource_type: "image",
     });
 
+    if (!result.secure_url) {
+      throw new Error("Cloudinary did not return secure_url");
+    }
+
     const newListing = new Listing({
       ...req.body.listing,
+      geometry: response.body.features[0].geometry,
       image: { url: result.secure_url, filename: result.public_id },
       owner: req.user._id,
     });
 
-    await newListing.save();
+    const savedListing = await newListing.save();
+
     await User.findByIdAndUpdate(req.user._id, {
-      $push: { listings: newListing._id },
+      $push: { listings: savedListing._id },
     });
 
     req.flash("success", "New listing created!");
-    return res.redirect(`/listings/${newListing._id || ""}`); // ✅ fallback safe
+    return res.redirect(`/listings/${savedListing._id}`);
   } catch (error) {
-    console.error("Cloudinary Upload Error:", error);
-    req.flash("error", `Failed to upload image: ${error.message}`);
+    req.flash("error", `Failed to create listing: ${error.message}`);
     return res.redirect("/listings/new");
   }
 };
+
+
 
 // Update listing
 const updateListing = async (req, res) => {

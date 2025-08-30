@@ -35,6 +35,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // DB connection
 const dbUrl = process.env.ATLASDB_URL;
+
 async function main() {
   try {
     await mongoose.connect(dbUrl);
@@ -54,10 +55,10 @@ const store = MongoStore.create({
   },
   touchAfter: 24 * 3600,
 });
-
 store.on("error", () =>{
   console.log("ERROR IN MONGO SESSION STORE", err);
 })
+
 // Session Config
 const sessionOptions = {
   store,
@@ -95,6 +96,13 @@ app.use((req, res, next) => {
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
+
+app.get("/privacy", (req, res) => {
+    res.render("listings/privacy");
+})
+app.get("/terms", (req, res) => {
+    res.render("listings/terms");
+})
 
 // 404 handler
 app.all("/*\w", (req, res, next) => {

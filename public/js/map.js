@@ -1,0 +1,23 @@
+mapboxgl.accessToken = mapToken;
+
+const map = new mapboxgl.Map({
+  container: 'map',
+  style: "mapbox://styles/mapbox/satellite-streets-v12",
+  center: coordinates,
+  zoom: 12
+});
+
+const marker1 = new mapboxgl.Marker({ color: "red" })
+  .setLngLat(coordinates)
+  .setPopup(
+    new mapboxgl.Popup({ offset: 25 })
+      .setHTML(`
+        <h3>Stayzio Listing</h3>
+        <small>📍 ${listing.location}, ${listing.country}</small>
+        <p>This place is available for booking. Click to know more!</p>
+      `)
+  )
+  .addTo(map);
+
+// optional: auto-open popup
+marker1.togglePopup();
