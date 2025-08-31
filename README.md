@@ -61,7 +61,7 @@ A modern accommodation booking platform built with the MERN stack, inspired by A
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/stayzio.git
+   git clone https://github.com/PiyushTechie/Stayzio_Complete
    cd stayzio
    ```
 
