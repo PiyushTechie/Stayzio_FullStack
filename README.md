@@ -25,7 +25,6 @@ A modern accommodation booking platform built with the MERN stack, inspired by A
 ## 🚀 Tech Stack
 
 **Frontend**
-- React.js
 - HTML5/CSS3
 - JavaScript (ES6+)
 - Responsive Web Design
