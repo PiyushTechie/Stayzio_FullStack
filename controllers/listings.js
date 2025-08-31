@@ -6,6 +6,10 @@ import path from "path";
 const parser = new DatauriParser();
 import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding.js';
 import mbxTilesets from '@mapbox/mapbox-sdk/services/tilesets.js';
+import mongoose from "mongoose";
+const { Schema, connect } = mongoose;
+import methodOverride from "method-override";
+
 
 const mapToken = process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
@@ -139,48 +143,38 @@ const createListing = async (req, res) => {
 
 
 // Update listing
+// Update listing (Refactored)
 const updateListing = async (req, res) => {
   const { id } = req.params;
-
-  // Ensure it's a valid ObjectId
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    req.flash("error", "Invalid listing ID.");
-    return res.redirect("/listings");
-  }
-
   const listingData = req.body.listing;
-  const originalListing = await Listing.findById(id);
 
-  if (!originalListing) {
-    req.flash("error", "Listing not found!");
-    return res.redirect("/listings");
-  }
+  // Find and update the listing in one step
+  let updatedListing = await Listing.findByIdAndUpdate(id, { ...listingData }, { new: true });
 
-  originalListing.set(listingData);
-
+  // Handle new image upload
   if (req.file) {
-    if (originalListing.image?.filename) {
-      await cloudinary.uploader.destroy(originalListing.image.filename);
+    // If there was a previous image, delete it from Cloudinary
+    if (updatedListing.image?.filename) {
+      await cloudinary.uploader.destroy(updatedListing.image.filename);
     }
-
+    
+    // Format and upload the new image
     const base64File = parser.format(
       path.extname(req.file.originalname).toString(),
       req.file.buffer
     ).content;
-
     const result = await cloudinary.uploader.upload(base64File, {
       folder: "stayzio_DEV",
     });
 
-    originalListing.image = { url: result.secure_url, filename: result.public_id };
+    // Save the new image details to the listing
+    updatedListing.image = { url: result.secure_url, filename: result.public_id };
+    await updatedListing.save(); // A quick save is needed just for the new image
   }
 
-  await originalListing.save();
-
   req.flash("success", "✏️ Listing Updated Successfully!");
-  return res.redirect(`/listings/${id}`);
+  res.redirect(`/listings/${id}`);
 };
-
 
 // Render edit form
 const renderEditForm = async (req, res) => {
