@@ -19,5 +19,3 @@ const marker1 = new mapboxgl.Marker({ color: "red" })
   )
   .addTo(map);
 
-// optional: auto-open popup
-marker1.togglePopup();
