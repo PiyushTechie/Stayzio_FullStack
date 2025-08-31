@@ -1,4 +1,5 @@
 import User from "../models/user.js";
+import mongoose from "mongoose";
 
 // ✅ Render signup form
 const renderSignUpForm = (req, res) => {
