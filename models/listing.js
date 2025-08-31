@@ -3,17 +3,6 @@ import Review from "./reviews.js";
 
 const { Schema, connect } = mongoose;
 
-// Optional: Connect from here if needed (better handled centrally)
-async function main() {
-  try {
-    await connect('mongodb://127.0.0.1:27017/wanderlust');
-    console.log("DB Connected Successfully");
-  } catch (err) {
-    console.log("DB Connection Error:", err);
-  }
-}
-
-
 const listingSchema = new Schema({
   title: String,
   description: String,
