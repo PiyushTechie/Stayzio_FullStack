@@ -118,21 +118,29 @@
         .nav-right {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px; /* Reduced gap for better fit */
         }
 
         .search-container {
             position: relative;
             display: flex;
             align-items: center;
+            flex-grow: 1; /* Allows it to take up available space */
+            max-width: 280px; /* Optional: Sets a maximum width */
+        }
+
+        .search-container form {
+            width: 100%;
+            display: flex;
+            align-items: center;
         }
 
         .search-input {
+            width: 100%; /* Makes the input flexible */
             padding: 12px 48px 12px 20px;
             border: 2px solid #e5e7eb;
             border-radius: 14px;
             font-size: 14px;
-            width: 280px;
             transition: all 0.3s ease;
             background: #f9fafb;
             color: #374151;
@@ -146,25 +154,9 @@
 
         .search-input:focus {
             outline: none;
-            border-color: #fe424d;
             background: #ffffff;
             box-shadow: 0 0 0 4px rgba(254, 66, 77, 0.1);
             transform: translateY(-1px);
-        }
-
-        .search-icon {
-            position: absolute;
-            right: 16px;
-            color: #9ca3af;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            padding: 4px;
-            border-radius: 6px;
-        }
-
-        .search-icon:hover {
-            color: #fe424d;
-            background: rgba(254, 66, 77, 0.1);
         }
 
         .search-icon-btn {
@@ -175,6 +167,19 @@
             position: absolute;
             right: 16px;
         }
+        
+        .search-icon {
+            color: #9ca3af;
+            transition: all 0.3s ease;
+            padding: 4px;
+            border-radius: 6px;
+        }
+
+        .search-icon:hover {
+            color: #fe424d;
+            background: rgba(254, 66, 77, 0.1);
+        }
+
         .user-profile {
             position: relative;
         }
@@ -399,10 +404,19 @@
             width: 100%;
             text-align: center;
         }
-
-        @media (max-width: 768px) {
-            .nav-menu,
+        
+        /* New and improved responsive breakpoints */
+        @media (max-width: 992px) {
             .search-container {
+                display: none;
+            }
+            .nav-right {
+                gap: 8px; /* Slightly reduced gap for smaller screens */
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu {
                 display: none;
             }
 
@@ -488,15 +502,15 @@
             <div class="nav-right">
                 <div class="search-container">
                     <form action="/listings" method="GET" class="d-flex align-items-center">
-                    <input type="text" class="search-input" name="q" placeholder="Search properties...">
-                    <button type="submit" class="search-icon-btn">
-                    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
-                    <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                  </button>
-            </form>
-        </div>
+                        <input type="text" class="search-input" name="q" placeholder="Search properties...">
+                        <button type="submit" class="search-icon-btn">
+                            <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                                <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
                 <a class="nav-item signup-btn" href="/listings/new">Become a Host</a>
 
                 <% if (currentUser) { %>
