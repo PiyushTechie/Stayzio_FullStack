@@ -20,19 +20,25 @@
             overflow-x: hidden;
         }
 
-        /* Update this existing CSS block */
-        .logo-icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(145deg, #fe424d, #ff6b7a);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white; /* This will color the Font Awesome icon */
-            box-shadow: 0 4px 12px rgba(254, 66, 77, 0.25);
-            transition: all 0.3s ease;
-        }
+        /* Brand Styling */
+  .navbar-brand {
+    text-decoration: none !important;
+    transition: transform 0.2s ease;
+  }
+  
+  .navbar-brand:hover {
+    transform: scale(1.05);
+  }
+  
+  .brand-icon {
+    color: #fe424d;
+    font-size: 1.5rem;
+  }
+  
+  .brand-text {
+    color: #fe424d;
+    font-size: 1.4rem;
+  }
 
         /* Navigation */
         nav {
@@ -554,9 +560,10 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <div class="logo">
-                <span class="logo-icon"><i class="fa-solid fa-globe"></i>Stayzio</span>
-            </div>
+            <a class="navbar-brand d-flex align-items-center gap-2" href="/listings">
+            <i class="fa-solid fa-earth-asia brand-icon"></i>
+            <span class="fw-bold brand-text">Stayzio</span>
+            </a>
             <div class="nav-links">
                 <a href="/features">Features</a>
                 <a href="/about">About</a>
