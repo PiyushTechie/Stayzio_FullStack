@@ -94,7 +94,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.get("/", (req, res) => {
-  res.redirect("/listings");
+  res.render("users/homepage");
 });
 
 app.use("/listings", listingRouter);
