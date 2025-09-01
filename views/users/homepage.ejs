@@ -20,25 +20,25 @@
             overflow-x: hidden;
         }
 
-        /* Brand Styling */
-  .navbar-brand {
-    text-decoration: none !important;
-    transition: transform 0.2s ease;
-  }
-  
-  .navbar-brand:hover {
-    transform: scale(1.05);
-  }
-  
-  .brand-icon {
-    color: #fe424d;
-    font-size: 1.5rem;
-  }
-  
-  .brand-text {
-    color: #fe424d;
-    font-size: 1.4rem;
-  }
+         /* Brand Styling */
+        .navbar-brand {
+            text-decoration: none !important;
+            transition: transform 0.2s ease;
+        }
+        
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+        
+        .brand-icon {
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .brand-text {
+            color: white;
+            font-size: 1.4rem;
+        }
 
         /* Navigation */
         nav {
@@ -281,8 +281,8 @@
             position: absolute;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 20px;
+            border-radius: 150px;
+            padding: 10px;
             animation: floatCard 8s ease-in-out infinite;
         }
 
@@ -292,11 +292,6 @@
             animation-delay: 0s;
         }
 
-        .card2 {
-            bottom: 10%;
-            left: -15%;
-            animation-delay: 2s;
-        }
 
         /* Features Section */
         .features {
@@ -600,11 +595,6 @@
                 </div>
                 
                 <div class="floating-elements">
-                    <div class="floating-card card1">
-                        <div style="font-size: 2rem; margin-bottom: 10px;">⭐</div>
-                        <div style="font-weight: 600;">4.5 Rating</div>
-                        <div style="color: #a0a0a0; font-size: 0.9rem;">Amazing host</div>
-                    </div>
                     <div class="floating-card card2">
                         <div style="font-size: 2rem; margin-bottom: 10px;">💰</div>
                         <div style="font-weight: 600;">Best Price</div>
@@ -670,7 +660,20 @@
         </div>
     </section>
 
-     <%- include("../includes/footer.ejs") %>
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-logo">
+                <span class="logo-icon"><i class="fa-solid fa-globe"></i>Stayzio</span>
+            </div>
+            <div class="footer-links">
+                <a href="/privacy">Privacy Policy</a>
+                <a href="/terms">Terms of Service</a>
+                <a href="/contact">Contact</a>
+            </div>
+            <p class="footer-copyright">© 2024 Stayzio, Inc. All rights reserved.</p>
+        </div>
+    </footer>
 
     <script>
         // Smooth scrolling for navigation links
