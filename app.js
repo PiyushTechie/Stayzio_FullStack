@@ -107,6 +107,9 @@ app.get("/privacy", (req, res) => {
 app.get("/terms", (req, res) => {
     res.render("listings/terms");
 })
+app.get("/contact", (req, res) => {
+  res.render("listings/contact");
+});
 
 // 404 handler
 app.all("/*\w", (req, res, next) => {

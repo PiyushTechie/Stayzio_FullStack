@@ -1,627 +1,415 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stayzio - Premium Navbar</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top shadow-sm">
+  <div class="container">
+    <!-- Brand -->
+    <a class="navbar-brand d-flex align-items-center gap-2" href="/listings">
+      <i class="fa-solid fa-earth-asia brand-icon"></i>
+      <span class="fw-bold brand-text">Stayzio</span>
+    </a>
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #fafbfc;
-            line-height: 1.5;
-        }
+    <!-- Toggler -->
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMain"
+            aria-controls="navMain" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-        .navbar {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
+    <!-- Links -->
+    <div class="collapse navbar-collapse" id="navMain">
+      <!-- Left -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="/listings">
+            <i class="fa-solid fa-compass me-1"></i>
+            Explore
+          </a>
+        </li>
+      </ul>
 
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 32px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 72px;
-        }
+      <!-- Search -->
+        <div class="mx-auto d-none d-lg-flex">
+          <form class="d-flex search-form" action="/listings" method="GET">
+            <input class="form-control search-input" name="q" type="search" placeholder="Search destinations...">
+            <button class="btn search-btn" type="submit">
+              <i class="fa-solid fa-magnifying-glass me-1"></i> Search
+            </button>
+          </form>
+        </div>
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 22px;
-            font-weight: 700;
-            color: #1a1a1a;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
+      <!-- Right -->
+      <ul class="navbar-nav align-items-center mb-2 mb-lg-0 gap-2">
+        <!-- Add Listing Button -->
+        <li class="nav-item">
+          <a class="btn btn-add-listing d-flex align-items-center gap-2" href="/listings/new">
+            <i class="fa-solid fa-plus"></i>
+            <span class="add-listing-text">Become a Host</span>
+          </a>
+        </li>
 
-        .logo:hover {
-            transform: translateY(-1px);
-        }
+        <% if (currentUser) { %>
+          <!-- User Profile Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle user-profile-btn d-flex align-items-center gap-2 p-2" 
+               href="#" id="userDropdown" role="button" 
+               data-bs-toggle="dropdown" aria-expanded="false">
+              <div class="user-avatar">
+                <i class="fa-solid fa-user"></i>
+              </div>
+              <div class="user-info d-none d-lg-block">
+                <div class="user-name"><%= currentUser.username %></div>
+              </div>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow-lg user-dropdown" aria-labelledby="userDropdown">
+              <li class="dropdown-header user-header">
+                <div class="d-flex align-items-center gap-3">
+                  <div class="user-avatar-large">
+                    <i class="fa-solid fa-user"></i>
+                  </div>
+                  <div>
+                    <strong><%= currentUser.username %></strong><br>
+                    <small class="text-muted"><%= currentUser.email %></small>
+                  </div>
+                </div>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center gap-2" href="/profile">
+                  <i class="fa-solid fa-user-edit"></i>
+                  Profile
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item d-flex align-items-center gap-2 text-danger" href="/logout">
+                  <i class="fa-solid fa-sign-out-alt"></i>
+                  Logout
+                </a>
+              </li>
+            </ul>
+          </li>
+        <% } else { %>
+          <!-- Auth Links -->
+          <li class="nav-item">
+            <a class="nav-link auth-link" href="/signup">Sign Up</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-auth-primary" href="/login">Login</a>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>
 
-        .logo-icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(145deg, #fe424d, #ff6b7a);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            box-shadow: 0 4px 12px rgba(254, 66, 77, 0.25);
-            transition: all 0.3s ease;
-        }
+<style>
+  :root {
+            --primary-gradient: linear-gradient(135deg, #ff385c 0%, #e31c5f 100%);
+             --text-secondary: #718096;
+          }
+  /* Brand Styling */
+  .navbar-brand {
+    text-decoration: none !important;
+    transition: transform 0.2s ease;
+  }
+  
+  .navbar-brand:hover {
+    transform: scale(1.05);
+  }
+  
+  .brand-icon {
+    color: #fe424d;
+    font-size: 1.5rem;
+  }
+  
+  .brand-text {
+    color: #fe424d;
+    font-size: 1.4rem;
+  }
 
-        .logo:hover .logo-icon {
-            transform: rotate(5deg) scale(1.05);
-            box-shadow: 0 6px 20px rgba(254, 66, 77, 0.35);
-        }
-
-        .nav-menu {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            list-style: none;
-        }
-
-        .nav-item a {
-            text-decoration: none;
-            color: #6b7280;
-            font-weight: 500;
-            font-size: 15px;
-            padding: 12px 20px;
-            border-radius: 10px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Search Form */
+        .search-form {
             position: relative;
-            white-space: nowrap;
-        }
-
-        .nav-item a::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(145deg, rgba(254, 66, 77, 0.1), rgba(255, 107, 122, 0.08));
-            border-radius: 10px;
-            opacity: 0;
-            transition: all 0.3s ease;
-            z-index: -1;
-        }
-
-        .nav-item a:hover,
-        .nav-item a.active {
-            color: #fe424d;
-            transform: translateY(-1px);
-        }
-
-        .nav-item a:hover::before,
-        .nav-item a.active::before {
-            opacity: 1;
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 12px; /* Reduced gap for better fit */
-        }
-
-        .search-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-            flex-grow: 1; /* Allows it to take up available space */
-            max-width: 280px; /* Optional: Sets a maximum width */
-        }
-
-        .search-container form {
-            width: 100%;
-            display: flex;
-            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 6px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 400px;
+            margin-bottom: 2px;
         }
 
         .search-input {
-            width: 100%; /* Makes the input flexible */
-            padding: 12px 48px 12px 20px;
-            border: 2px solid #e5e7eb;
-            border-radius: 14px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            background: #f9fafb;
-            color: #374151;
-            font-weight: 500;
-        }
-
-        .search-input::placeholder {
-            color: #9ca3af;
-            font-weight: 400;
+            border: none !important;
+            background: transparent !important;
+            padding: 10px 18px !important;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            border-radius: 16px !important;
+            box-shadow: none !important;
         }
 
         .search-input:focus {
             outline: none;
-            background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(254, 66, 77, 0.1);
-            transform: translateY(-1px);
+            box-shadow: 0 0 0 3px rgba(255, 56, 92, 0.2) !important;
         }
 
-        .search-icon-btn {
-            background: none;
-            border: none;
-            padding: 0;
-            cursor: pointer;
-            position: absolute;
-            right: 16px;
-        }
-        
-        .search-icon {
-            color: #9ca3af;
-            transition: all 0.3s ease;
-            padding: 4px;
-            border-radius: 6px;
+        .search-input::placeholder {
+            color: var(--text-secondary);
+            font-weight: 500;
         }
 
-        .search-icon:hover {
-            color: #fe424d;
-            background: rgba(254, 66, 77, 0.1);
-        }
-
-        .user-profile {
-            position: relative;
-        }
-
-        .profile-button {
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
-            background: linear-gradient(145deg, #fe424d, #ff6b7a);
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
+        .search-btn {
+            /* Add this line to make the button narrower */
+            padding: 0.5rem 0.9rem 0.5rem 0.5rem !important; /* Adjust the second value (1.2rem) to change the width */
+            background: var(--primary-gradient) !important;
+            border: none !important;
+            color: white !important;
+            margin-bottom: 2px;
+            border-radius: 16px !important;
             font-weight: 600;
-            font-size: 16px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 12px rgba(254, 66, 77, 0.3);
+            font-size: 0.85rem; 
+            box-shadow: 0 4px 15px rgba(255, 56, 92, 0.3);
             position: relative;
             overflow: hidden;
         }
 
-        .profile-button::before {
+        .search-btn::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255, 255, 255, 0.2);
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
         }
 
-        .profile-button:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(254, 66, 77, 0.4);
-        }
-
-        .profile-button:hover::before {
-            opacity: 1;
-        }
-
-        .profile-dropdown {
-            position: absolute;
-            top: calc(100% + 12px);
-            right: 0;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.05);
-            min-width: 180px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px) scale(0.95);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            padding: 8px;
-        }
-
-        .profile-dropdown.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0) scale(1);
-        }
-
-        .dropdown-item {
-            padding: 12px 16px;
-            color: #374151;
-            text-decoration: none;
-            display: block;
-            transition: all 0.2s ease;
-            font-size: 14px;
-            font-weight: 500;
-            border-radius: 10px;
-            position: relative;
-        }
-
-        .dropdown-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(145deg, rgba(254, 66, 77, 0.08), rgba(255, 107, 122, 0.06));
-            border-radius: 10px;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-            z-index: -1;
-        }
-
-        .dropdown-item:hover {
-            color: #fe424d;
-            transform: translateX(4px);
-        }
-
-        .dropdown-item:hover::before {
-            opacity: 1;
-        }
-
-        .signup-btn {
-            color: #fe424d !important;
-            background: linear-gradient(145deg, rgba(254, 66, 77, 0.1), rgba(255, 107, 122, 0.08));
-            border-radius: 10px;
-            padding: 12px 20px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            white-space: nowrap;
-        }
-
-        .signup-btn:hover {
-            transform: translateY(-1px) scale(1.02);
-            box-shadow: 0 4px 12px rgba(254, 66, 77, 0.15);
-        }
-
-        .login-btn {
-            color: #6b7280 !important;
-            padding: 12px 20px;
-            border-radius: 10px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            white-space: nowrap;
-        }
-
-        .login-btn:hover {
-            background: rgba(0, 0, 0, 0.04);
-            transform: translateY(-1px);
-        }
-
-        .mobile-menu-button {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 22px;
-            cursor: pointer;
-            color: #6b7280;
-            transition: all 0.3s ease;
-            padding: 8px;
-            border-radius: 8px;
-        }
-
-        .mobile-menu-button:hover {
-            color: #fe424d;
-            background: rgba(254, 66, 77, 0.1);
-        }
-
-        .mobile-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
-            padding: 24px 32px;
-            opacity: 0;
-            transform: translateY(-20px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .mobile-menu.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .mobile-nav-item {
-            padding: 16px 0;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .mobile-nav-item:last-child {
-            border-bottom: none;
-        }
-
-        .mobile-nav-item a {
-            color: #6b7280;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            display: block;
-            padding: 8px 16px;
-            border-radius: 8px;
-            margin: -8px -16px;
-        }
-
-        .mobile-nav-item a:hover,
-        .mobile-nav-item a.active {
-            color: #fe424d;
-            background: rgba(254, 66, 77, 0.08);
-            transform: translateX(8px);
-        }
-
-        .mobile-search {
-            margin-top: 24px;
-            padding-top: 24px;
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .mobile-search .search-input {
+        .search-btn:hover::before {
             width: 100%;
-            margin-bottom: 16px;
+            height: 100%;
         }
 
-        .mobile-nav-item.mobile-buttons {
-            padding: 0;
-            border-bottom: none;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 56, 92, 0.4);
         }
 
-        .mobile-nav-item.mobile-buttons a {
-            margin: 0;
-            padding: 16px;
-            display: block;
-            width: 100%;
-            text-align: center;
-        }
-        
-        /* New and improved responsive breakpoints */
-        @media (max-width: 992px) {
-            .search-container {
-                display: none;
-            }
-            .nav-right {
-                gap: 8px; /* Slightly reduced gap for smaller screens */
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .nav-menu {
-                display: none;
-            }
+  /* Navbar Toggle */
+  .navbar-toggler {
+    padding: 0.5rem;
+    border-radius: 8px;
+  }
+  
+  .navbar-toggler:focus {
+    box-shadow: 0 0 0 0.2rem rgba(254, 66, 77, 0.25);
+  }
 
-            .mobile-menu-button {
-                display: block;
-            }
+  /* Navigation Links */
+  .navbar .nav-link {
+    font-weight: 500;
+    position: relative;
+    transition: all 0.3s ease;
+    padding: 0.75rem 1rem !important;
+    border-radius: 8px;
+    margin: 0 0.25rem;
+  }
 
-            .mobile-menu.show {
-                display: block;
-            }
+  .navbar .nav-link:hover {
+    color: #fe424d !important;
+    background-color: rgba(254, 66, 77, 0.1);
+  }
 
-            .nav-container {
-                padding: 0 20px;
-                height: 68px;
-            }
+  /* Add Listing Button */
+  .btn-add-listing {
+    background: linear-gradient(135deg, #fe424d, #fe424d);
+    color: white !important;
+    border: none;
+    border-radius: 25px;
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(254, 66, 77, 0.3);
+  }
 
-            .logo {
-                font-size: 20px;
-            }
+  .btn-add-listing:hover {
+    background: linear-gradient(135deg, #fe424d, #fe424d);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(254, 66, 77, 0.4);
+    color: white !important;
+  }
 
-            .logo-icon {
-                width: 32px;
-                height: 32px;
-            }
+  .btn-add-listing:active {
+    transform: translateY(0);
+  }
 
-            .profile-button {
-                width: 40px;
-                height: 40px;
-                font-size: 14px;
-            }
-        }
+  /* User Profile Button */
+  .user-profile-btn {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    text-decoration: none !important;
+    min-width: 50px;
+  }
 
-        @media (max-width: 480px) {
-            .nav-container {
-                padding: 0 16px;
-            }
-        }
+  .user-profile-btn:hover {
+    background-color: rgba(254, 66, 77, 0.1);
+    border-color: #fe424d;
+    color: #fe424d !important;
+  }
 
-        /* Smooth scroll behavior */
-        html {
-            scroll-behavior: smooth;
-        }
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #fe424d, #ff5a6b);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+  }
 
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
+  .user-info .user-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.2;
+  }
 
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
+  /* Dropdown Styling */
+  .user-dropdown {
+    border: none;
+    border-radius: 12px;
+    padding: 0.5rem 0;
+    min-width: 280px;
+    margin-top: 0.5rem;
+  }
 
-        ::-webkit-scrollbar-thumb {
-            background: #fe424d;
-            border-radius: 3px;
-        }
+  .user-header {
+    padding: 1rem 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: 12px 12px 0 0;
+    margin: -0.5rem -0rem 0.5rem -0rem;
+  }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: #e63946;
-        }
-    </style>
-</head>
-<body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="/listings" class="logo">
-                <div class="logo-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
-                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" fill="none" stroke="currentColor" stroke-width="2"/>
-                        <path d="M2 12h20" stroke="currentColor" stroke-width="2"/>
-                    </svg>
-                </div>
-                Stayzio
-            </a>
+  .user-avatar-large {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #fe424d, #ff5a6b);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+  }
 
-            <ul class="nav-menu">
-                <li class="nav-item"><a href="/listings">Home</a></li>
-                <li class="nav-item"><a href="/about">About</a></li>
-                <li class="nav-item"><a href="/contact">Contact</a></li>
-            </ul>
+  .dropdown-item {
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
 
-            <div class="nav-right">
-                <div class="search-container">
-                    <form action="/listings" method="GET" class="d-flex align-items-center">
-                        <input type="text" class="search-input" name="q" placeholder="Search properties...">
-                        <button type="submit" class="search-icon-btn">
-                            <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
-                                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
-                                <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            </svg>
-                        </button>
-                    </form>
-                </div>
-                <a class="nav-item signup-btn" href="/listings/new">Become a Host</a>
+  .dropdown-item:hover {
+    background-color: rgba(254, 66, 77, 0.1);
+    color: #fe424d;
+  }
 
-                <% if (currentUser) { %>
-                    <div class="user-profile">
-                        <button class="profile-button" onclick="toggleDropdown()">
-                            <%= currentUser.username.charAt(0).toUpperCase() %>
-                        </button>
-                        <div class="profile-dropdown" id="profileDropdown">
-                            <a href="/profile" class="dropdown-item">Profile</a>
-                            <a href="/logout" class="dropdown-item">Logout</a>
-                        </div>
-                    </div>
-                <% } else { %>
-                    <a href="/signup" class="nav-item login-btn">Sign Up</a>
-                    <a href="/login" class="nav-item signup-btn">Login</a>
-                <% } %>
-            </div>
+  .dropdown-item.text-danger:hover {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+  }
 
-            <button class="mobile-menu-button" onclick="toggleMobileMenu()">
-                ☰
-            </button>
-        </div>
+  /* Auth Links */
+  .auth-link {
+    color: #6c757d !important;
+    font-weight: 600;
+  }
 
-        <div class="mobile-menu" id="mobileMenu">
-            <div class="mobile-nav-item"><a href="/listings">Home</a></div>
-            <div class="mobile-nav-item"><a href="/about">About</a></div>
-            <div class="mobile-nav-item"><a href="/contact">Contact</a></div>
+  .auth-link:hover {
+    color: #fe424d !important;
+  }
 
-            <div class="mobile-search">
-                <input type="text" class="search-input" placeholder="Search Destinations...">
-            </div>
+  .btn-auth-primary {
+    background-color: transparent;
+    color: #fe424d !important;
+    border: 2px solid #fe424d;
+    border-radius: 25px;
+    padding: 0.5rem 1.2rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
 
-            <div class="mobile-nav-item mobile-buttons">
-                <% if (currentUser) { %>
-                    <a href="/profile" class="signup-btn">Profile</a>
-                    <a href="/logout" class="login-btn">Logout</a>
-                <% } else { %>
-                    <a href="/signup" class="signup-btn">Sign Up</a>
-                    <a href="/login" class="login-btn">Login</a>
-                <% } %>
-            </div>
-        </div>
-    </nav>
+  .btn-auth-primary:hover {
+    background-color: #fe424d;
+    color: white !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(254, 66, 77, 0.3);
+  }
 
-    <script>
-        function toggleDropdown() {
-            const dropdown = document.getElementById('profileDropdown');
-            dropdown.classList.toggle('show');
-        }
+  /* Responsive Design */
+  @media (max-width: 991.98px) {
+    .add-listing-text {
+      display: none;
+    }
+    
+    .btn-add-listing {
+      padding: 0.6rem;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .navbar-nav {
+      gap: 0.5rem !important;
+    }
+    
+    .user-profile-btn {
+      border-radius: 8px;
+      padding: 0.5rem !important;
+    }
+    
+    .nav-item {
+      margin: 0.25rem 0;
+    }
+  }
 
-        function toggleMobileMenu() {
-            const mobileMenu = document.getElementById('mobileMenu');
-            mobileMenu.classList.toggle('show');
-        }
+  @media (max-width: 575.98px) {
+    .container {
+      padding: 0 1rem;
+    }
+    
+    .brand-text {
+      font-size: 1.2rem;
+    }
+    
+    .brand-icon {
+      font-size: 1.3rem;
+    }
+  }
 
-        document.addEventListener('click', function(event) {
-            const profile = document.querySelector('.user-profile');
-            const dropdown = document.getElementById('profileDropdown');
-            if (profile && dropdown && !profile.contains(event.target)) {
-                dropdown.classList.remove('show');
-            }
-        });
+  /* Smooth animations */
+  .navbar-collapse {
+    transition: all 0.3s ease;
+  }
 
-        document.addEventListener('click', function(event) {
-            const navbar = document.querySelector('.navbar');
-            const mobileMenu = document.getElementById('mobileMenu');
-            const mobileButton = document.querySelector('.mobile-menu-button');
-            if (!navbar.contains(event.target) && !mobileButton.contains(event.target)) {
-                mobileMenu.classList.remove('show');
-            }
-        });
+  /* Focus states for accessibility */
+  .btn-add-listing:focus,
+  .btn-auth-primary:focus,
+  .user-profile-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(254, 66, 77, 0.25);
+  }
 
-        document.querySelectorAll('.nav-item a, .mobile-nav-item a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelectorAll('.nav-item a, .mobile-nav-item a').forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-                const linkText = this.textContent.trim();
-                document.querySelectorAll('.nav-item a, .mobile-nav-item a').forEach(l => {
-                    if (l.textContent.trim() === linkText) l.classList.add('active');
-                });
-                document.getElementById('mobileMenu').classList.remove('show');
-            });
-        });
-
-        let lastScrollTop = 0;
-        const navbar = document.querySelector('.navbar');
-        window.addEventListener('scroll', function() {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            if (scrollTop > lastScrollTop && scrollTop > 100) {
-                navbar.style.transform = 'translateY(-100%)';
-            } else {
-                navbar.style.transform = 'translateY(0)';
-            }
-            if (scrollTop > 20) {
-                navbar.style.background = 'rgba(255, 255, 255, 0.9)';
-                navbar.style.backdropFilter = 'blur(25px)';
-            } else {
-                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-                navbar.style.backdropFilter = 'blur(20px)';
-            }
-            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-        });
-
-        window.addEventListener('load', function() {
-            navbar.style.transform = 'translateY(-100%)';
-            setTimeout(() => {
-                navbar.style.transition = 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-                navbar.style.transform = 'translateY(0)';
-            }, 100);
-        });
-    </script>
-</body>
-</html>
+  .nav-link:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(254, 66, 77, 0.15);
+    border-radius: 8px;
+  }
+</style>
