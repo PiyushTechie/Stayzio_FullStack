@@ -376,7 +376,6 @@
             margin-bottom: 16px;
         }
 
-        /* Fix mobile menu content spacing */
         .mobile-nav-item.mobile-buttons {
             padding: 0;
             border-bottom: none;
@@ -461,7 +460,7 @@
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="#" class="logo">
+            <a href="/listings" class="logo">
                 <div class="logo-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -473,12 +472,12 @@
             </a>
 
             <ul class="nav-menu">
-                <li class="nav-item"><a href="#" class="active">Home</a></li>
-                <li class="nav-item"><a href="#">About</a></li>
-                <li class="nav-item"><a href="#">Properties</a></li>
-                <li class="nav-item"><a href="#">Market</a></li>
-                <li class="nav-item"><a href="#">Services</a></li>
-                <li class="nav-item"><a href="#">Contact</a></li>
+                <li class="nav-item"><a href="/listings" class="active">Home</a></li>
+                <li class="nav-item"><a href="/about">About</a></li>
+                <li class="nav-item"><a href="/properties">Properties</a></li>
+                <li class="nav-item"><a href="/market">Market</a></li>
+                <li class="nav-item"><a href="/services">Services</a></li>
+                <li class="nav-item"><a href="/contact">Contact</a></li>
             </ul>
 
             <div class="nav-right">
@@ -489,87 +488,57 @@
                         <path d="21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                     </svg>
                 </div>
-                
-                <div id="auth-section"></div>
+                <a class="nav-item signup-btn" href="/listings/new">Become a Host</a>
 
-                <button class="mobile-menu-button" onclick="toggleMobileMenu()">
-                    ☰
-                </button>
+                <% if (currentUser) { %>
+                    <div class="user-profile">
+                        <button class="profile-button" onclick="toggleDropdown()">
+                            <%= currentUser.username.charAt(0).toUpperCase() %>
+                        </button>
+                        <div class="profile-dropdown" id="profileDropdown">
+                            <a href="/profile" class="dropdown-item">Profile</a>
+                            <a href="/logout" class="dropdown-item">Logout</a>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <a href="/signup" class="nav-item login-btn">Sign Up</a>
+                    <a href="/login" class="nav-item signup-btn">Login</a>
+                <% } %>
             </div>
-            
+
+            <button class="mobile-menu-button" onclick="toggleMobileMenu()">
+                ☰
+            </button>
         </div>
 
         <div class="mobile-menu" id="mobileMenu">
             <div class="mobile-nav-item"><a href="/listings" class="active">Home</a></div>
-            <div class="mobile-nav-item"><a href="#">About</a></div>
-            <div class="mobile-nav-item"><a href="#">Services</a></div>
-            <div class="mobile-nav-item"><a href="#">Contact</a></div>
-            
+            <div class="mobile-nav-item"><a href="/about">About</a></div>
+            <div class="mobile-nav-item"><a href="/properties">Properties</a></div>
+            <div class="mobile-nav-item"><a href="/market">Market</a></div>
+            <div class="mobile-nav-item"><a href="/services">Services</a></div>
+            <div class="mobile-nav-item"><a href="/contact">Contact</a></div>
+
             <div class="mobile-search">
                 <input type="text" class="search-input" placeholder="Search properties...">
             </div>
-            
-            <div class="mobile-nav-item mobile-buttons" id="mobile-auth-section"></div>
+
+            <div class="mobile-nav-item mobile-buttons">
+                <% if (currentUser) { %>
+                    <a href="/profile" class="signup-btn">Profile</a>
+                    <a href="/logout" class="login-btn">Logout</a>
+                <% } else { %>
+                    <a href="/signup" class="signup-btn">Sign Up</a>
+                    <a href="/login" class="login-btn">Login</a>
+                <% } %>
+            </div>
         </div>
     </nav>
 
     <script>
-        // --- User Authentication Logic (Simulation) ---
-        // Change this variable to `null` to see the login/signup buttons.
-        const currentUser = {
-            //name: null,
-            //profilePic: "U"
-        };
-        // const currentUser = null; // Uncomment this to test the logged-out state
-
-        // --- Dynamic Navbar Content ---
-        const authSection = document.getElementById('auth-section');
-        const mobileAuthSection = document.getElementById('mobile-auth-section');
-
-        function renderAuthSection() {
-            if (currentUser) {
-                // User is logged in, show profile
-                authSection.innerHTML = `
-                    <div class="user-profile">
-                        <button class="profile-button" onclick="toggleDropdown(event)">
-                            ${currentUser.profilePic}
-                        </button>
-                        <div class="profile-dropdown" id="profileDropdown">
-                            <a href="#" class="dropdown-item">Profile</a>
-                            <a href="#" class="dropdown-item">Settings</a>
-                            <a href="#" class="dropdown-item">Logout</a>
-                        </div>
-                    </div>
-                `;
-                mobileAuthSection.innerHTML = `
-                    <a href="#" class="signup-btn">Profile</a>
-                    <a href="#" class="login-btn">Logout</a>
-                `;
-            } else {
-                // User is logged out, show signup/login
-                authSection.innerHTML = `
-                    <a href="#" class="nav-item login-btn">Log In</a>
-                    <a href="#" class="nav-item signup-btn">Sign Up</a>
-                `;
-                mobileAuthSection.innerHTML = `
-                    <a href="#" class="signup-btn">Sign Up</a>
-                    <a href="#" class="login-btn">Log In</a>
-                `;
-            }
-        }
-
-        // Call the function on page load
-        renderAuthSection();
-
-        // --- JavaScript Functions ---
-        function toggleDropdown(event) {
-            if (event) {
-                event.stopPropagation();
-            }
+        function toggleDropdown() {
             const dropdown = document.getElementById('profileDropdown');
-            if (dropdown) {
-                dropdown.classList.toggle('show');
-            }
+            dropdown.classList.toggle('show');
         }
 
         function toggleMobileMenu() {
@@ -577,62 +546,45 @@
             mobileMenu.classList.toggle('show');
         }
 
-        // Close dropdown when clicking outside
         document.addEventListener('click', function(event) {
             const profile = document.querySelector('.user-profile');
             const dropdown = document.getElementById('profileDropdown');
-            
             if (profile && dropdown && !profile.contains(event.target)) {
                 dropdown.classList.remove('show');
             }
         });
 
-        // Close mobile menu when clicking outside
         document.addEventListener('click', function(event) {
             const navbar = document.querySelector('.navbar');
             const mobileMenu = document.getElementById('mobileMenu');
             const mobileButton = document.querySelector('.mobile-menu-button');
-            
             if (!navbar.contains(event.target) && !mobileButton.contains(event.target)) {
                 mobileMenu.classList.remove('show');
             }
         });
 
-        // Handle active navigation states
         document.querySelectorAll('.nav-item a, .mobile-nav-item a').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
-                
-                document.querySelectorAll('.nav-item a, .mobile-nav-item a').forEach(l => {
-                    l.classList.remove('active');
-                });
-                
+                document.querySelectorAll('.nav-item a, .mobile-nav-item a').forEach(l => l.classList.remove('active'));
                 this.classList.add('active');
-                
-                const linkText = this.textContent;
+                const linkText = this.textContent.trim();
                 document.querySelectorAll('.nav-item a, .mobile-nav-item a').forEach(l => {
-                    if (l.textContent === linkText) {
-                        l.classList.add('active');
-                    }
+                    if (l.textContent.trim() === linkText) l.classList.add('active');
                 });
-                
                 document.getElementById('mobileMenu').classList.remove('show');
             });
         });
 
-        // Enhanced navbar scroll behavior
         let lastScrollTop = 0;
         const navbar = document.querySelector('.navbar');
-        
         window.addEventListener('scroll', function() {
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            
             if (scrollTop > lastScrollTop && scrollTop > 100) {
                 navbar.style.transform = 'translateY(-100%)';
             } else {
                 navbar.style.transform = 'translateY(0)';
             }
-            
             if (scrollTop > 20) {
                 navbar.style.background = 'rgba(255, 255, 255, 0.9)';
                 navbar.style.backdropFilter = 'blur(25px)';
@@ -640,11 +592,9 @@
                 navbar.style.background = 'rgba(255, 255, 255, 0.95)';
                 navbar.style.backdropFilter = 'blur(20px)';
             }
-            
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
         });
 
-        // Add smooth entrance animation
         window.addEventListener('load', function() {
             navbar.style.transform = 'translateY(-100%)';
             setTimeout(() => {
