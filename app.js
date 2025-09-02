@@ -93,7 +93,7 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.get("/", (req, res) => {
+app.get("/home", (req, res) => {
   res.render("users/homepage");
 });
 
