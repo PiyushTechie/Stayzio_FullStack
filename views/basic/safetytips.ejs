@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safety Tips - Stayzio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #fe424d;
+            --primary-dark: #e5363f;
+            --primary-light: #ff6b74;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --bg-light: #f8f9fa;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(254, 66, 77, 0.1);
+            --shadow-hover: 0 8px 25px rgba(254, 66, 77, 0.2);
+            --gradient: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            --success: #27ae60;
+            --warning: #f39c12;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--bg-light);
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: var(--white);
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-back {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-back:hover {
+            color: var(--primary-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--gradient);
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="80" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="90" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="10" cy="60" r="1.5" fill="rgba(255,255,255,0.1)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .hero-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Quick Stats */
+        .quick-stats {
+            background: var(--white);
+            padding: 2rem 0;
+            margin-top: -2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .stats-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: var(--shadow-hover);
+            border-top: 4px solid var(--primary-color);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .stat-title {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* Section Styles */
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            color: var(--text-light);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Safety Tips Grid */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .tip-card {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .tip-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-light);
+        }
+
+        .tip-header {
+            padding: 2rem 2rem 1rem;
+            position: relative;
+        }
+
+        .tip-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .tip-card.before .tip-icon { color: var(--primary-color); }
+        .tip-card.during .tip-icon { color: var(--warning); }
+        .tip-card.after .tip-icon { color: var(--success); }
+
+        .tip-title {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .tip-category {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        .tip-card.before .tip-category {
+            background: rgba(254, 66, 77, 0.1);
+            color: var(--primary-color);
+        }
+
+        .tip-card.during .tip-category {
+            background: rgba(243, 156, 18, 0.1);
+            color: var(--warning);
+        }
+
+        .tip-card.after .tip-category {
+            background: rgba(39, 174, 96, 0.1);
+            color: var(--success);
+        }
+
+        .tip-content {
+            padding: 0 2rem 2rem;
+        }
+
+        .tip-list {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .tip-list li {
+            padding: 0.5rem 0;
+            color: var(--text-light);
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .tip-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* Emergency Section */
+        .emergency-section {
+            background: var(--primary-color);
+            color: white;
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            margin: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .emergency-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .emergency-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .emergency-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .emergency-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 1rem 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .emergency-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .emergency-item {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .emergency-item h4 {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* Checklist Section */
+        .checklist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .checklist-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .checklist-title {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .checklist-title::before {
+            content: "📋";
+            margin-right: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            color: var(--text-light);
+            position: relative;
+            padding-left: 2rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .checklist li:last-child {
+            border-bottom: none;
+        }
+
+        .checklist li::before {
+            content: "☐";
+            position: absolute;
+            left: 0;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .checklist li:hover {
+            color: var(--text-dark);
+        }
+
+        .checklist li:hover::before {
+            color: var(--primary-color);
+        }
+
+        .checklist li.checked {
+            color: var(--success);
+            text-decoration: line-through;
+        }
+
+        .checklist li.checked::before {
+            content: "☑";
+            color: var(--success);
+        }
+
+        /* Call to Action */
+        .cta-section {
+            background: var(--gradient);
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+            border-radius: 20px;
+            margin-top: 4rem;
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .cta-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: white;
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+
+        .btn:hover {
+            background: var(--bg-light);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .emergency-section {
+                padding: 2rem;
+            }
+
+            .emergency-number {
+                font-size: 2.5rem;
+            }
+
+            .cta-title {
+                font-size: 2rem;
+            }
+
+            .nav-container {
+                padding: 0 1rem;
+            }
+        }
+
+        /* Scroll animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .animate-on-scroll.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">Stayzio</a>
+            <a href="#" class="nav-back">← Back to Home</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="hero-icon">🛡️</span>
+            <h1>Safety Tips</h1>
+            <p>Your safety is our priority. Follow these essential guidelines to ensure a secure and enjoyable stay experience.</p>
+        </div>
+    </section>
+
+    <!-- Quick Stats -->
+    <section class="quick-stats">
+        <div class="stats-container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🔒</div>
+                    <div class="stat-title">Verified Properties</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📱</div>
+                    <div class="stat-title">24/7 Support</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏥</div>
+                    <div class="stat-title">Emergency Ready</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-title">Safety Certified</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Safety Tips Section -->
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">Essential Safety Guidelines</h2>
+                <p class="section-subtitle">Follow these comprehensive safety tips before, during, and after your stay to ensure maximum security and peace of mind.</p>
+            </div>
+
+            <div class="tips-grid">
+                <!-- Before Travel -->
+                <div class="tip-card before animate-on-scroll">
+                    <div class="tip-header">
+                        <span class="tip-icon">📋</span>
+                        <span class="tip-category">Before Travel</span>
+                        <h3 class="tip-title">Pre-Trip Preparation</h3>
+                    </div>
+                    <div class="tip-content">
+                        <ul class="tip-list">
+                            <li>Research your destination and accommodation thoroughly</li>
+                            <li>Share your itinerary with family or friends</li>
+                            <li>Make copies of important documents (passport, ID, insurance)</li>
+                            <li>Check property reviews and verification status</li>
+                            <li>Download offline maps and emergency contact apps</li>
+                            <li>Verify host identity and communication</li>
+                            <li>Review cancellation and refund policies</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- During Stay -->
+                <div class="tip-card during animate-on-scroll">
+                    <div class="tip-header">
+                        <span class="tip-icon">🏠</span>
+                        <span class="tip-category">During Stay</span>
+                        <h3 class="tip-title">At Your Accommodation</h3>
+                    </div>
+                    <div class="tip-content">
+                        <ul class="tip-list">
+                            <li>Inspect the property upon arrival for safety hazards</li>
+                            <li>Locate emergency exits and safety equipment</li>
+                            <li>Secure your belongings in provided safes or lockers</li>
+                            <li>Keep doors and windows locked when away</li>
+                            <li>Don't share accommodation details on social media</li>
+                            <li>Report any suspicious activity immediately</li>
+                            <li>Keep emergency numbers easily accessible</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Personal Safety -->
+                <div class="tip-card before animate-on-scroll">
+                    <div class="tip-header">
+                        <span class="tip-icon">👤</span>
+                        <span class="tip-category">Personal Safety</span>
+                        <h3 class="tip-title">Protect Yourself</h3>
+                    </div>
+                    <div class="tip-content">
+                        <ul class="tip-list">
+                            <li>Trust your instincts and stay alert</li>
+                            <li>Keep a charged phone with you at all times</li>
+                            <li>Avoid displaying expensive items or large amounts of cash</li>
+                            <li>Use reputable transportation services</li>
+                            <li>Stay in well-lit, populated areas at night</li>
+                            <li>Inform someone of your daily plans</li>
+                            <li>Learn basic local emergency phrases</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Property Safety -->
+                <div class="tip-card during animate-on-scroll">
+                    <div class="tip-header">
+                        <span class="tip-icon">🔍</span>
+                        <span class="tip-category">Property Check</span>
+                        <h3 class="tip-title">Safety Inspection</h3>
+                    </div>
+                    <div class="tip-content">
+                        <ul class="tip-list">
+                            <li>Check smoke detectors and fire extinguishers</li>
+                            <li>Test door and window locks functionality</li>
+                            <li>Ensure electrical outlets and appliances work safely</li>
+                            <li>Verify first aid kit availability</li>
+                            <li>Check for carbon monoxide detectors</li>
+                            <li>Inspect balcony railings and outdoor areas</li>
+                            <li>Document any safety concerns with photos</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Communication -->
+                <div class="tip-card after animate-on-scroll">
+                    <div class="tip-header">
+                        <span class="tip-icon">📞</span>
+                        <span class="tip-category">Communication</span>
+                        <h3 class="tip-title">Stay Connected</h3>
+                    </div>
+                    <div class="tip-content">
+                        <ul class="tip-list">
+                            <li>Maintain regular check-ins with family/friends</li>
+                            <li>Keep host contact information easily accessible</li>
+                            <li>Know local emergency services numbers</li>
+                            <li>Have backup communication methods ready</li>
+                            <li>Use Stayzio's messaging system for documentation</li>
+                            <li>Report issues through official channels</li>
+                            <li>Keep proof of all communications</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- After Stay -->
+                <div class="tip-card after animate-on-scroll">
+                    <div class="tip-header">
+                        <span class="tip-icon">✅</span>
+                        <span class="tip-category">After Stay</span>
+                        <h3 class="tip-title">Post-Stay Actions</h3>
+                    </div>
+                    <div class="tip-content">
+                        <ul class="tip-list">
+                            <li>Check for any forgotten belongings</li>
+                            <li>Review and rate your experience honestly</li>
+                            <li>Report any safety concerns to Stayzio</li>
+                            <li>Monitor your accounts for any unusual activity</li>
+                            <li>Share feedback to help other travelers</li>
+                            <li>Save important documents and receipts</li>
+                            <li>Follow up on any unresolved issues</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Emergency Section -->
+        <section class="emergency-section animate-on-scroll">
+            <div class="emergency-content">
+                <h2 class="emergency-title">Emergency Contacts</h2>
+                <p>In case of emergency, contact these numbers immediately:</p>
+                <div class="emergency-number">911</div>
+                <p>For immediate life-threatening emergencies</p>
+                
+                <div class="emergency-grid">
+                    <div class="emergency-item">
+                        <h4>Stayzio Support</h4>
+                        <p>+1 (555) 123-SAFE<br>support@stayzio.com</p>
+                    </div>
+                    <div class="emergency-item">
+                        <h4>Local Police</h4>
+                        <p>911 or local<br>non-emergency line</p>
+                    </div>
+                    <div class="emergency-item">
+                        <h4>Medical Emergency</h4>
+                        <p>911 or nearest<br>hospital/clinic</p>
+                    </div>
+                    <div class="emergency-item">
+                        <h4>Poison Control</h4>
+                        <p>1-800-222-1222<br>24/7 hotline</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Safety Checklist Section -->
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">Safety Checklists</h2>
+                <p class="section-subtitle">Use these interactive checklists to ensure you've covered all safety aspects of your stay.</p>
+            </div>
+
+            <div class="checklist-grid">
+                <div class="checklist-card animate-on-scroll">
+                    <h3 class="checklist-title">Arrival Checklist</h3>
+                    <ul class="checklist">
+                        <li onclick="toggleCheck(this)">Verify property matches listing photos</li>
+                        <li onclick="toggleCheck(this)">Test all door and window locks</li>
+                        <li onclick="toggleCheck(this)">Locate fire exits and extinguishers</li>
+                        <li onclick="toggleCheck(this)">Check smoke and CO detectors</li>
+                        <li onclick="toggleCheck(this)">Inspect electrical outlets and appliances</li>
+                        <li onclick="toggleCheck(this)">Secure valuables in safe or hidden area</li>
+                        <li onclick="toggleCheck(this)">Save emergency contacts in phone</li>
+                        <li onclick="toggleCheck(this)">Take photos of property condition</li>
+                    </ul>
+                </div>
+
+                <div class="checklist-card animate-on-scroll">
+                    <h3 class="checklist-title">Daily Safety Checklist</h3>
+                    <ul class="checklist">
+                        <li onclick="toggleCheck(this)">Lock doors and windows when leaving</li>
+                        <li onclick="toggleCheck(this)">Keep phone charged and accessible</li>
+                        <li onclick="toggleCheck(this)">Inform someone of your daily plans</li>
+                        <li onclick="toggleCheck(this)">Carry emergency contact information</li>
+                        <li onclick="toggleCheck(this)">Keep copies of important documents</li>
+                        <li onclick="toggleCheck(this)">Check weather and local alerts</li>
+                        <li onclick="toggleCheck(this)">Use well-lit and populated routes</li>
+                        <li onclick="toggleCheck(this)">Trust your instincts about situations</li>
+                    </ul>
+                </div>
+
+                <div class="checklist-card animate-on-scroll">
+                    <h3 class="checklist-title">Departure Checklist</h3>
+                    <ul class="checklist">
+                        <li onclick="toggleCheck(this)">Check all rooms for forgotten items</li>
+                        <li onclick="toggleCheck(this)">Return all keys and access cards</li>
+                        <li onclick="toggleCheck(this)">Take final photos if needed</li>
+                        <li onclick="toggleCheck(this)">Report any damage or issues</li>
+                        <li onclick="toggleCheck(this)">Leave honest review for other travelers</li>
+                        <li onclick="toggleCheck(this)">Confirm checkout procedures with host</li>
+                        <li onclick="toggleCheck(this)">Secure transportation to next destination</li>
+                        <li onclick="toggleCheck(this)">Keep receipts and documentation</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="cta-section animate-on-scroll">
+            <h2 class="cta-title">Stay Safe, Travel Smart</h2>
+            <p class="cta-subtitle">Ready to book your next safe and secure accommodation?</p>
+            <a href="#" class="btn">Browse Safe Properties</a>
+            <a href="#" class="btn">Contact Safety Team</a>
+        </section>
+    </div>
+
+    <script>
+        // Toggle checklist items
+        function toggleCheck(item) {
+            item.classList.toggle('checked');
+        }
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all elements with animation class
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add floating animation to hero icon
+        const heroIcon = document.querySelector('.hero-icon');
+        setInterval(() => {
+            heroIcon.style.transform = `translateY(${Math.sin(Date.now() * 0.001) * 10}px)`;
+        }, 50);
+    </script>
+</body>
+</html>
