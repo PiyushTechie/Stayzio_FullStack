@@ -285,20 +285,6 @@
           s.style.color = s.getAttribute('data-value') <= defaultValue ? '#fe424d' : '#ccc';
         });
       });
-
-      const btn = document.getElementById("loadMapBtn");
-      const mapDiv = document.getElementById("map");
-
-   btn.addEventListener("click", () => {
-    // Show map on first click
-    if (mapDiv.style.display === "none") {
-      mapDiv.style.display = "block";
-      btn.textContent = "Hide Map"; // change button text
-    } else {
-      mapDiv.style.display = "none";
-      btn.textContent = "Show Map"; // revert button text
-    }
-  });
     </script>
     <script>
       (() => {
@@ -320,8 +306,28 @@
   })
 })
     </script>
-    
     <%- include("../includes/footer.ejs") %>
+    <script>
+  const btn = document.getElementById("loadMapBtn");
+  const mapDiv = document.getElementById("map");
+  let mapInitialized = false;
+
+  btn.addEventListener("click", () => {
+    if (mapDiv.style.display === "none") {
+      mapDiv.style.display = "block";
+      btn.textContent = "Hide Map";
+
+      // Initialize only once
+      if (!mapInitialized) {
+        initializeMap(); 
+        mapInitialized = true;
+      }
+    } else {
+      mapDiv.style.display = "none";
+      btn.textContent = "Show Map";
+    }
+  });
+</script>
     <script src="/js/map.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="/js/script.js"></script>
