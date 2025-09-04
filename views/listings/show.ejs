@@ -113,11 +113,19 @@
     </div>
 
     <hr class="section-divider" />
-      <div>
-        <h5>Location of Listing: </h5>
-        <br>
-        <div id="map"></div>
-      </div>
+<div>
+  <h5>Location of Listing:</h5>
+  <br>
+
+  <!-- Button -->
+  <button id="loadMapBtn">Show Map</button>
+
+  <!-- Map container (hidden initially) -->
+  <div id="map" style="display:none;">
+    <p style="text-align:center; padding-top:180px;">Map will appear here</p>
+  </div>
+</div>
+
       
     <hr class="section-divider" />
       
@@ -277,6 +285,20 @@
           s.style.color = s.getAttribute('data-value') <= defaultValue ? '#fe424d' : '#ccc';
         });
       });
+
+      const btn = document.getElementById("loadMapBtn");
+      const mapDiv = document.getElementById("map");
+
+   btn.addEventListener("click", () => {
+    // Show map on first click
+    if (mapDiv.style.display === "none") {
+      mapDiv.style.display = "block";
+      btn.textContent = "Hide Map"; // change button text
+    } else {
+      mapDiv.style.display = "none";
+      btn.textContent = "Show Map"; // revert button text
+    }
+  });
     </script>
     <script>
       (() => {
