@@ -111,6 +111,15 @@ app.get("/contact", (req, res) => {
   res.render("listings/contact");
 });
 
+app.get("/cookie", (req, res) => {
+  res.render("users/cookiepolicy");
+});
+
+app.get("/safety", (req, res) => {
+  res.render("users/safetytips");
+});
+
+
 // 404 handler
 app.all("/*\w", (req, res, next) => {
   next(new ExpressError(404, "Page Not Found!"));
