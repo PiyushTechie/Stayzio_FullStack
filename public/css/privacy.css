@@ -216,6 +216,31 @@
             }
         }
 
+        footer {
+                padding: 60px 20px 30px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+
+            .footer-brand {
+                text-align: center;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .footer-legal {
+                justify-content: center;
+            }
+        
+
         /* Scroll behavior */
         html {
             scroll-behavior: smooth;
