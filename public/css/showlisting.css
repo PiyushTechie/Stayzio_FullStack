@@ -329,3 +329,9 @@
     height: 400px;
     width: 100%;
   }
+
+  .btn-close:hover {
+  color: #000; /* Change hover color to black or your theme color */
+  background-color: transparent; /* Ensure no background color */
+  border: none; /* Remove border */
+}

@@ -85,69 +85,8 @@ footer {
   background-color: rgba(0, 0, 0, 0.2); /* Subtle dark overlay on hover */
 }
 
-/* NEW LISTING */
-body {
-  background-color: #f7f7f7;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+.btn-close:hover {
+  color: #000; /* Change hover color to black or your theme color */
+  background-color: transparent; /* Ensure no background color */
+  border: none; /* Remove border */
 }
-
-.card {
-  border: none;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(209, 41, 41, 0.08);
-  background-color: #ffffff;
-  transition: transform 0.3s ease;
-}
-
-.card-title {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #333;
-}
-
-.form-control {
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  padding: 0.75rem 1rem;
-  transition: border-color 0.3s;
-}
-
-.form-control:focus {
-  border-color: #ff385c;
-  box-shadow: 0 0 0 0.2rem rgba(255, 56, 92, 0.25);
-}
-
-label {
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-  color: #555;
-}
-
-input[type="text"]:hover,
-textarea:hover {
-  transform: translateX(2px);
-  border-color: #ff385c;
-  transition: all 0.3s ease;
-}
-
-
-#btn {
-  background-color: #fe424d; /* red background */
-  color: #fff;              /* white text */
-  border-radius: 8px;
-  font-weight: 600;
-  padding: 0.75rem 1.25rem;
-  border: none;
-  transition: all 0.4s ease;
-  box-shadow: 0 4px 15px rgba(255, 56, 92, 0.2);
-}
-#btn:hover {
-  background-color: #fe424d; /* darker red on hover */
-  box-shadow: 0 6px 20px rgba(255, 56, 92, 0.3);
-  transform: scale(1.02);
-}
-
-#h2{
-  color: #fe424d; /* red */
-}
-
