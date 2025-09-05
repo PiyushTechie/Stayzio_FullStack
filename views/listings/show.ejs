@@ -121,8 +121,9 @@
   <button id="loadMapBtn" class="btn text-white" style="background: var(--gradient-primary); border: none; border-radius: 25px; padding: 0.6rem 2rem;">
     <i class="fa-solid fa-map-location-dot"></i>&nbsp; View Map
   </button>
-  <br>
+  
   <!-- Map container (hidden initially) -->
+  <br><br>
   <div id="map" style="display:none;">
     <p style="text-align:center; padding-top:180px;">Map will appear here</p>
   </div>
@@ -318,7 +319,7 @@
   btn.addEventListener("click", () => {
     if (mapDiv.style.display === "none") {
       mapDiv.style.display = "block";
-      btn.textContent = "Hide Map";
+      btn.innerHTML = '<i class="fa-solid fa-eye-slash"></i>&nbsp; Hide Map';
 
       // Initialize only once
       if (!mapInitialized) {
@@ -327,7 +328,7 @@
       }
     } else {
       mapDiv.style.display = "none";
-      btn.textContent = "Show Map";
+      btn.innerHTML = '<i class="fa-solid fa-map-location-dot"></i>&nbsp; View Map';
     }
   });
 </script>
