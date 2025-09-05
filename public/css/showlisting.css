@@ -106,17 +106,13 @@
   }
 
   .detail-value {
-    font-weight: 600;
-    color: var(--text-dark);
-    margin-right: 0.5rem;
-    min-width: 120px;
-    flex-shrink: 0;
+    color: var(--text-muted);
+    flex-grow: 1;
   }
 
   .price-highlight {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--primary-color);
+    font-weight: 600;
+    color: var(--text-muted);
   }
 
   .owner-link {
