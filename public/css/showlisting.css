@@ -106,8 +106,11 @@
   }
 
   .detail-value {
-    color: var(--text-muted);
-    flex-grow: 1;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-right: 0.5rem;
+    min-width: 120px;
+    flex-shrink: 0;
   }
 
   .price-highlight {

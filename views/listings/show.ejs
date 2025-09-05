@@ -64,7 +64,7 @@
         <span class="detail-label">Owned By:</span>
         <span class="detail-value">
          <% if (listing.owner) { %>
-          <a href="#" class="owner-link"><%= listing.owner.username %></a>
+          <%= listing.owner.username %></a>
           <% } else { %>
           <span class="text-muted">Unknown</span>
           <% } %>
