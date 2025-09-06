@@ -119,6 +119,9 @@ app.get("/safety", (req, res) => {
   res.render("users/safetytips");
 });
 
+app.get("/about", (req, res) => {
+  res.render("users/about");
+});
 
 // 404 handler
 app.all("/*\w", (req, res, next) => {
