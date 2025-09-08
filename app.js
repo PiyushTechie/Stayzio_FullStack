@@ -123,6 +123,11 @@ app.get("/about", (req, res) => {
   res.render("users/about");
 });
 
+app.get("/cancelPolicy", (req, res) => {
+  res.render("users/cancellationpoilcy");
+});
+
+
 // 404 handler
 app.all("/*\w", (req, res, next) => {
   next(new ExpressError(404, "Page Not Found!"));
