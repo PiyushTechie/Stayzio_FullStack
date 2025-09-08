@@ -103,10 +103,12 @@ app.use("/", userRouter);
 
 app.get("/privacy", (req, res) => {
     res.render("listings/privacy");
-})
+});
+
 app.get("/terms", (req, res) => {
     res.render("listings/terms");
-})
+});
+
 app.get("/contact", (req, res) => {
   res.render("listings/contact");
 });
@@ -124,7 +126,7 @@ app.get("/about", (req, res) => {
 });
 
 app.get("/cancelPolicy", (req, res) => {
-  res.render("users/cancellationpoilcy");
+  res.render("users/cancellationpolicy");
 });
 
 
