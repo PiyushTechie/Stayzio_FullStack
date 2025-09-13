@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify OTP | Stayzio</title>
+  <!-- Google Fonts for a modern look -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* --- General Body Styles --- */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #fff5f5; /* Light background from your theme */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    /* --- Main Container Card --- */
+    .verify-card {
+      max-width: 420px;
+      width: 100%;
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      border: 1px solid #fee2e2;
+    }
+
+    .icon-container {
+      margin-bottom: 20px;
+      color: #fe424d; /* Your theme color */
+    }
+
+    .verify-card h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #333;
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+
+    .verify-card .subtitle {
+      font-size: 15px;
+      color: #666;
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+    
+    /* --- Form Styling --- */
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: #4a5568;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+      font-family: 'Poppins', sans-serif;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #fe424d; /* Your theme color */
+      box-shadow: 0 0 0 4px rgba(254, 66, 77, 0.2);
+    }
+    
+    /* --- Button & Loader --- */
+    .btn-submit {
+      position: relative;
+      width: 100%;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 50px;
+      padding: 12px;
+      background: #fe424d; /* Your theme color */
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(254, 66, 77, 0.3);
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      background: #e63946; /* A slightly darker red for hover */
+      box-shadow: 0 6px 20px rgba(254, 66, 77, 0.4);
+    }
+    
+    .button-loader {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.4);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to   { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .btn-submit.loading .button-text {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    .btn-submit.loading .button-loader {
+      display: block;
+    }
+
+    .btn-submit:disabled {
+      cursor: not-allowed;
+      opacity: 0.8;
+    }
+    
+    /* --- Alert Messages --- */
+    .alert {
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      text-align: left;
+      border: 1px solid transparent;
+    }
+
+    .alert-danger {
+      background-color: #fef2f2;
+      color: #991b1b;
+      border-color: #fecaca;
+    }
+
+    .alert-success {
+      background-color: #f0fdf4;
+      color: #14532d;
+      border-color: #bbf7d0;
+    }
+    
+    /* --- Footer Link --- */
+    .footer-link {
+      margin-top: 25px;
+      font-size: 14px;
+    }
+    .footer-link a {
+      color: #fe424d; /* Your theme color */
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .footer-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="verify-card">
+    <div class="icon-container">
+      <!-- A verification shield icon using SVG -->
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+      </svg>
+    </div>
+
+    <h1>Account Verification</h1>
+    <p class="subtitle">Please enter the OTP sent to your email to complete verification.</p>
+
+    <!-- EJS Flash Messages (Assuming a standard setup) -->
+    <% if (typeof messages !== 'undefined' && messages.error) { %>
+      <div class="alert alert-danger"><%= messages.error %></div>
+    <% } %>
+    <% if (typeof messages !== 'undefined' && messages.success) { %>
+      <div class="alert alert-success"><%= messages.success %></div>
+    <% } %>
+
+    <!-- Add id="verifyForm" to the form -->
+    <form id="verifyForm" action="/verify-otp" method="POST">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" name="email" id="email" placeholder="Your registered email" required>
+      </div>
+      <div class="form-group">
+        <label for="otp">Verification Code (OTP)</label>
+        <input type="text" name="otp" id="otp" placeholder="Enter OTP" required>
+      </div>
+      
+      <!-- Updated Button Structure -->
+      <button type="submit" class="btn-submit">
+        <span class="button-text">Verify Account</span>
+        <span class="button-loader"></span>
+      </button>
+    </form>
+    
+    <p class="footer-link">
+      Didn't get the code? <a href="#">Resend OTP</a>
+    </p>
+
+  </div>
+
+  <!-- JavaScript for the loader functionality -->
+  <script>
+    const verifyForm = document.getElementById('verifyForm');
+    const submitButton = verifyForm.querySelector('.btn-submit');
+
+    verifyForm.addEventListener('submit', function() {
+      // Show loader on submit
+      submitButton.disabled = true;
+      submitButton.classList.add('loading');
+    });
+  </script>
+
+</body>
+</html>

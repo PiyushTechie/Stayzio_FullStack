@@ -16,6 +16,7 @@ import User from "./models/user.js";
 import listingRouter from "./routes/listing.js";
 import reviewRouter from "./routes/review.js";
 import userRouter from "./routes/user.js"; // Updated import
+import bookingRoutes from "./routes/booking.js"
 
 // Setup __dirname in ES Module style
 const __filename = fileURLToPath(import.meta.url);
@@ -38,7 +39,7 @@ const dbUrl = process.env.ATLASDB_URL;
 
 async function main() {
   try {
-    await mongoose.connect(dbUrl);
+    await mongoose.connect("mongodb://127.0.0.1:27017/wanderlust");
     console.log("✅ DB Connected Successfully");
   } catch (err) {
     console.log("❌ Connection error:", err);
@@ -48,20 +49,21 @@ async function main() {
 main();
 
 //MongoDb Atlas Config
-const store = MongoStore.create({
-  mongoUrl:dbUrl,
-  crypto: {
-    secret: process.env.SECRET
-  },
-  touchAfter: 24 * 3600,
-});
-store.on("error", () =>{
-  console.log("ERROR IN MONGO SESSION STORE", err);
-})
+// const store = MongoStore.create({
+//   mongoUrl:dbUrl,
+//   crypto: {
+//     secret: process.env.SECRET
+//   },
+//   touchAfter: 24 * 3600,
+// });
+// store.on("error", () =>{
+//   console.log("ERROR IN MONGO SESSION STORE", err);
+// })
 
 // Session Config
+//store,
 const sessionOptions = {
-  store,
+  
   secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
@@ -91,6 +93,13 @@ app.use((req, res, next) => {
   res.locals.error = req.flash("error");
   next();
 });
+app.use((req, res, next) => {
+  res.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+  res.set("Pragma", "no-cache");
+  res.set("Expires", "0");
+  res.set("Surrogate-Control", "no-store");
+  next();
+});
 
 // Routes
 app.get("/", (req, res) => {
@@ -100,6 +109,7 @@ app.get("/", (req, res) => {
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
+app.use('/bookings', bookingRoutes);
 
 app.get("/privacy", (req, res) => {
     res.render("listings/privacy");

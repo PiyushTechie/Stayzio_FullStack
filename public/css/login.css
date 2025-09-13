@@ -75,3 +75,15 @@ button:hover {
     text-decoration: none;
     font-weight: 500;
   }
+
+  .custom-link {
+    color: var(--primary-color);
+    text-decoration: none; /* Remove default underline */
+    font-weight: 500; /* Optional: Make the text slightly bold */
+    transition: all 0.3s ease; /* Smooth hover effect */
+  }
+
+  .custom-link:hover {
+    text-decoration: underline; /* Add underline on hover */
+    color: var(--primary-dark); /* Optional: Darken the color on hover */
+  }

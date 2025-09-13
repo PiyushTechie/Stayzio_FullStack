@@ -20,10 +20,28 @@ const userSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: "Review"
     }
-  ]
+  ],
+  // ✅ Fields for email verification and OTP
+  emailVerified: {
+    type: Boolean,
+    default: false
+  },
+  otp: {           // new OTP field
+    type: String
+  },
+  otpExpiry: {     // OTP expiration time
+    type: Date
+  },
+ 
+  resetToken: {
+    type: String
+  },
+  resetTokenExpiry: {
+    type: Date
+  }
 });
 
-// Plug in passport-local-mongoose (uses email as username)
+// Plug in passport-local-mongoose (use email to login)
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
 
 export default mongoose.model("User", userSchema);

@@ -189,10 +189,7 @@
       if (!form.checkValidity()) {
         event.preventDefault();   // stop submission
         event.stopPropagation();
-        console.log("❌ Form blocked by client-side validation");
       } else {
-        console.log("✅ Form is valid, submitting");
-        // Add success animation
         form.classList.add('success-animation');
       }
       form.classList.add('was-validated');

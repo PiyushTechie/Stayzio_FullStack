@@ -1,0 +1,139 @@
+<mjml>
+  <mj-head>
+    <mj-preview>Confirm your Stayzio booking - Verification required</mj-preview>
+    <mj-style inline="inline">
+      .otp-box {
+        background: linear-gradient(135deg, #fe424d 0%, #ff6b73 100%);
+        color: #ffffff;
+        font-size: 32px;
+        font-weight: bold;
+        letter-spacing: 5px;
+        padding: 20px 30px;
+        border-radius: 15px;
+        display: inline-block;
+        box-shadow: 0 6px 20px rgba(254, 66, 77, 0.4);
+        border: 3px solid rgba(254, 66, 77, 0.1);
+        font-family: 'Courier New', monospace;
+      }
+      .booking-highlight {
+        background: linear-gradient(135deg, #fff5f5 0%, #fef2f2 100%);
+        border-left: 4px solid #fe424d;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+      }
+      .brand-accent {
+        color: #fe424d;
+      }
+      .property-card {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 15px 0;
+      }
+      .urgency-badge {
+        background-color: #fbbf24;
+        color: #92400e;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        display: inline-block;
+      }
+    </mj-style>
+  </mj-head>
+  <mj-body width="600px" background-color="#fafafa">
+    <!-- Header Section -->
+    <mj-section background-color="#fe424d" padding="30px 25px" border-radius="12px 12px 0 0">
+      <mj-column>
+        <mj-text align="center" font-size="28px" color="#ffffff" font-weight="bold" padding="0 0 8px 0">
+          🌏︎Stayzio
+        </mj-text>
+        <mj-text font-size="24px" color="#ffffff" align="center" font-weight="bold" padding="5px 0">
+          🏠 Booking Confirmation
+        </mj-text>
+        <mj-text font-size="14px" color="rgba(255,255,255,0.9)" align="center">
+          Verify your reservation to secure your stay
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <!-- Main Content Section -->
+    <mj-section padding="30px 25px" background-color="#ffffff">
+      <mj-column>
+        <mj-text font-size="18px" color="#333" padding="0 0 15px 0">
+          Hi <strong class="brand-accent">{{username}}</strong>,
+        </mj-text>
+        
+        <mj-text font-size="16px" color="#555" line-height="1.6" padding="0 0 20px 0">
+          Great news! You're one step away from confirming your booking. We've received your reservation request for:
+        </mj-text>
+
+        <!-- Property Card -->
+        <mj-text font-size="14px" color="#333" padding="0 0 20px 0">
+          <div class="property-card">
+            <strong style="color: #fe424d; font-size: 18px;">🏡 {{listingTitle}}</strong><br/>
+            <span style="color: #6b7280; margin-top: 8px; display: inline-block;">Your perfect getaway awaits!</span>
+          </div>
+        </mj-text>
+
+        <mj-text font-size="16px" color="#555" line-height="1.6" padding="0 0 25px 0">
+          To secure your reservation and proceed with the booking process, please verify using the confirmation code below:
+        </mj-text>
+
+        <!-- OTP Section -->
+        <mj-text align="center" padding="25px 0">
+          <span class="otp-box">{{otp}}</span>
+        </mj-text>
+
+        <!-- Urgency Notice -->
+        <mj-text align="center" padding="15px 0 25px 0">
+          <span class="urgency-badge">⏰ Expires in 10 minutes</span>
+        </mj-text>
+
+        <!-- Booking Instructions -->
+        <mj-text font-size="15px" color="#555" padding="0 0 20px 0">
+          <div class="booking-highlight">
+            <strong style="color: #fe424d;">📋 Next Steps:</strong><br/>
+            1. Enter this verification code in your booking confirmation page<br/>
+            2. Complete your payment details<br/>
+            3. Receive your booking confirmation and host contact information
+          </div>
+        </mj-text>
+
+        <mj-text font-size="14px" color="#7c3aed" line-height="1.5" padding="0 0 15px 0">
+          <strong>💜 Pro Tip:</strong> Popular properties get booked quickly! Complete your verification soon to avoid disappointment.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <!-- Support Section -->
+    <mj-section background-color="#f8fafc" padding="25px" border-top="1px solid #e2e8f0">
+      <mj-column>
+        <mj-text align="center" font-size="16px" color="#333" padding="0 0 15px 0" font-weight="600">
+          Need Help With Your Booking?
+        </mj-text>
+        <mj-text align="center" font-size="14px" color="#6b7280" line-height="1.6" padding="0 0 20px 0">
+          Our booking specialists are here to help you 24/7
+        </mj-text>
+        <mj-button background-color="#fe424d" color="#ffffff" border-radius="25px" font-size="14px" font-weight="bold" padding="12px 30px" href="mailto:piyushpraja1336@gmail.com">
+          Contact Booking Support
+        </mj-button>
+      </mj-column>
+    </mj-section>
+
+    <!-- Footer Section -->
+    <mj-section background-color="transparent" padding="25px 20px 20px 20px">
+      <mj-column>
+        <mj-divider border-width="1px" border-color="#e0e0e0" width="100%" />
+        <mj-text align="center" font-size="12px" color="#9ca3af" padding="15px 0 5px 0">
+          © {{year}} <span class="brand-accent"><strong>🌏︎Stayzio</strong></span>, Inc. All rights reserved.
+        </mj-text>
+        <mj-text align="center" font-size="11px" color="#bbb" line-height="1.4">
+          This booking confirmation was sent to verify your reservation request.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

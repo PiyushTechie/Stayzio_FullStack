@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Booking - Stayzio</title>
+    <style>
+      /* General Body Styles */
+body {
+  font-family: 'Poppins', sans-serif;
+  /* New light background color, derived from your theme */
+  background-color: #fff5f5; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+/* Main Container */
+.otp-verify-container-modern {
+  padding: 20px;
+}
+
+/* The Box */
+.otp-verify-box {
+  max-width: 380px;
+  background: #ffffff; /* Changed from semi-transparent for better contrast */
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  border: 1px solid #fee2e2; /* Light border to complement the theme */
+}
+
+.icon-container {
+    margin-bottom: 20px;
+}
+
+.icon-container svg {
+    color: #fe424d; /* Changed from purple to your brand red */
+}
+
+.otp-verify-box h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.otp-verify-box .subtitle {
+  font-size: 15px;
+  color: #666;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+/* Form Styling */
+.otp-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.otp-form input {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 16px;
+  text-align: center;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.otp-form input:focus {
+  outline: none;
+  border-color: #fe424d; /* Changed from purple to your brand red */
+  /* Updated shadow to match your brand red */
+  box-shadow: 0 0 0 4px rgba(254, 66, 77, 0.2); 
+}
+
+/* Button Styling */
+.btn-verify-modern {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 53px;
+  padding: 15px;
+  background: #fe424d; /* Changed from purple to your brand red */
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  /* Updated shadow to match your brand red */
+  box-shadow: 0 4px 15px rgba(254, 66, 77, 0.3);
+  overflow: hidden;
+}
+
+.btn-verify-modern:hover {
+  transform: translateY(-2px);
+  background: #e63946; /* A slightly darker red for hover effect */
+  /* Updated shadow to match your brand red */
+  box-shadow: 0 6px 20px rgba(254, 66, 77, 0.4);
+}
+
+.button-loader {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%); /* keep it centered */
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+
+.btn-verify-modern.loading .button-text {
+  opacity: 0; /* Use opacity to fade the text out */
+  visibility: hidden;
+}
+
+.btn-verify-modern.loading .button-loader {
+  display: block;
+  position: absolute;  
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+}
+
+.btn-verify-modern:disabled {
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+/* Alert Message Styling (Unchanged) */
+.alert {
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+  </style>
+</head>
+<body>
+    <div class="otp-verify-container-modern">
+  <div class="otp-verify-box">
+    
+    <div class="icon-container">
+      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shield-check"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 11 12 14 22 4"></polyline></svg>
+    </div>
+
+    <h1>Verify Booking</h1>
+    <p class="subtitle">
+      Enter the code sent to your device for <strong><%= booking.listing.title %></strong>
+    </p>
+
+    <% if (messages.error && messages.error.length) { %>
+      <div class="alert alert-danger"><%= messages.error[0] %></div>
+    <% } %>
+    <% if (messages.success && messages.success.length) { %>
+      <div class="alert alert-success"><%= messages.success[0] %></div>
+    <% } %>
+
+    <form id="otpForm" class="otp-form" action="/bookings/<%= booking._id %>/verify-otp" method="POST">
+        <label for="otp" class="sr-only">Enter OTP</label>
+        <input type="text" id="otp" name="otp" required maxlength="6" pattern="\d{6}" title="Please enter a 6-digit number." placeholder="Enter OTP" />
+        
+        <button type="submit" class="btn-verify-modern">
+            <span class="button-text">Verify</span>
+            <span class="button-loader"></span>
+        </button>
+    </form>
+  </div>
+</div>
+
+<script>
+  const otpForm = document.getElementById('otpForm');
+  const verifyButton = otpForm.querySelector('.btn-verify-modern');
+
+  otpForm.addEventListener('submit', function() {
+    verifyButton.disabled = true;
+    
+    verifyButton.classList.add('loading');
+  });
+</script>
+</body>
+</html>

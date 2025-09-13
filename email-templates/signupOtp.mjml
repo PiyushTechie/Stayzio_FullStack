@@ -1,0 +1,93 @@
+<mjml>
+  <mj-head>
+    <mj-preview>Your Stayzio signup OTP</mj-preview>
+    <mj-style inline="inline">
+      .otp-box {
+        background: linear-gradient(135deg, #fe424d 0%, #ff6b73 100%);
+        color: #ffffff;
+        font-size: 24px;
+        font-weight: bold;
+        letter-spacing: 4px;
+        padding: 16px 24px;
+        border-radius: 12px;
+        display: inline-block;
+        box-shadow: 0 4px 15px rgba(254, 66, 77, 0.3);
+        border: 2px solid rgba(254, 66, 77, 0.1);
+      }
+      .welcome-text {
+        background: linear-gradient(135deg, #fe424d 0%, #ff6b73 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .brand-accent {
+        color: #fe424d;
+      }
+    </mj-style>
+  </mj-head>
+  <mj-body background-color="#fafafa">
+    <!-- Header Section -->
+    <mj-section background-color="#ffffff" padding="30px 20px 20px 20px" border-radius="12px 12px 0 0">
+  <mj-column>
+    <mj-text align="center" font-size="28px" font-weight="bold" color="#fe424d" padding="0 0 10px 0">
+      🌏︎Stayzio
+    </mj-text>
+    <mj-text align="center" font-size="26px" font-weight="bold" color="#333" padding="0 0 15px 0">
+      Welcome to Stayzio 🎉
+    </mj-text>
+    <mj-divider border-width="2px" border-color="#fe424d" width="60px" />
+  </mj-column>
+</mj-section>
+
+
+    <!-- Main Content Section -->
+    <mj-section background-color="#ffffff" padding="20px">
+      <mj-column>
+        <mj-text font-size="18px" color="#333" padding="0 0 15px 0">
+          Hi <strong class="brand-accent">{{username}}</strong>,
+        </mj-text>
+        <mj-text font-size="16px" color="#555" line-height="1.6" padding="0 0 25px 0">
+          Thank you for choosing Stayzio! We're excited to have you on board. Please use the verification code below to complete your email verification:
+        </mj-text>
+        
+        <!-- OTP Box -->
+        <mj-text align="center" padding="20px 0 25px 0">
+          <span class="otp-box">{{otp}}</span>
+        </mj-text>
+        
+        <mj-text font-size="14px" color="#777" line-height="1.5" padding="0 0 15px 0">
+          <strong>Important:</strong> This verification code will expire in <span class="brand-accent"><strong>10 minutes</strong></span>. Please do not share it with anyone for security reasons.
+        </mj-text>
+        
+        <mj-text font-size="14px" color="#888" line-height="1.5">
+          If you didn't request this verification code, please ignore this email or contact our support team.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <!-- Call to Action Section -->
+    <mj-section background-color="#fff5f5" padding="20px" border-radius="0 0 12px 12px">
+      <mj-column>
+        <mj-text align="center" font-size="16px" color="#333" padding="0 0 15px 0">
+          Need help? We're here for you!
+        </mj-text>
+        <mj-button background-color="#fe424d" color="#ffffff" border-radius="25px" font-size="14px" font-weight="bold" padding="12px 30px" href="mailto:piyushpraja1336@gmail.com">
+          Contact Support
+        </mj-button>
+      </mj-column>
+    </mj-section>
+
+    <!-- Footer Section -->
+    <mj-section background-color="transparent" padding="25px 20px 20px 20px">
+      <mj-column>
+        <mj-divider border-width="1px" border-color="#e0e0e0" width="100%" />
+        <mj-text align="center" font-size="12px" color="#999" padding="15px 0 5px 0">
+          © {{year}} <span class="brand-accent"><strong>🌏︎Stayzio</strong></span>. All rights reserved.
+        </mj-text>
+        <mj-text align="center" font-size="11px" color="#bbb" line-height="1.4">
+          This email was sent to verify your account. If you have any questions, please contact us.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

@@ -1,4 +1,4 @@
-        /* :root {
+        :root {
             --primary-gradient: linear-gradient(135deg, #ff385c 0%, #e31c5f 100%);
             --secondary-gradient: linear-gradient(135deg, #ff385c 0%, #e31c5f 100%);
             --accent-gradient: linear-gradient(135deg, #ff385c 0%, #e31c5f 100%);
@@ -460,4 +460,4 @@
             .user-dropdown {
                 background: rgba(255, 255, 255, 0.9) !important;
             }
-        } */
+        }

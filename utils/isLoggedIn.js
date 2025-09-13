@@ -1,6 +1,5 @@
 // utils/isLoggedIn.js
-export default function isLoggedIn(req, res, next) {
-  
+export const isLoggedIn = (req, res, next)=> {
   if (!req.isAuthenticated()) {
     req.session.redirectUrl = req.originalUrl;
     req.flash("error", "You must be logged in to do that!");

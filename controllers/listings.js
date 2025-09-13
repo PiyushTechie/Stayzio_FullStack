@@ -14,8 +14,6 @@ import methodOverride from "method-override";
 const mapToken = process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 
-// Get all listings with average rating
-// Get all listings with average rating (and search functionality)
 const index = async (req, res) => {
   // 1. Get the search query from the URL (e.g., /listings?q=beach)
   const { q } = req.query;
@@ -141,9 +139,6 @@ const createListing = async (req, res) => {
 };
 
 
-
-// Update listing
-// Update listing (Refactored)
 const updateListing = async (req, res) => {
   const { id } = req.params;
   const listingData = req.body.listing;
@@ -187,7 +182,6 @@ const renderEditForm = async (req, res) => {
 
   res.render("listings/edit", { listing });
 };
-
 
 // Delete a listing
 const destroyListing = async (req, res) => {

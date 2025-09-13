@@ -488,23 +488,7 @@
     </div>
 
     <script>
-        // Cookie preference management
-        function saveCookiePreferences() {
-            // Get all toggle states
-            const toggles = document.querySelectorAll('.toggle-switch input[type="checkbox"]');
-            const preferences = {};
-            
-            toggles.forEach((toggle, index) => {
-                const categories = ['essential', 'performance', 'functional', 'marketing'];
-                preferences[categories[index]] = toggle.checked;
-            });
-            
-            // Store preferences (in a real implementation, this would save to your backend)
-            console.log('Cookie preferences saved:', preferences);
-            
-            // Show confirmation
-            alert('Your cookie preferences have been saved successfully!');
-        }
+        
 
         function acceptAllCookies() {
             // Enable all toggles except essential (which is already disabled/checked)

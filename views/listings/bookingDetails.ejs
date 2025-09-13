@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest Details - Stayzio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #fe424d;
+            --primary-dark: #e23940;
+            --primary-light: #ff6b73;
+            --gradient-primary: linear-gradient(135deg, #fe424d, #ff6b73);
+            --shadow-soft: 0 10px 30px rgba(254, 66, 77, 0.1);
+            --shadow-card: 0 8px 25px rgba(0, 0, 0, 0.08);
+            --border-radius: 16px;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8f9ff 0%, #fff5f5 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+            margin: 2rem auto;
+            overflow: hidden;
+            max-width: 900px;
+            position: relative;
+        }
+
+        .header-section {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 2.5rem 2rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .header-section::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-subtitle {
+            opacity: 0.9;
+            font-size: 1.1rem;
+            margin-bottom: 0;
+        }
+
+        .form-section {
+            padding: 2.5rem 2rem;
+        }
+
+        .section-divider {
+            height: 3px;
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 2px;
+            margin: 2rem 0;
+            opacity: 0.3;
+        }
+
+        .guest-counter-container {
+            background: linear-gradient(135deg, #f8f9ff, #fff);
+            border: 2px solid #e9ecef;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .guest-counter-container:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .guest-counter {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .guest-counter:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(254, 66, 77, 0.25);
+            outline: none;
+        }
+
+        .guest-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .guest-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .guest-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-soft);
+            transform: translateY(-2px);
+        }
+
+        .guest-card h5 {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(254, 66, 77, 0.25);
+            outline: none;
+        }
+
+        .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(254, 66, 77, 0.25);
+            outline: none;
+        }
+
+        .contact-section {
+            background: linear-gradient(135deg, #fff5f5, #f8f9ff);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border: 2px solid rgba(254, 66, 77, 0.1);
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+            position: relative;
+            overflow: hidden;
+        }
+
+
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .counter-badge {
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .guest-type-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                margin: 1rem;
+            }
+            
+            .header-section {
+                padding: 2rem 1.5rem 1.5rem;
+            }
+            
+            .form-section {
+                padding: 2rem 1.5rem;
+            }
+            
+            .header-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="main-container">
+            <div class="header-section">
+                <div class="header-content">
+                    <h1 class="header-title">
+                        <i class="fas fa-users"></i>
+                        Guest Details
+                    </h1>
+                    <p class="header-subtitle">Enter the details for all guests who will be staying</p>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <form action="/bookings/details" method="POST" class="needs-validation" novalidate>
+                    <div class="guest-counter-container">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="adults" class="form-label">
+                                    <i class="fas fa-user-tie text-primary"></i>
+                                    Adults (18+)
+                                </label>
+                                <input type="number" id="adults" class="form-control guest-counter" value="1" min="1" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="children" class="form-label">
+                                    <i class="fas fa-child text-primary"></i>
+                                    Children (0-17)
+                                </label>
+                                <input type="number" id="children" class="form-control guest-counter" value="0" min="0" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="section-divider">
+
+                    <div id="guest-fields-container"></div>
+
+                    <div class="contact-section">
+                        <label for="contactNumber" class="form-label">
+                            <i class="fas fa-phone text-primary"></i>
+                            Contact Mobile Number
+                        </label>
+                        <input type="tel" id="contactNumber" name="contactNumber" class="form-control" placeholder="e.g., 9876543210" required>
+                        <div class="invalid-feedback">Please provide a contact number.</div>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-arrow-right me-2"></i>
+                            Proceed to Confirmation
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // JavaScript to dynamically add/remove guest fields
+        const adultsInput = document.getElementById('adults');
+        const childrenInput = document.getElementById('children');
+        const container = document.getElementById('guest-fields-container');
+
+        function generateGuestFields() {
+            container.innerHTML = ''; // Clear existing fields
+            const adults = parseInt(adultsInput.value) || 0;
+            const children = parseInt(childrenInput.value) || 0;
+
+            // Generate fields for Adults
+            for (let i = 0; i < adults; i++) {
+                const guestCard = createGuestFieldElement('Adult', i);
+                container.appendChild(guestCard);
+            }
+            
+            // Generate fields for Children
+            for (let i = 0; i < children; i++) {
+                const guestCard = createGuestFieldElement('Child', i);
+                container.appendChild(guestCard);
+            }
+        }
+
+        function createGuestFieldElement(type, index) {
+            const offsetIndex = type === 'Adult' ? index : parseInt(adultsInput.value) + index;
+            const div = document.createElement('div');
+            div.className = 'guest-card fade-in';
+            
+            const icon = type === 'Adult' ? 'fa-user-tie' : 'fa-child';
+            
+            div.innerHTML = `
+                <h5>
+                    <span class="guest-type-icon">
+                        <i class="fas ${icon}"></i>
+                    </span>
+                    ${type} ${index + 1}
+                    <span class="counter-badge">${index + 1}</span>
+                </h5>
+                <input type="hidden" name="guests[${offsetIndex}][type]" value="${type}">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">
+                            <i class="fas fa-signature text-muted"></i>
+                            Full Name
+                        </label>
+                        <input type="text" name="guests[${offsetIndex}][name]" class="form-control" required>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">
+                            <i class="fas fa-birthday-cake text-muted"></i>
+                            Age
+                        </label>
+                        <input type="number" name="guests[${offsetIndex}][age]" class="form-control" min="${type === 'Adult' ? 18 : 0}" max="${type === 'Adult' ? 120 : 17}" required>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">
+                            <i class="fas fa-venus-mars text-muted"></i>
+                            Gender
+                        </label>
+                        <select name="guests[${offsetIndex}][gender]" class="form-select" required>
+                            <option value="" selected disabled>Select...</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+            
+            return div;
+        }
+        
+        // Event listeners to update fields when numbers change
+        adultsInput.addEventListener('input', generateGuestFields);
+        childrenInput.addEventListener('input', generateGuestFields);
+        
+        // Initial generation on page load
+        generateGuestFields();
+
+        // Form validation
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+</body>
+</html>
