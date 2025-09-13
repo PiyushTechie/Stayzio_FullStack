@@ -48,7 +48,7 @@ async function main() {
 }
 main();
 
-MongoDb Atlas Config
+
 const store = MongoStore.create({
   mongoUrl:dbUrl,
   crypto: {
