@@ -13,6 +13,17 @@ const renderSignUpForm = (req, res) => {
 const signup = async (req, res) => {
   try {
     const { username, email, password } = req.body;
+    
+    // 🔍 Check if username/email already exists
+    const existingUser = await User.findOne({
+      $or: [{ username }, { email }],
+    });
+
+    if (existingUser) {
+      req.flash("error", "Username or email already in use");
+      return res.redirect("/signup");
+    }
+    
     const user = new User({ username, email });
 
     // Register with passport-local-mongoose (hashes password)
