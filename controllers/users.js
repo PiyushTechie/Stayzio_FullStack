@@ -86,6 +86,59 @@ const verifyOtp = async (req, res) => {
   res.redirect("/login");
 };
 
+//Resend Verification Otp
+const resendOtp = async (req, res) => {
+  try {
+    const { email } = req.body; // or from session if user is logged in
+
+    // 1. Find user
+    const user = await User.findOne({ email });
+    if (!user) {
+      req.flash("error", "No account found with this email");
+      return res.redirect("/resend-otp");
+    }
+
+    if (user.emailVerified) {
+      req.flash("info", "Your email is already verified");
+      return res.redirect("/login");
+    }
+
+    // 2. Check cooldown (2.5 minutes = 150000 ms)
+    const now = Date.now();
+    if (user.lastOtpSent && now - user.lastOtpSent.getTime() < 150000) {
+      const waitTime = Math.ceil((150000 - (now - user.lastOtpSent.getTime())) / 1000);
+      req.flash("error", `Please wait ${waitTime} seconds before requesting another OTP`);
+      return res.redirect("/resend-otp");
+    }
+
+    // 3. Generate new OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    user.otp = otp;
+    user.otpExpiry = now + 10 * 60 * 1000; // 10 minutes
+    user.lastOtpSent = now; // update cooldown timer
+    await user.save();
+
+    // 4. Send OTP email
+    await sendEmailFromTemplate({
+      to: user.email,
+      subject: "Stayzio: Resend OTP Verification",
+      templateName: "signupOtp",
+      templateData: {
+        username: user.username,
+        otp,
+        year: new Date().getFullYear(),
+      },
+    });
+
+    // 5. Notify success
+    req.flash("success", "A new OTP has been sent to your email");
+    res.redirect("/verify-otp");
+  } catch (e) {
+    req.flash("error", "Failed to resend OTP. Please try again.");
+    res.redirect("/resend-otp");
+  }
+};
+
 // ====================== LOGIN / LOGOUT ======================
 
 const renderLoginForm = (req, res) => {

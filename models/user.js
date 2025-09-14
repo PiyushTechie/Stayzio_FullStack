@@ -38,7 +38,8 @@ const userSchema = new Schema({
   },
   resetTokenExpiry: {
     type: Date
-  }
+  },
+  lastOtpSent: { type: Date } // cooldown tracking
 });
 
 // Plug in passport-local-mongoose (use email to login)

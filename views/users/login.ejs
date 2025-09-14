@@ -3,7 +3,7 @@
 <div class="form-container">
   <h1>Login</h1>
 
-  <form action="/login" method="POST" class="needs-validation" novalidate>
+  <form id="loginForm" action="/login" method="POST" class="needs-validation" novalidate>
     <div class="form-group">
       <label for="email">Email</label>
       <input 
@@ -28,12 +28,16 @@
       >
     </div>
 
-<div class="text-right mb-3">
-  <a href="/forgot-password" class="custom-link">Forgot password?</a>
-</div>
+    <div class="text-right mb-3">
+      <a href="/forgot-password" class="custom-link">Forgot password?</a>
+    </div>
 
-    <button type="submit">Login</button>
+    <!-- Button with loader inside -->
+    <button type="submit" id="loginBtn">
+      <span class="btn-text">Login</span>
+      <div class="spinner hidden"></div>
+    </button>
   </form>
-
+  
   <p class="signup-link">Don't have an account? <a href="/signup">Sign up here</a></p>
 </div>

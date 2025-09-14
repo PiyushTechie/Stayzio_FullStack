@@ -222,7 +222,9 @@
     </form>
     
     <p class="footer-link">
-      Didn't get the code? <a href="#">Resend OTP</a>
+      Didn't get the code? 
+      <a id="resendLink" href="/resend-otp">Resend OTP</a>
+    <span id="countdown" style="margin-left:8px; font-weight:500; color:#666;"></span>
     </p>
 
   </div>
@@ -236,8 +238,32 @@
       // Show loader on submit
       submitButton.disabled = true;
       submitButton.classList.add('loading');
+
+    const resendLink = document.getElementById("resendLink");
+    const countdownEl = document.getElementById("countdown");
+    let cooldown = 150; // 2.5 minutes in seconds
+
+    function startCooldown() {
+      resendLink.style.pointerEvents = "none";
+      resendLink.style.opacity = "0.5";
+
+    const timer = setInterval(() => {
+      if (cooldown > 0) {
+        countdownEl.textContent = `Wait ${cooldown}s`;
+        cooldown--;
+      } else {
+        clearInterval(timer);
+        countdownEl.textContent = "";
+        resendLink.style.pointerEvents = "auto";
+        resendLink.style.opacity = "1";
+      }
+    }, 1000);
+  }
+
+  // Start cooldown immediately on page load
+  startCooldown();
     });
-  </script>
+</script>
 
 </body>
 </html>
