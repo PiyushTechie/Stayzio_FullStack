@@ -15,7 +15,7 @@ A modern accommodation booking platform built with the MERN stack, inspired by A
 - **Responsive Design** - Seamless experience across all devices
 
 ### Technical Highlights
-- **Full-Stack MERN Architecture** - MongoDB, Express.js, React, Node.js
+- **Complete Web Architecture** - MongoDB, Express.js, Node.js
 - **RESTful API Design** - Clean, scalable backend with proper error handling
 - **Session-Based Authentication** - Secure user management with Passport.js
 - **Geolocation Integration** - Interactive maps powered by Mapbox API
