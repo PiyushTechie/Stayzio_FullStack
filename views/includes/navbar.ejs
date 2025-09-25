@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top shadow-sm">
   <div class="container">
     <!-- Brand -->
-    <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+    <a class="navbar-brand d-flex align-items-center gap-2 me-auto" href="/">
       <i class="fa-solid fa-earth-asia brand-icon"></i>
       <span class="fw-bold brand-text">Stayzio</span>
     </a>
@@ -25,7 +25,7 @@
       </ul>
 
 <% if (typeof showSearch === 'undefined' || showSearch) { %>
-  <div class="mx-auto d-none d-lg-flex">
+  <div class="d-lg-flex mx-lg-auto my-2 my-lg-0">
     <form class="d-flex search-form" action="/listings" method="GET">
       <input class="form-control search-input" name="q" type="search" placeholder="Search destinations...">
       <button class="btn search-btn" type="submit">
@@ -36,7 +36,7 @@
 <% } %>
 
       <!-- Right -->
-      <ul class="navbar-nav align-items-center mb-2 mb-lg-0 gap-2">
+      <ul class="navbar-nav mb-2 mb-lg-0 gap-2">
         <!-- Add Listing Button -->
         <li class="nav-item">
           <a class="btn btn-add-listing d-flex align-items-center gap-2" href="/listings/new">
@@ -199,6 +199,9 @@
   .navbar-toggler {
     padding: 0.5rem;
     border-radius: 8px;
+    width: auto;
+    flex-grow: 0;
+    flex-shrink: 0;
   }
   
   .navbar-toggler:focus {
@@ -379,12 +382,15 @@
     .nav-item {
       margin: 0.25rem 0;
     }
+
+    .search-form {
+    width: 100%; /* Make search form full-width inside collapsed menu */
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
   }
 
   @media (max-width: 575.98px) {
-    .container {
-      padding: 0 1rem;
-    }
+   
     
     .brand-text {
       font-size: 1.2rem;
