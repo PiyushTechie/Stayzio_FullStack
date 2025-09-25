@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance Protection - Stayzio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #fe424d 0%, #ff6b73 100%);
+            color: white;
+            padding: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+            opacity: 0.3;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffffff, #ffe4e6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .trust-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-weight: 600;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .main-content {
+            padding: 4rem 0;
+        }
+
+        .coverage-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .coverage-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(254, 66, 77, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(254, 66, 77, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .coverage-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #fe424d, #ff6b73);
+        }
+
+        .coverage-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(254, 66, 77, 0.15);
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #fe424d, #ff6b73);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .card-description {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .coverage-amount {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #fe424d;
+            margin-bottom: 0.5rem;
+        }
+
+        .coverage-label {
+            font-size: 0.9rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .features-section {
+            background: white;
+            padding: 4rem 0;
+            margin: 2rem 0;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: scale(1.05);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #fe424d, #ff6b73);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-description {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        .claim-process {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 4rem 0;
+            margin: 2rem 0;
+            border-radius: 30px;
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .process-step {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .process-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(254, 66, 77, 0.1);
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #fe424d, #ff6b73);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin: 0 auto 1rem;
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-description {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #fe424d, #ff6b73);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            border-radius: 30px;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .cta-description {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #fe424d;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            color: #fe424d;
+        }
+
+        .contact-info {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            margin: 2rem 0;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        .contact-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .contact-details {
+            color: #64748b;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .contact-highlight {
+            color: #fe424d;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .coverage-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Insurance Protection</h1>
+                <p class="hero-subtitle">Your peace of mind is our priority. Comprehensive coverage for every stay.</p>
+                <div class="trust-badge">🛡️ Trusted by 10000+ guests worldwide</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="coverage-grid">
+                <div class="coverage-card">
+                    <div class="card-icon">🏠</div>
+                    <h3 class="card-title">Property Protection</h3>
+                    <p class="card-description">Complete coverage for accidental damage to your accommodation, furniture, and amenities during your stay.</p>
+                    <div class="coverage-amount">Up to ₹50,000</div>
+                    <div class="coverage-label">Coverage Limit</div>
+                </div>
+
+                <div class="coverage-card">
+                    <div class="card-icon">🏥</div>
+                    <h3 class="card-title">Medical & Emergency</h3>
+                    <p class="card-description">24/7 medical assistance and emergency evacuation coverage for unexpected health issues during your travels.</p>
+                    <div class="coverage-amount">Up to ₹100,000</div>
+                    <div class="coverage-label">Medical Coverage</div>
+                </div>
+
+                <div class="coverage-card">
+                    <div class="card-icon">✈️</div>
+                    <h3 class="card-title">Trip Interruption</h3>
+                    <p class="card-description">Protection against trip cancellations, delays, and interruptions due to unforeseen circumstances.</p>
+                    <div class="coverage-amount">Up to ₹10,000</div>
+                    <div class="coverage-label">Trip Protection</div>
+                </div>
+
+                <div class="coverage-card">
+                    <div class="card-icon">💼</div>
+                    <h3 class="card-title">Personal Belongings</h3>
+                    <p class="card-description">Coverage for loss, theft, or damage to your personal items and luggage during your stay.</p>
+                    <div class="coverage-amount">Up to ₹10,000</div>
+                    <div class="coverage-label">Personal Property</div>
+                </div>
+
+                <div class="coverage-card">
+                    <div class="card-icon">⚖️</div>
+                    <h3 class="card-title">Liability Protection</h3>
+                    <p class="card-description">Personal liability coverage for accidental injury to others or damage to third-party property.</p>
+                    <div class="coverage-amount">Up to ₹20,000</div>
+                    <div class="coverage-label">Liability Limit</div>
+                </div>
+
+                <div class="coverage-card">
+                    <div class="card-icon">🔒</div>
+                    <h3 class="card-title">Identity Protection</h3>
+                    <p class="card-description">Identity theft protection and fraud monitoring services active throughout your travel period.</p>
+                    <div class="coverage-amount">Up to ₹5,000</div>
+                    <div class="coverage-label">Identity Coverage</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="features-section">
+            <h2 class="section-title">Why Choose Our Insurance</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <h4 class="feature-title">Instant Coverage</h4>
+                    <p class="feature-description">Coverage begins immediately upon booking confirmation</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🌍</div>
+                    <h4 class="feature-title">Global Coverage</h4>
+                    <p class="feature-description">Protection available in over 180 countries worldwide</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📞</div>
+                    <h4 class="feature-title">24/7 Support</h4>
+                    <p class="feature-description">Round-the-clock customer service and claims assistance</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">💳</div>
+                    <h4 class="feature-title">No Deductibles</h4>
+                    <p class="feature-description">Zero out-of-pocket expenses for covered claims</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📱</div>
+                    <h4 class="feature-title">Digital Claims</h4>
+                    <p class="feature-description">File and track claims easily through our mobile app</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🏆</div>
+                    <h4 class="feature-title">Award Winning</h4>
+                    <p class="feature-description">Recognized for excellence in travel insurance</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="claim-process">
+            <h2 class="section-title">Simple Claims Process</h2>
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h4 class="step-title">Report Incident</h4>
+                    <p class="step-description">Contact us immediately via phone, app, or website to report your claim</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h4 class="step-title">Submit Documents</h4>
+                    <p class="step-description">Upload required documents and photos through our secure portal</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h4 class="step-title">Claim Review</h4>
+                    <p class="step-description">Our experts review your claim within 24-48 hours</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <h4 class="step-title">Quick Settlement</h4>
+                    <p class="step-description">Approved claims are settled within 3-5 business days</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <div class="cta-content">
+                <h2 class="cta-title">Ready to Travel with Confidence?</h2>
+                <p class="cta-description">Get comprehensive insurance coverage for your next Stayzio booking.</p>
+                <a href="/listings" class="cta-button">Get Covered Now for your Next Stayzio Booking&nbsp;&nbsp;<i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="contact-info">
+            <h3 class="contact-title">Need Help? We're Here 24/7</h3>
+            <div class="contact-details">
+                <p>📞 Emergency Claims: <span class="contact-highlight">+919920694680-Stayzio</span></p>
+                <p>📞 General Inquiries: <span class="contact-highlight">+919920694680-Stayzio</span></p>
+                <p>📧 Email: <span class="contact-highlight">piyushpraja1336@.com</span></p>
+                <p>🌐 Policy Management: <span class="contact-highlight">stayzio.com/insurance</span></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

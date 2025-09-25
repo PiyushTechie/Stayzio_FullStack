@@ -28,3 +28,4 @@ setTimeout(() => {
     }, 500); // wait for fade transition (default Bootstrap: 0.15s, we keep 0.5s for smoother effect)
   });
 }, 3000);
+

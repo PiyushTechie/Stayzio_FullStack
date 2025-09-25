@@ -5,151 +5,576 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= user.username %> - Profile</title>
   <!-- Bootstrap & FontAwesome -->
-  <link rel="stylesheet" href="/css/profile.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #fe424d;
+      --primary-hover: #e23a44;
+      --primary-light: rgba(254, 66, 77, 0.1);
+      --secondary-color: #6c757d;
+      --background-color: #f8f9fa;
+      --white: #ffffff;
+      --text-primary: #212529;
+      --text-secondary: #6c757d;
+      --border-color: rgba(0,0,0,0.125);
+      --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+      --shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, var(--background-color) 0%, #e9ecef 100%);
+      min-height: 100vh;
+      color: var(--text-primary);
+    }
+
+    /* Hero Section */
+    .profile-hero {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+      color: var(--white);
+      padding: 4rem 0 6rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='3'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+    }
+
+    .profile-hero .container-fluid {
+      position: relative;
+      z-index: 2;
+    }
+
+    .profile-avatar {
+      width: 120px;
+      height: 120px;
+      background: var(--white);
+      color: var(--primary-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      margin: 0 auto 2rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      border: 4px solid rgba(255,255,255,0.2);
+    }
+
+    .profile-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .profile-email {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      margin-bottom: 2rem;
+    }
+
+    /* Action Buttons */
+    .btn-primary-custom {
+      background: var(--white);
+      color: var(--primary-color);
+      border: 2px solid var(--white);
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      margin: 0.25rem;
+    }
+
+    .btn-primary-custom:hover {
+      background: transparent;
+      color: var(--white);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .btn-outline-custom {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid rgba(255,255,255,0.3);
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      margin: 0.25rem;
+    }
+
+    .btn-outline-custom:hover {
+      background: rgba(255,255,255,0.1);
+      color: var(--white);
+      border-color: var(--white);
+      transform: translateY(-2px);
+    }
+
+    /* Stats Section */
+    .stats-section {
+      margin-top: -3rem;
+      position: relative;
+      z-index: 3;
+      padding: 0 1rem;
+    }
+
+    .stats-card {
+      background: var(--white);
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border-color);
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* Content Sections */
+    .content-section {
+      padding: 3rem 0;
+    }
+
+    .section-card {
+      background: var(--white);
+      border-radius: 1rem;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+    }
+
+    .section-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-title i {
+      color: var(--primary-color);
+    }
+
+    /* Listing Cards */
+    .listing-card {
+      background: var(--white);
+      border-radius: 0.75rem;
+      border: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+      overflow: hidden;
+      height: 100%;
+    }
+
+    .listing-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary-color);
+    }
+
+    .listing-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .listing-location {
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .badge-active {
+      background: linear-gradient(45deg, var(--primary-color), var(--primary-hover));
+      color: var(--white);
+      padding: 0.375rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .btn-view {
+      background: var(--primary-light);
+      color: var(--primary-color);
+      border: 1px solid var(--primary-color);
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+    }
+
+    .btn-view:hover {
+      background: var(--primary-color);
+      color: var(--white);
+      transform: translateY(-1px);
+    }
+
+    /* Review Cards */
+    .review-card {
+      background: var(--white);
+      border-radius: 0.75rem;
+      border: 1px solid var(--border-color);
+      margin-bottom: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .review-card:hover {
+      transform: translateX(4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary-color);
+    }
+
+    .star-rating {
+      font-size: 1.1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .star-rating .star {
+      color: #ffd700;
+      margin-right: 2px;
+    }
+
+    .star-rating .star.empty {
+      color: #e0e0e0;
+    }
+
+    /* Empty States */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-secondary);
+    }
+
+    .empty-state i {
+      font-size: 4rem;
+      opacity: 0.3;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .empty-state p {
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-create {
+      background: linear-gradient(45deg, var(--primary-color), var(--primary-hover));
+      color: var(--white);
+      border: none;
+      padding: 0.875rem 2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn-create:hover {
+      color: var(--white);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(254, 66, 77, 0.4);
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+      .profile-hero {
+        padding: 3rem 0 4rem;
+      }
+      
+      .profile-title {
+        font-size: 2rem;
+      }
+      
+      .profile-avatar {
+        width: 100px;
+        height: 100px;
+        font-size: 3rem;
+      }
+      
+      .stats-section {
+        margin-top: -2rem;
+      }
+      
+      .stat-number {
+        font-size: 2rem;
+      }
+      
+      .btn-primary-custom,
+      .btn-outline-custom {
+        padding: 0.625rem 1.25rem;
+        font-size: 0.9rem;
+        margin: 0.25rem 0;
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .section-card {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .stats-card {
+        padding: 1.5rem;
+      }
+      
+      .content-section {
+        padding: 2rem 0;
+      }
+    }
+
+    /* Animation Classes */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 </head>
 <body>
- 
-  <div class="container mt-4 mb-5">
-    <div class="row justify-content-center">
-      <div class="col-lg-10">
-
-        <!-- Profile Header -->
-        <div class="profile-container p-0 mb-4">
-          <div class="profile-header text-center">
-            <i class="fa-solid fa-user-circle profile-avatar d-block mb-3"></i>
-            <h2 class="mb-2"><%= user.username %></h2>
+  
+  <!-- Profile Hero Section -->
+  <section class="profile-hero">
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-6">
+          <div class="text-center">
+            <div class="profile-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <h1 class="profile-title"><%= user.username %></h1>
             
             <% if (isOwner) { %>
-              <p class="mb-3 opacity-90"><i class="fa fa-envelope me-2"></i><%= user.email %></p>
-              <p class="mb-3 opacity-90"><i class="fa fa-user me-2"></i><%= user.username %></p>
+              <p class="profile-email">
+                <i class="fas fa-envelope me-2"></i><%= user.email %>
+              </p>
               
               <!-- Action Buttons -->
-              <div class="d-flex justify-content-center gap-3 flex-wrap">
-                <a href="/listings/new" class="btn btn-custom">
-                  <i class="fa fa-plus me-2"></i>Add Listing
+              <div class="d-flex justify-content-center flex-wrap">
+                <a href="/listings/new" class="btn-primary-custom">
+                  <i class="fas fa-plus"></i>Add Listing
                 </a>
-                <a href="/logout" class="btn btn-outline-custom">
-                  <i class="fa fa-sign-out-alt me-2"></i>Logout
+                <a href="/bookings/my" class="btn-primary-custom">
+                  <i class="fas fa-calendar-check"></i>My Bookings
+                </a>
+                <a href="/logout" class="btn-outline-custom">
+                  <i class="fas fa-sign-out-alt"></i>Logout
                 </a>
               </div>
             <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-            <!-- Stats Grid -->
-            <div class="stats-grid mt-4">
-              <div class="stat-item">
-                <div class="stat-number"><%= user.listings ? user.listings.length : 0 %></div>
-                <div class="stat-label">Listings</div>
+  <!-- Stats Section -->
+  <section class="stats-section">
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-6">
+          <div class="stats-card">
+            <div class="row">
+              <div class="col-6">
+                <div class="stat-item">
+                  <div class="stat-number"><%= user.listings ? user.listings.length : 0 %></div>
+                  <div class="stat-label">Listings</div>
+                </div>
               </div>
-              <div class="stat-item">
-                <div class="stat-number"><%= user.reviews ? user.reviews.length : 0 %></div>
-                <div class="stat-label">Reviews</div>
+              <div class="col-6">
+                <div class="stat-item">
+                  <div class="stat-number"><%= user.reviews ? user.reviews.length : 0 %></div>
+                  <div class="stat-label">Reviews</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-
-        <!-- Listings Section -->
-        <div class="section-card p-4">
-          <h4 class="section-title">
-            <i class="fa fa-home me-2"></i>
-            <%= isOwner ? "My Listings" : (user.username + "'s Listings") %>
-          </h4>
-          
-          <% if (user.listings && user.listings.length > 0) { %>
-            <div class="row g-4">
-              <% user.listings.forEach((listing, index) => { %>
-                <div class="col-md-6" style="animation-delay: <%= index * 0.1 %>s;">
-                  <div class="card listing-card p-4 h-100">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                      <h5 class="card-title mb-0"><%= listing.title %></h5>
-                      <span class="badge bg-primary">Active</span>
-                    </div>
-                    <p class="text-muted mb-3">
-                      <i class="fa fa-map-marker-alt me-2 text-danger"></i>
-                      <%= listing.location %>
-                    </p>
-                    <div class="d-flex justify-content-between align-items-center mt-auto">
-                      <small class="text-muted">
-                        <i class="fa fa-calendar me-1"></i>
-                        Listed recently
-                      </small>
-                      <a href="/listings/<%= listing._id %>" class="btn btn-outline-custom btn-sm">
-                        <i class="fa fa-eye me-1"></i>View Details
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              <% }) %>
-            </div>
-          <% } else { %>
-            <div class="text-center py-5">
-              <i class="fa fa-home text-muted mb-3" style="font-size: 3rem; opacity: 0.5;"></i>
-              <p class="text-muted mb-0">
-                <%= isOwner ? "Ready to share your space? Add your first listing!" : "No listings to show yet." %>
-              </p>
-              <% if (isOwner) { %>
-                <a href="/listings/new" class="btn btn-custom mt-3">
-                  <i class="fa fa-plus me-2"></i>Create First Listing
-                </a>
-              <% } %>
-            </div>
-          <% } %>
-        </div>
-
-        <!-- Reviews Section -->
-        <div class="section-card p-4">
-          <h4 class="section-title">
-            <i class="fa fa-star me-2"></i>
-            <%= isOwner ? "My Reviews" : (user.username + "'s Reviews") %>
-          </h4>
-          
-          <% if (user.reviews && user.reviews.length > 0) { %>
-            <div class="row g-3">
-              <% user.reviews.forEach((review, index) => { %>
-                <div class="col-12" style="animation-delay: <%= index * 0.1 %>s;">
-                  <div class="review-card p-4">
-                    <div class="d-flex justify-content-between align-items-start">
-                      <div class="flex-grow-1">
-                        <div class="star-rating mb-2">
-                          <% for (let i = 1; i <= 5; i++) { %>
-                            <span style="color:<%= i <= review.rating ? '#ffd700' : '#e0e0e0' %>;">★</span>
-                          <% } %>
-                          <!-- Removed numeric (x/5) -->
-                        </div>
-                        <p class="mb-2"><%= review.comment %></p>
-                        <small class="text-muted">
-                          <i class="fa fa-clock me-1"></i>
-                          Recently reviewed
-                        </small>
-                      </div>
-                      <a href="/listings/<%= review.listing %>" class="btn btn-outline-custom btn-sm ms-3">
-                        <i class="fa fa-external-link-alt me-1"></i>View Listing
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              <% }) %>
-            </div>
-          <% } else { %>
-            <div class="text-center py-5">
-              <i class="fa fa-star text-muted mb-3" style="font-size: 3rem; opacity: 0.5;"></i>
-              <p class="text-muted mb-0">
-                <%= isOwner ? "Share your experiences! Write your first review." : "No reviews to display yet." %>
-              </p>
-            </div>
-          <% } %>
-        </div>
-
       </div>
     </div>
-  </div>
+  </section>
+
+  <!-- Content Section -->
+  <section class="content-section">
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-8">
+          
+          <!-- Listings Section -->
+          <div class="section-card fade-in">
+            <h4 class="section-title">
+              <i class="fas fa-home"></i>
+              <%= isOwner ? "My Listings" : (user.username + "'s Listings") %>
+            </h4>
+            
+            <% if (user.listings && user.listings.length > 0) { %>
+              <div class="row g-4">
+                <% user.listings.forEach((listing) => { %>
+                  <div class="col-lg-6">
+                    <div class="listing-card p-4">
+                      <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h5 class="listing-title mb-0"><%= listing.title %></h5>
+                        <span class="badge-active">Active</span>
+                      </div>
+                      <div class="listing-location mb-3">
+                        <i class="fas fa-map-marker-alt text-danger"></i>
+                        <span><%= listing.location %></span>
+                      </div>
+                      <div class="d-flex justify-content-between align-items-center mt-auto">
+                        <small class="text-muted">
+                          <i class="fas fa-calendar me-1"></i>
+                          Listed recently
+                        </small>
+                        <a href="/listings/<%= listing._id %>" class="btn-view">
+                          <i class="fas fa-eye"></i>View Details
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                <% }) %>
+              </div>
+            <% } else { %>
+              <div class="empty-state">
+                <i class="fas fa-home"></i>
+                <p><%= isOwner ? "Ready to share your space? Add your first listing!" : "No listings to show yet." %></p>
+                <% if (isOwner) { %>
+                  <a href="/listings/new" class="btn-create">
+                    </i>Create First Listing
+                  </a>
+                <% } %>
+              </div>
+            <% } %>
+          </div>
+
+          <!-- Reviews Section -->
+          <div class="section-card fade-in">
+            <h4 class="section-title">
+              <i class="fas fa-star"></i>
+              <%= isOwner ? "My Reviews" : (user.username + "'s Reviews") %>
+            </h4>
+            
+            <% if (user.reviews && user.reviews.length > 0) { %>
+              <div class="row g-3">
+                <% user.reviews.forEach((review) => { %>
+                  <div class="col-12">
+                    <div class="review-card p-4">
+                      <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                          <div class="star-rating mb-2">
+                            <% for (let i = 1; i <= 5; i++) { %>
+                              <span class="star <%= i <= review.rating ? '' : 'empty' %>">★</span>
+                            <% } %>
+                          </div>
+                          <p class="mb-2"><%= review.comment %></p>
+                          <small class="text-muted">
+                            <i class="fas fa-clock me-1"></i>
+                            Recently reviewed
+                          </small>
+                        </div>
+                        <a href="/listings/<%= review.listing %>" class="btn-view ms-3">
+                          <i class="fas fa-external-link-alt"></i>View Listing
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                <% }) %>
+              </div>
+            <% } else { %>
+              <div class="empty-state">
+                <i class="fas fa-star"></i>
+                <p><%= isOwner ? "Share your experiences! Write your first review." : "No reviews to display yet." %></p>
+              </div>
+            <% } %>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
 
   <script>
-    // Fade-in animation for cards
+    // Smooth scroll animation for cards
     document.addEventListener('DOMContentLoaded', function() {
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, observerOptions);
+
+      const fadeElements = document.querySelectorAll('.fade-in');
+      fadeElements.forEach(el => observer.observe(el));
+
+      // Listing and review card animations
       const cards = document.querySelectorAll('.listing-card, .review-card');
       cards.forEach((card, index) => {
         card.style.opacity = '0';

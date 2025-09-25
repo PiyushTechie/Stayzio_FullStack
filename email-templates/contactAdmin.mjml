@@ -1,0 +1,55 @@
+<mjml>
+  <mj-head>
+    <mj-font name="Inter" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
+    <mj-style>
+      .heading { font-family: 'Inter', sans-serif; font-size: 24px; font-weight: 700; color: #fe424d; }
+      .label { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 600; color: #fe424d; }
+      .value { font-family: 'Inter', sans-serif; font-size: 16px; color: #374151; }
+      .footer { font-family: 'Inter', sans-serif; font-size: 14px; color: #6b7280; }
+    </mj-style>
+  </mj-head>
+
+  <mj-body background-color="#fef2f2">
+    <!-- Header Section -->
+    <mj-section background-color="#fe424d" padding="30px 0">
+      <mj-column>
+        <mj-text align="center" color="#ffffff" font-size="22px" font-weight="bold" font-family="Inter">
+          📩 New Enquiry Received
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <!-- Content Section -->
+    <mj-section background-color="#ffffff" padding="30px">
+      <mj-column>
+        <mj-text css-class="label">Name: </mj-text>
+        <mj-text css-class="value">{{name}}</mj-text>
+
+        <mj-text css-class="label">Email:</mj-text>
+        <mj-text css-class="value">{{email}}</mj-text>
+
+        <mj-text css-class="label">Subject:</mj-text>
+        <mj-text css-class="value">{{subject}}</mj-text>
+
+        <mj-text css-class="label">Message:</mj-text>
+        <mj-text css-class="value">{{message}}</mj-text>
+      </mj-column>
+    </mj-section>
+
+    <!-- Divider -->
+    <mj-section padding="0">
+      <mj-column>
+        <mj-divider border-color="#fe424d" border-width="2px" />
+      </mj-column>
+    </mj-section>
+
+    <!-- Footer -->
+    <mj-section background-color="#fef2f2" padding="20px">
+      <mj-column>
+        <mj-text align="center" css-class="footer">
+          © {{year}} Stayzio, Inc. All rights reserved.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

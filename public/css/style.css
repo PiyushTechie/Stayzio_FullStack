@@ -1,21 +1,21 @@
-body{
-    background-color: #f7f7f7;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+body {
+  background-color: #f7f7f7;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-.container{
-    flex: 1;
+.container {
+  flex: 1;
 }
 
-.fa-compass{
-    color: #fe424d;
-    font-size: 2rem;
+.fa-compass {
+  color: #fe424d;
+  font-size: 2rem;
 }
-.navbar-brand{
-    color: #fe424d;
+.navbar-brand {
+  color: #fe424d;
 }
 
 /* Footer */
@@ -30,7 +30,7 @@ footer {
 
 .f-info {
   display: flex;
-    flex-direction: column;
+  flex-direction: column;
   align-items: center;
   gap: 10px;
   text-align: center;
@@ -45,7 +45,6 @@ footer {
 
 .f-info-socials i:hover {
   color: #fe424d; /* Stayzio's red highlight */
-
 }
 
 .f-info-links a {
@@ -58,8 +57,7 @@ footer {
 .f-info-links a:hover {
   color: #fe424d;
   text-decoration: underline;
-  
-}   
+}
 .card-img-top {
   border-radius: 12px;
   object-fit: cover;

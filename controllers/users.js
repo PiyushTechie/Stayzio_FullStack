@@ -1,7 +1,6 @@
 // controllers/users.js
 import User from "../models/user.js";
-import { sendEmailFromTemplate } from "../utils/mailer.js";
-
+import { sendEmailFromMJML } from "../utils/mailer.js";
 // ====================== SIGNUP & OTP ======================
 
 // Render signup form
@@ -26,7 +25,6 @@ const signup = async (req, res) => {
     
     const user = new User({ username, email });
 
-    // Register with passport-local-mongoose (hashes password)
     await User.register(user, password);
 
     // Generate 6-digit OTP
@@ -36,17 +34,16 @@ const signup = async (req, res) => {
     user.emailVerified = false;
     await user.save();
 
-    // ✅ Send signup OTP email
-    await sendEmailFromTemplate({
-      to: email,
-      subject: "Stayzio: Verify your email",
-      templateName: "signupOtp",
-      templateData: {
-        username,
-        otp,
-        year: new Date().getFullYear(),
-      },
-    });
+    await sendEmailFromMJML({
+          to: email,
+          subject: "Stayzio: Verify your email",
+          templateName: "signupOtp",   // matches email-templates/signupOtp.mjml
+          templateData: {
+            username,
+            otp,
+            year: new Date().getFullYear(),
+          },
+        });
 
     req.flash(
       "success",
@@ -89,55 +86,55 @@ const verifyOtp = async (req, res) => {
 //Resend Verification Otp
 const resendOtp = async (req, res) => {
   try {
-    const { email } = req.body; // or from session if user is logged in
+    
+    const { email } = req.body || {};
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
+    }
 
-    // 1. Find user
     const user = await User.findOne({ email });
     if (!user) {
-      req.flash("error", "No account found with this email");
-      return res.redirect("/resend-otp");
+      return res.status(404).json({ error: "No account found with this email" });
     }
 
     if (user.emailVerified) {
-      req.flash("info", "Your email is already verified");
-      return res.redirect("/login");
+      return res.status(400).json({ error: "Your email is already verified. Please log in." });
     }
 
-    // 2. Check cooldown (2.5 minutes = 150000 ms)
     const now = Date.now();
-    if (user.lastOtpSent && now - user.lastOtpSent.getTime() < 150000) {
-      const waitTime = Math.ceil((150000 - (now - user.lastOtpSent.getTime())) / 1000);
-      req.flash("error", `Please wait ${waitTime} seconds before requesting another OTP`);
-      return res.redirect("/resend-otp");
+    const cooldownPeriod = 150000;
+
+    if (user.lastOtpSent && now - user.lastOtpSent.getTime() < cooldownPeriod) {
+      const waitTime = Math.ceil((cooldownPeriod - (now - user.lastOtpSent.getTime())) / 1000);
+      return res.status(429).json({ error: `Please wait ${waitTime} seconds before requesting another OTP` });
     }
 
-    // 3. Generate new OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     user.otp = otp;
-    user.otpExpiry = now + 10 * 60 * 1000; // 10 minutes
-    user.lastOtpSent = now; // update cooldown timer
+    user.otpExpiry = now + 10 * 60 * 1000;
+    user.lastOtpSent = new Date(now);
     await user.save();
 
-    // 4. Send OTP email
-    await sendEmailFromTemplate({
-      to: user.email,
-      subject: "Stayzio: Resend OTP Verification",
-      templateName: "signupOtp",
-      templateData: {
-        username: user.username,
-        otp,
-        year: new Date().getFullYear(),
-      },
-    });
+    console.log("Generated OTP:", otp);
 
-    // 5. Notify success
-    req.flash("success", "A new OTP has been sent to your email");
-    res.redirect("/verify-otp");
+    await sendEmailFromMJML({
+          to: user.email,
+          subject: "Stayzio: Resend OTP Verification",
+          templateName: "signupOtp",   // matches email-templates/signupOtp.mjml
+          templateData: {
+            username: user.username,
+            otp,
+            year: new Date().getFullYear(),
+          },
+        });
+
+    return res.status(200).json({ message: "A new OTP has been sent to your email" });
   } catch (e) {
-    req.flash("error", "Failed to resend OTP. Please try again.");
-    res.redirect("/resend-otp");
+    console.error("Resend OTP Error:", e); 
+    return res.status(500).json({ error: "An internal server error occurred. Please try again." });
   }
 };
+
 
 // ====================== LOGIN / LOGOUT ======================
 
@@ -209,17 +206,16 @@ const forgotPassword = async (req, res) => {
     user.otpExpiry = Date.now() + 10 * 60 * 1000;
     await user.save();
 
-    // ✅ Send password reset OTP email
-    await sendEmailFromTemplate({
-      to: email,
-      subject: "Stayzio: Password Reset OTP",
-      templateName: "passwordResetOtp",
-      templateData: {
-        username: user.username,
-        otp,
-        year: new Date().getFullYear(),
-      },
-    });
+    await sendEmailFromMJML({
+          to: user.email,
+          subject: "Stayzio: Password Reset OTP",
+          templateName: "passwordResetOtp",   // matches email-templates/signupOtp.mjml
+          templateData: {
+            username: user.username,
+            otp,
+            year: new Date().getFullYear(),
+          },
+        });
 
     req.flash("success", "OTP sent to your email. Enter it below to reset password.");
     res.redirect("/reset-password-otp");
@@ -279,4 +275,5 @@ export default {
   forgotPassword,
   renderResetPasswordForm,
   resetPassword,
+  resendOtp,
 };

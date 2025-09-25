@@ -5,53 +5,56 @@ import DatauriParser from "datauri/parser.js";
 import path from "path";
 const parser = new DatauriParser();
 import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding.js';
-import mbxTilesets from '@mapbox/mapbox-sdk/services/tilesets.js';
-import mongoose from "mongoose";
-const { Schema, connect } = mongoose;
-import methodOverride from "method-override";
-
-
 const mapToken = process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 
+
 const index = async (req, res) => {
-  // 1. Get the search query from the URL (e.g., /listings?q=beach)
-  const { q } = req.query;
+  res.render("listings/index", {showSearch: true} );
+};
 
-  // 2. Create a base query object
-  let findQuery = {};
+const apiIndex = async (req, res) => {
+  try {
+    const { q, page = 1 } = req.query;
+    const limit = 12;
 
-  // 3. If a search query 'q' exists, build a search filter
-  if (q) {
-    findQuery = {
-      $or: [
-        { title: { $regex: q, $options: "i" } },
-        { location: { $regex: q, $options: "i" } },
-        { country: { $regex: q, $options: "i" } },
-        { category: { $regex: q, $options: "i" } },
-      ],
-    };
-  }
-
-  // 4. Use the findQuery to get listings. It will be {} if not searching,
-  //    or the search filter object if a query is present.
-  const allListings = await Listing.find(findQuery).populate("reviews");
-
-  // 5. Your existing average rating logic now works on the filtered results
-  const listingsWithAvg = allListings.map((listing) => {
-    let avg = 4.5; // Changed default from 4.5 to 0 for accuracy
-    if (listing.reviews && listing.reviews.length > 0) {
-      const sum = listing.reviews.reduce(
-        (acc, review) => acc + review.rating,
-        0
-      );
-      avg = (sum / listing.reviews.length).toFixed(1);
+    let findQuery = {};
+    if (q) {
+      findQuery = {
+        $or: [
+          { title: { $regex: q, $options: "i" } },
+          { location: { $regex: q, $options: "i" } },
+          { country: { $regex: q, $options: "i" } },
+          { category: { $regex: q, $options: "i" } },
+        ],
+      };
     }
-    return { ...listing.toObject(), avgRating: avg };
-  });
 
-  // 6. Pass the (potentially filtered) listings and the search query to the template
-  res.render("listings/index", { listings: listingsWithAvg, searchQuery: q });
+    const allListings = await Listing.find(findQuery)
+      .populate("reviews")
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    // Calculate average rating
+    const listingsWithAvg = allListings.map((listing) => {
+      let avg = 4.5;
+      if (listing.reviews && listing.reviews.length > 0) {
+        const sum = listing.reviews.reduce(
+          (acc, review) => acc + review.rating,
+          0
+        );
+        avg = (sum / listing.reviews.length).toFixed(1);
+      }
+      return { ...listing.toObject(), avgRating: avg };
+    });
+
+     // ✅ FIX: Send data as JSON, do not render the page
+    res.json(listingsWithAvg);
+
+  } catch (error) {
+    console.error("Error fetching listings:", error);
+    res.status(500).render("error", { error: "Failed to fetch listings" });
+  }
 };
 
 // Render new form
@@ -70,10 +73,9 @@ const showListing = async (req, res) => {
     return res.redirect("/listings");
   }
   res.render("listings/show", { 
-  listing, 
-  mapToken: process.env.MAP_TOKEN 
-});
-
+    listing, 
+    mapToken: process.env.MAP_TOKEN, showSearch: false
+  });
 };
 
 // Create a new listing (with Cloudinary upload)
@@ -138,22 +140,17 @@ const createListing = async (req, res) => {
   }
 };
 
-
 const updateListing = async (req, res) => {
   const { id } = req.params;
   const listingData = req.body.listing;
 
-  // Find and update the listing in one step
   let updatedListing = await Listing.findByIdAndUpdate(id, { ...listingData }, { new: true });
 
-  // Handle new image upload
   if (req.file) {
-    // If there was a previous image, delete it from Cloudinary
     if (updatedListing.image?.filename) {
       await cloudinary.uploader.destroy(updatedListing.image.filename);
     }
     
-    // Format and upload the new image
     const base64File = parser.format(
       path.extname(req.file.originalname).toString(),
       req.file.buffer
@@ -162,9 +159,8 @@ const updateListing = async (req, res) => {
       folder: "stayzio_DEV",
     });
 
-    // Save the new image details to the listing
     updatedListing.image = { url: result.secure_url, filename: result.public_id };
-    await updatedListing.save(); // A quick save is needed just for the new image
+    await updatedListing.save();
   }
 
   req.flash("success", "✏️ Listing Updated Successfully!");
@@ -179,7 +175,6 @@ const renderEditForm = async (req, res) => {
     req.flash("error", "❌ Listing not found");
     return res.redirect("/listings");
   }
-
   res.render("listings/edit", { listing });
 };
 
@@ -195,8 +190,11 @@ const destroyListing = async (req, res) => {
   res.redirect("/listings");
 };
 
+
+// Export all controller functions, including the new apiIndex
 export default {
   index,
+  apiIndex, // <-- Make sure to export the new API controller
   renderNewForm,
   showListing,
   createListing,

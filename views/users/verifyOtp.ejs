@@ -182,7 +182,8 @@
     }
   </style>
 </head>
-<body>
+</head>
+<body></body>
 
   <div class="verify-card">
     <div class="icon-container">
@@ -195,6 +196,7 @@
     <h1>Account Verification</h1>
     <p class="subtitle">Please enter the OTP sent to your email to complete verification.</p>
 
+    <p class="subtitle"><strong>Note:</strong> Please check your Spam folder if you don’t see the OTP confirmation in your inbox.</p>
     <!-- EJS Flash Messages (Assuming a standard setup) -->
     <% if (typeof messages !== 'undefined' && messages.error) { %>
       <div class="alert alert-danger"><%= messages.error %></div>
@@ -203,7 +205,6 @@
       <div class="alert alert-success"><%= messages.success %></div>
     <% } %>
 
-    <!-- Add id="verifyForm" to the form -->
     <form id="verifyForm" action="/verify-otp" method="POST">
       <div class="form-group">
         <label for="email">Email Address</label>
@@ -214,56 +215,108 @@
         <input type="text" name="otp" id="otp" placeholder="Enter OTP" required>
       </div>
       
-      <!-- Updated Button Structure -->
       <button type="submit" class="btn-submit">
         <span class="button-text">Verify Account</span>
         <span class="button-loader"></span>
       </button>
     </form>
     
-    <p class="footer-link">
-      Didn't get the code? 
-      <a id="resendLink" href="/resend-otp">Resend OTP</a>
+    <form id="resendForm" action="/resend-otp" method="POST" style="display:inline;">
+      <input type="hidden" name="email" id="resendEmail" value="">
+      <button type="submit" id="resendLink" style="background:none;border:none;color:#fe424d;cursor:pointer;padding:0;">
+      Resend OTP
+    </button>
+    </form>
     <span id="countdown" style="margin-left:8px; font-weight:500; color:#666;"></span>
-    </p>
-
   </div>
 
-  <!-- JavaScript for the loader functionality -->
-  <script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
     const verifyForm = document.getElementById('verifyForm');
     const submitButton = verifyForm.querySelector('.btn-submit');
-
-    verifyForm.addEventListener('submit', function() {
-      // Show loader on submit
-      submitButton.disabled = true;
-      submitButton.classList.add('loading');
-
+    const resendForm = document.getElementById("resendForm");
+    const emailInput = document.getElementById("email");       // visible email field
+    const resendEmailInput = document.getElementById("resendEmail"); // hidden field
     const resendLink = document.getElementById("resendLink");
     const countdownEl = document.getElementById("countdown");
-    let cooldown = 150; // 2.5 minutes in seconds
+    const bodyEl = document.body;
 
-    function startCooldown() {
-      resendLink.style.pointerEvents = "none";
+    // Keep hidden resendEmail synced with main email field
+    emailInput.addEventListener("input", () => {
+      resendEmailInput.value = emailInput.value.trim();
+    });
+
+    // ===== 1. Loader on the main verify form =====
+    verifyForm.addEventListener('submit', function () {
+      submitButton.disabled = true;
+      submitButton.classList.add('loading');
+    });
+
+    // ===== 2. Improved Resend OTP logic using fetch =====
+    resendForm.addEventListener("submit", async (e) => {
+      e.preventDefault(); // Prevent the full-page reload
+
+      const email = resendEmailInput.value;
+      if (!email) {
+        alert("Please enter your email address first.");
+        return;
+      }
+
+      resendLink.disabled = true;
       resendLink.style.opacity = "0.5";
 
-    const timer = setInterval(() => {
-      if (cooldown > 0) {
-        countdownEl.textContent = `Wait ${cooldown}s`;
-        cooldown--;
-      } else {
-        clearInterval(timer);
-        countdownEl.textContent = "";
-        resendLink.style.pointerEvents = "auto";
+      try {
+        const response = await fetch('/resend-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          alert(result.message || "A new OTP has been sent!");
+          startCooldown(150); // start cooldown
+        } else {
+          alert(result.error || "Failed to resend OTP.");
+          resendLink.disabled = false;
+          resendLink.style.opacity = "1";
+        }
+      } catch (error) {
+        console.error("Resend OTP failed:", error);
+        alert("An error occurred. Please check your connection and try again.");
+        resendLink.disabled = false;
         resendLink.style.opacity = "1";
       }
-    }, 1000);
-  }
-
-  // Start cooldown immediately on page load
-  startCooldown();
     });
+
+    // ===== 3. Cooldown Function =====
+    function startCooldown(seconds) {
+      let cooldown = seconds;
+      resendLink.disabled = true;
+      resendLink.style.opacity = "0.5";
+
+      const timer = setInterval(() => {
+        if (cooldown > 0) {
+          countdownEl.textContent = `Wait ${cooldown}s`;
+          cooldown--;
+        } else {
+          clearInterval(timer);
+          countdownEl.textContent = "";
+          resendLink.disabled = false;
+          resendLink.style.opacity = "1";
+        }
+      }, 1000);
+    }
+
+    // ===== 4. Check for existing cooldown on page load =====
+    const initialCooldown = parseInt(bodyEl.dataset.cooldownSeconds, 10);
+    if (initialCooldown > 0) {
+      startCooldown(initialCooldown);
+    }
+  });
 </script>
+
 
 </body>
 </html>

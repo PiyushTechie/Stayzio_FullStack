@@ -354,6 +354,58 @@
                 text-align: left;
             }
         }
+
+        .btn-submit {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        min-height: 50px;
+        gap: 0.5rem;
+    }
+
+    .btn-submit:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    .button-loader {
+        display: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-top-color: #ffffff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        position: absolute;
+    }
+
+    .btn-submit.loading .button-text {
+        visibility: hidden;
+        opacity: 0;
+    }
+
+    .btn-submit.loading .button-loader {
+        display: block;
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+
+
     </style>
 </head>
 <body>
@@ -502,11 +554,16 @@
 
                 <!-- Confirmation Section -->
                 <div class="confirm-section">
-                    <form action="/bookings" method="POST">
-                        <button type="submit" class="btn-confirm">
-                            <i class="fas fa-credit-card"></i>
-                            Confirm & Pay ₹<%= finalTotal.toFixed(2) %>
-                        </button>
+                    <form id="paymentForm" action="/bookings" method="POST">
+                    <button type="submit" class="btn-submit" id="confirmBtn">
+                        <span class="button-text">
+                        <i class="fas fa-credit-card"></i>
+                        Confirm & Pay ₹<%= finalTotal.toFixed(2) %>
+                        </span>
+                        <div class="button-loader"></div>
+                    </button>
+                    </form>
+
                         <p class="security-note">
                             <i class="fas fa-shield-alt"></i>
                             Your payment is secured with 256-bit SSL encryption
@@ -518,5 +575,20 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const confirmBtn = document.getElementById("confirmBtn");
+  const form = document.getElementById("paymentForm");
+
+  form.addEventListener("submit", () => {
+    confirmBtn.classList.add("loading");
+    confirmBtn.disabled = true;
+    // No setTimeout — loader stays until backend responds with redirect/render
+  });
+</script>
+
+</script>
+
+</script>
+
 </body>
 </html>

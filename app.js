@@ -17,6 +17,8 @@ import listingRouter from "./routes/listing.js";
 import reviewRouter from "./routes/review.js";
 import userRouter from "./routes/user.js"; // Updated import
 import bookingRoutes from "./routes/booking.js"
+import { sendEmailFromMJML }   from "./utils/mailer.js";
+
 
 // Setup __dirname in ES Module style
 const __filename = fileURLToPath(import.meta.url);
@@ -29,13 +31,14 @@ const port = 8080;
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.engine("ejs", ejsMate);
-
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public"))); 
 
 // DB connection
 const dbUrl = process.env.ATLASDB_URL;
+const localDb = "mongodb://127.0.0.1:27017/wanderlust";
 
 async function main() {
   try {
@@ -63,7 +66,7 @@ store.on("error", () =>{
 // Session Config
 
 const sessionOptions = {
-  store,  
+  store,    
   secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
@@ -73,8 +76,6 @@ const sessionOptions = {
     httpOnly: true,
   }
 };
-
-
 
 app.use(session(sessionOptions));
 app.use(flash());
@@ -138,6 +139,64 @@ app.get("/about", (req, res) => {
 app.get("/cancelPolicy", (req, res) => {
   res.render("users/cancellationpolicy");
 });
+
+app.post("/contact", async (req, res) => {
+    const { name, email, subject, message } = req.body;
+    const timestamp = Date.now();
+    if (!name || !email || !subject || !message) {
+        return res.status(400).send("All fields are required");
+    }
+
+    try {
+        // 1️⃣ Send email to Admin
+        await sendEmailFromMJML({
+              to: "piyushpraja1336@gmail.com",
+              subject: `New Contact Form Submission: ${subject}`,
+              templateName: "contactAdmin",   // matches email-templates/signupOtp.mjml
+              templateData: { name, email, subject, message, year: new Date().getFullYear() }
+            });
+
+        // 2️⃣ Send confirmation email to User
+        await sendEmailFromMJML({
+            to: email,
+            subject: "We received your message – Stayzio",
+            templateName: "contactUser",
+            templateData: { name, subject, year: new Date().getFullYear(), timestamp }
+        });
+
+        // Redirect to thank-you page
+        res.redirect("/thank-you");
+
+    } catch (err) {
+        console.error("Contact form error:", err);
+        res.status(500).send("Something went wrong, please try again later.");
+    }
+});
+
+app.get("/insurance", (req, res) => {
+  res.render("listings/insurance")
+})
+// Thank You page route
+app.get("/thank-you", (req, res) => {
+    res.render("users/thankyou");
+});
+app.get("/experiences", (req, res) => {
+  res.render("listings/experiences");
+})
+app.get("/host-resources", (req, res) => {
+  res.render("users/hostresources");
+})
+app.get("/host-guidelines", (req, res) => {
+  res.render("users/hostguidelines");
+})
+
+app.get("/host-community", (req, res) => {
+  res.render("users/hostcommunity");
+})
+
+app.get("/host-insurance", (req, res) => {
+  res.render("users/hostinsurance");
+})
 
 
 // 404 handler

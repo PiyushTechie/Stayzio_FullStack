@@ -1,31 +1,41 @@
 // utils/mailer.js
-import nodemailer from "nodemailer";
-import { renderTemplate } from "./emailTemplates.js"; // ✅ use single source
+import sgMail from "@sendgrid/mail";
+import fs from "fs";
+import path from "path";
+import mjml2html from "mjml";
 
-// ✅ Create transporter
-const transporter = nodemailer.createTransport({
-  service: "gmail", // or use host/port/secure for custom SMTP
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-// ✅ Send email from MJML + Handlebars template
-export async function sendEmailFromTemplate({ to, subject, templateName, templateData = {} }) {
-  try {
-    // Render MJML → HTML
-    const html = await renderTemplate(templateName, templateData);
+export const sendEmailFromMJML = async ({ to, subject, templateName, templateData }) => {
+  const templatePath = path.join(process.cwd(), "email-templates", `${templateName}.mjml`);
+  const mjmlContent = fs.readFileSync(templatePath, "utf-8");
 
-    const info = await transporter.sendMail({
-      from: `"Stayzio" <${process.env.EMAIL_USER}>`, // sender name + email
-      to,
-      subject,
-      html,
-    });
-    return info;
-  } catch (error) {
-    console.error("❌ Error sending email:", error);
-    throw error;
+  // Replace {{placeholders}}
+  let filledTemplate = mjmlContent;
+  for (const [key, value] of Object.entries(templateData)) {
+    const regex = new RegExp(`{{\\s*${key}\\s*}}`, "g");
+    filledTemplate = filledTemplate.replace(regex, value || "");
   }
-}
+
+  // Convert MJML → HTML
+  const { html, errors } = mjml2html(filledTemplate);
+  if (errors.length > 0) {
+    console.error("MJML Errors:", errors);
+  }
+
+  const msg = {
+    to,
+    from: process.env.SENDGRID_FROM,
+    subject,
+    html,
+  };
+
+  await sgMail.send(msg);
+  console.log(`✅ Email sent to ${to} with ${templateName}`);
+};
+
+// In your mailer.js or wherever you set up SendGrid
+console.log("Attempting to use SendGrid Key:", process.env.SENDGRID_API_KEY);
+
+// If this prints "undefined", your .env file is the problem.
+// If it prints the key, the key itself (permissions, value) is the problem.

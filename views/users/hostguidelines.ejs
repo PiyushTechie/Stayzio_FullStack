@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Host Guidelines - Stayzio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
+        }
+
+       .navbar {
+            background: #ffffff;
+            padding: 1rem 0;
+            box-shadow: 0 4px 20px rgba(254, 66, 77, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto; /* This was the main fix */
+            width: 100%;
+            padding: 0 1rem; /* This handles spacing from the edges */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #fe424d;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            /* Removed padding-left from here */
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            /* Removed padding-left from here */
+            margin: 0; /* Good practice to reset default ul margin */
+            padding: 0;/* Good practice to reset default ul padding */
+        }
+
+        .nav-links a {
+            color: #fe424d;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .nav-links a:hover {
+            color: white;
+            background-color: #fe424d;
+            transform: translateY(-2px);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #fe424d 0%, #e63946 100%);
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" fill="none"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="1000" height="1000" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .content-section {
+            padding: 4rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .content-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .section-icon {
+            background: linear-gradient(135deg, #fe424d 0%, #e63946 100%);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-right: 1.5rem;
+            box-shadow: 0 8px 25px rgba(254, 66, 77, 0.2);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .section-intro {
+            font-size: 1.1rem;
+            color: #4a5568;
+            margin-bottom: 2rem;
+        }
+
+        .guideline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .guideline-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .guideline-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #fe424d 0%, #e63946 100%);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .guideline-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(254, 66, 77, 0.15);
+            border-color: rgba(254, 66, 77, 0.2);
+        }
+
+        .guideline-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .guideline-card h3::before {
+            content: attr(data-icon);
+            margin-right: 0.75rem;
+            font-size: 1.2rem;
+        }
+
+        .guideline-card p {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+        }
+
+        .guideline-list {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .guideline-list li {
+            padding: 0.75rem 0;
+            color: #4a5568;
+            position: relative;
+            padding-left: 2rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .guideline-list li:last-child {
+            border-bottom: none;
+        }
+
+        .guideline-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 0.75rem;
+            color: #fe424d;
+            font-weight: bold;
+            font-size: 1.1rem;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(254, 66, 77, 0.1);
+            border-radius: 50%;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(254, 66, 77, 0.1) 0%, rgba(230, 57, 70, 0.05) 100%);
+            border: 2px solid rgba(254, 66, 77, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .highlight-box::before {
+            content: '💡';
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: white;
+            padding: 0 10px;
+            font-size: 1.2rem;
+        }
+
+        .highlight-box h4 {
+            color: #fe424d;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .highlight-box p {
+            color: #4a5568;
+            margin-bottom: 0;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(255, 152, 0, 0.05) 100%);
+            border: 2px solid rgba(255, 193, 7, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .warning-box::before {
+            content: '⚠️';
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: white;
+            padding: 0 10px;
+            font-size: 1.2rem;
+        }
+
+        .warning-box h4 {
+            color: #ff6b35;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .example-scenario {
+            background: #f8fafc;
+            border-left: 4px solid #fe424d;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .example-scenario h5 {
+            color: #fe424d;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .example-scenario p {
+            color: #4a5568;
+            font-style: italic;
+        }
+
+        .quick-checklist {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin: 2rem 0;
+        }
+
+        .quick-checklist h4 {
+            color: #1a202c;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .quick-checklist h4::before {
+            content: '📋';
+            margin-right: 0.5rem;
+        }
+
+        .checklist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            color: #4a5568;
+        }
+
+        .checklist-item::before {
+            content: '☐';
+            color: #fe424d;
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+        }
+
+        .footer-cta {
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            padding: 4rem 0;
+            text-align: center;
+            color: white;
+        }
+
+        .footer-cta h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-cta p {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #fe424d 0%, #e63946 100%);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(254, 66, 77, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(254, 66, 77, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .guideline-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .checklist-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .section-icon {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo"><i class="fa-solid fa-earth-asia brand-icon"></i>Stayzio</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/listings/new">Become a Host</a></li>
+                <li><a href="/contact">Support</a></li>
+                <li><a href="/login">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Our Standards for Hosting on Stayzio</h1>
+            <p>These guidelines help ensure every guest has an exceptional experience while supporting our hosts in building successful, sustainable hosting businesses. Following these standards protects both you and your guests, and helps maintain the trust that makes our platform thrive.</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <section class="content-section">
+            <div class="section-header">
+                <div class="section-icon">✅</div>
+                <div>
+                    <h2 class="section-title">Eligibility Requirements</h2>
+                    <p class="section-subtitle">Who Can Host on Stayzio</p>
+                </div>
+            </div>
+
+            <p class="section-intro">To maintain safety and trust across our platform, all hosts must meet these basic requirements:</p>
+
+            <div class="guideline-grid">
+                <div class="guideline-card">
+                    <h3 data-icon="🆔">Age and Identity Verification</h3>
+                    <ul class="guideline-list">
+                        <li>Must be at least 18 years old.</li>
+                        <li>Provide government-issued photo ID (driver's license, passport, or national ID).</li>
+                        <li>Complete phone number verification.</li>
+                        <li>Submit clear, recent photo for profile verification.</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h3 data-icon="🏠">Property Authorization</h3>
+                    <ul class="guideline-list">
+                        <li>Own the property or have explicit permission from the owner.</li>
+                        <li>Provide proof of ownership or written authorization.</li>
+                        <li>Ensure compliance with local housing laws and HOA regulations.</li>
+                        <li>Maintain current insurance coverage for short-term rentals.</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h3 data-icon="👤">Account Requirements</h3>
+                    <ul class="guideline-list">
+                        <li>One verified account per person (no duplicate accounts).</li>
+                        <li>Valid email address and active phone number.</li>
+                        <li>Complete banking information for payouts.</li>
+                        <li>Agree to Stayzio's Terms of Service and Host Agreement.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h4>Verification Timeline</h4>
+                <p>Most verifications are completed within 24-48 hours. You can start building your listing during the verification process, but it won't go live until all requirements are met.</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="section-header">
+                <div class="section-icon">📸</div>
+                <div>
+                    <h2 class="section-title">Accurate Listings</h2>
+                    <p class="section-subtitle">Truth in Advertising</p>
+                </div>
+            </div>
+
+            <p class="section-intro">Your listing is a promise to guests. Photos and descriptions must accurately represent your space to ensure guests know exactly what they're booking.</p>
+
+            <div class="guideline-grid">
+                <div class="guideline-card">
+                    <h3 data-icon="📷">Photography Standards</h3>
+                    <ul class="guideline-list">
+                        <li>Photos must be current (taken within the last 12 months).</li>
+                        <li>Show the actual space guests will access.</li>
+                        <li>No filters that significantly alter colors or lighting.</li>
+                        <li>Include all bedrooms, bathrooms, and common areas.</li>
+                        <li>Clearly show any limitations or shared spaces.</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h3 data-icon="✍️">Description Accuracy</h3>
+                    <ul class="guideline-list">
+                        <li>Honest descriptions of space size and layout.</li>
+                        <li>Accurate amenity listings (WiFi speed, kitchen appliances, etc.).</li>
+                        <li>Clear information about parking availability.</li>
+                        <li>Mention any construction, noise, or temporary issues.</li>
+                        <li>Specify check-in/check-out procedures.</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h3 data-icon="📍">Location Details</h3>
+                    <ul class="guideline-list">
+                        <li>Accurate neighborhood and landmark information.</li>
+                        <li>Honest walking times to public transport and attractions.</li>
+                        <li>Mention any accessibility limitations.</li>
+                        <li>Clarify building entry requirements (codes, keys, etc.).</li>
+                        <li>Note any local regulations that might affect guests.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="example-scenario">
+                <h5>Good Example:</h5>
+                <p>"Cozy studio apartment on the 3rd floor (no elevator) with street parking available. Kitchen has mini-fridge and hotplate - great for light meals. 10-minute walk to downtown, 5 minutes to bus stop."</p>
+            </div>
+
+            <div class="warning-box">
+                <h4>What Not to Do</h4>
+                <p>Avoid using heavily filtered photos, calling a studio a "1-bedroom," or failing to mention significant limitations like construction noise or no parking.</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🌟</div>
+                <div>
+                    <h2 class="section-title">Guest Experience</h2>
+                    <p class="section-subtitle">Communication and Hospitality Excellence</p>
+                </div>
+            </div>
+
+            <p class="section-intro">Great hosting goes beyond providing a place to sleep. Clear communication and thoughtful touches create memorable experiences that lead to positive reviews and repeat bookings.</p>
+
+            <div class="guideline-grid">
+                <div class="guideline-card">
+                    <h3 data-icon="💬">Communication Standards</h3>
+                    <ul class="guideline-list">
+                        <li>Respond to inquiries within 24 hours (ideally within 4 hours).</li>
+                        <li>Provide clear check-in instructions 24-48 hours before arrival.</li>
+                        <li>Be available during guest stay for questions or issues.</li>
+                        <li>Send check-out reminders and instructions.</li>
+                        <li>Follow up after departure to ensure satisfaction.</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h3 data-icon="🏡">Welcome Experience</h3>
+                    <ul class="guideline-list">
+                        <li>Provide a clean, welcoming space upon arrival.</li>
+                        <li>Leave welcome information (WiFi, local recommendations, house rules).</li>
+                        <li>Ensure all advertised amenities are working.</li>
+                        <li>Stock basic essentials (toilet paper, soap, clean towels).</li>
+                        <li>Maintain comfortable temperature and good lighting.</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h3 data-icon="🛠️">Issue Resolution</h3>
+                    <ul class="guideline-list">
+                        <li>Address maintenance issues promptly.</li>
+                        <li>Provide clear instructions for common problems.</li>
+                        <li>Offer alternative solutions when possible.</li>
+                        <li>Keep emergency contact information available.</li>
+                        <li>Document and resolve complaints professionally.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="quick-checklist">
+                <h4>Pre-Arrival Checklist</h4>
+                <div class="checklist-grid">
+                    <div class="checklist-item">Send check-in instructions.</div>
+                    <div class="checklist-item">Test all amenities and WiFi.</div>
+                    <div class="checklist-item">Stock fresh linens and towels.</div>
+                    <div class="checklist-item">Leave welcome guide.</div>
+                    <div class="checklist-item">Check cleanliness standards.</div>
+                    <div class="checklist-item">Confirm parking arrangements.</div>
+                </div>
+            </div>
+
+            <div class="example-scenario">
+                <h5>Response Time Example:</h5>
+                <p>"Hi Sarah! Thanks for your inquiry about my downtown loft. Yes, it's available for your dates. The space has everything you mentioned needing, and you'll love the rooftop access. I've sent you a booking request with all the details. Let me know if you have any other questions!"</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🛡️</div>
+                <div>
+                    <h2 class="section-title">Safety & Cleanliness</h2>
+                    <p class="section-subtitle">Essential Standards for Guest Protection</p>
+                </div>
+            </div>
+
+            <p class="section-intro">Guest safety is our top priority. Your property must meet basic safety requirements and maintain high cleanliness standards for every stay.</p>
+
+            <div class="guideline-grid">
+                <div class="guideline-card">
+                    <h3 data-icon="🔒">Security Requirements</h3>
+                    <ul class="guideline-list">
+                        <li>Secure locks on all entry points.</li>
+                        <li>Working deadbolts on main entrance.</li>
+                        <li>Secure windows and sliding doors.</li>
+                        <li>Adequate exterior lighting for safe entry.</li>
+                        <li>Clear emergency exit routes.</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h3 data-icon="🔥">Fire Safety</h3>
+                    <ul class="guideline-list">
+                        <li>Working smoke detectors in all required areas.</li>
+                        <li>Carbon monoxide detectors near gas appliances.</li>
+                        <li>Fire extinguisher accessible and up-to-date.</li>
+                        <li>Clear evacuation plan posted visibly.</li>
+                        <li>No blocked emergency exits.</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h3 data-icon="🧽">Cleanliness Standards</h3>
+                    <ul class="guideline-list">
+                        <li>Deep cleaning between every guest.</li>
+                        <li>Fresh linens and towels for each stay.</li>
+                        <li>Sanitized bathrooms and kitchen surfaces.</li>
+                        <li>Vacuumed/mopped floors throughout.</li>
+                        <li>Emptied trash and replaced bags.</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h3 data-icon="🚨">Emergency Preparedness</h3>
+                    <ul class="guideline-list">
+                        <li>First aid kit readily accessible.</li>
+                        <li>Emergency contact numbers posted.</li>
+                        <li>Flashlight and batteries available.</li>
+                        <li>Local emergency services information.</li>
+                        <li>Clear instructions for utilities shutoffs.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h4>Professional Cleaning Services</h4>
+                <p>Many hosts use professional cleaning services between guests. This ensures consistent quality and saves time, especially for busy properties. Budget 15-25% of your nightly rate for professional cleaning.</p>
+            </div>
+
+            <div class="warning-box">
+                <h4>Safety Violations</h4>
+                <p>Properties with safety violations (non-working smoke detectors, blocked exits, unsafe electrical) may be immediately suspended until issues are resolved.</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🤝</div>
+                <div>
+                    <h2 class="section-title">Respect & Conduct</h2>
+                    <p class="section-subtitle">Building a Welcoming Community</p>
+                </div>
+            </div>
+
+            <p class="section-intro">Stayzio is built on mutual respect and inclusivity. We expect all hosts to treat guests fairly and contribute positively to their local communities.</p>
+
+            <div class="guideline-grid">
+                <div class="guideline-card">
+                    <h3 data-icon="🚫">Anti-Discrimination Policy</h3>
+                    <ul class="guideline-list">
+                        <li>Welcome guests regardless of race, religion, gender, sexual orientation, or nationality.</li>
+                        <li>No discriminatory language in listings or communications.</li>
+                        <li>Equal treatment for all qualified guests.</li>
+                        <li>Reasonable accommodation for guests with disabilities.</li>
+                        <li>Report any discrimination issues immediately.</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h3 data-icon="👥">Guest Relations</h3>
+                    <ul class="guideline-list">
+                        <li>Maintain professional, friendly communication.</li>
+                        <li>Respect guest privacy during their stay.</li>
+                        <li>Honor confirmed reservations and house rules.</li>
+                        <li>Handle complaints with patience and understanding.</li>
+                        <li>Provide honest, helpful local recommendations.</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h3 data-icon="🏘️">Community Responsibility</h3>
+                    <ul class="guideline-list">
+                        <li>Maintain good relationships with neighbors.</li>
+                        <li>Enforce reasonable noise policies.</li>
+                        <li>Ensure guests respect parking regulations.</li>
+                        <li>Address neighbor concerns promptly and professionally.</li>
+                        <li>Follow local short-term rental regulations.</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h3 data-icon="🐕">Pet and Special Policies</h3>
+                    <ul class="guideline-list">
+                        <li>Clearly state pet policies and any associated fees.</li>
+                        <li>Set reasonable smoking/vaping rules.</li>
+                        <li>Establish fair occupancy limits.</li>
+                        <li>Communicate event and party policies upfront.</li>
+                        <li>Be consistent in policy enforcement.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="example-scenario">
+                <h5>Neighbor Relations Example:</h5>
+                <p>When Mark's neighbor complained about guest parking, he immediately contacted his current guests, provided alternative parking options, and updated his listing with clearer parking instructions. He also left the neighbor his contact information for future issues.</p>
+            </div>
+
+            <div class="highlight-box">
+                <h4>Building Community Trust</h4>
+                <p>Great hosts often introduce themselves to neighbors, share contact information, and proactively address potential concerns. This builds trust and prevents issues before they start.</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="section-header">
+                <div class="section-icon">📅</div>
+                <div>
+                    <h2 class="section-title">Cancellations</h2>
+                    <p class="section-subtitle">Following Fair Cancellation Practices</p>
+                </div>
+            </div>
+
+            <p class="section-intro">Cancellations should be rare and handled according to Stayzio's policies. Understanding these guidelines protects both hosts and guests.</p>
+
+            <div class="guideline-grid">
+                <div class="guideline-card">
+                    <h3 data-icon="🔄">Host Cancellation Policy</h3>
+                    <ul class="guideline-list">
+                        <li>Host-initiated cancellations should only occur in emergencies.</li>
+                        <li>Provide maximum notice possible to affected guests.</li>
+                        <li>Offer alternative accommodations when feasible.</li>
+                        <li>Follow Stayzio's cancellation penalties and procedures.</li>
+                        <li>Document legitimate reasons for emergency cancellations.</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h3 data-icon="💰">Refund Guidelines</h3>
+                    <ul class="guideline-list">
+                        <li>Honor your selected cancellation policy consistently.</li>
+                        <li>Process approved refunds promptly through Stayzio.</li>
+                        <li>Communicate refund timelines clearly to guests.</li>
+                        <li>Document any damage or policy violations that affect refunds.</li>
+                        <li>Work with Stayzio support for complex refund situations.</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h3 data-icon="🆘">Emergency Situations</h3>
+                    <ul class="guideline-list">
+                        <li>Natural disasters or government-mandated closures.</li>
+                        <li>Serious property damage making space uninhabitable.</li>
+                        <li>Family emergencies requiring immediate attention.</li>
+                        <li>Safety concerns that cannot be quickly resolved.</li>
+                        <li>Major utility failures affecting guest comfort.</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h3 data-icon="📋">Documentation Requirements</h3>
+                    <ul class="guideline-list">
+                        <li>Keep records of all guest communications.</li>
+                        <li>Photo evidence for damage or cleanliness issues.</li>
+                        <li>Receipts for emergency repairs or replacements.</li>
+                        <li>Weather reports or official emergency declarations.</li>
+                        <li>Medical documentation for health-related cancellations.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <h4>Cancellation Penalties</h4>
+                <p>Frequent host cancellations can result in account penalties, including listing suspension, reduced search ranking, and potential account deactivation. Always contact Stayzio support before canceling a confirmed booking.</p>
+            </div>
+
+            <div class="example-scenario">
+                <h5>Legitimate Cancellation Example:</h5>
+                <p>When a pipe burst in Jennifer's rental property flooding the bathroom, she immediately contacted her guests (arriving the next day), helped them find alternative accommodations, provided a full refund plus compensation for their inconvenience, and documented the damage for Stayzio support.</p>
+            </div>
+
+            <div class="highlight-box">
+                <h4>Prevention is Key</h4>
+                <p>Most cancellations can be prevented with proper maintenance, clear communication, and realistic expectations. Regular property inspections and prompt maintenance help avoid emergency situations.</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <div>
+                    <h2 class="section-title">Violations & Consequences</h2>
+                    <p class="section-subtitle">Understanding Our Enforcement Process</p>
+                </div>
+            </div>
+
+            <p class="section-intro">We take these guidelines seriously to maintain trust and safety for everyone. Here's what happens when standards aren't met:</p>
+
+            <div class="guideline-grid">
+                <div class="guideline-card">
+                    <h3 data-icon="⚠️">Warning System</h3>
+                    <ul class="guideline-list">
+                        <li>First violation: Warning and requirement to address issue.</li>
+                        <li>Educational resources provided to help improve.</li>
+                        <li>Timeline given for corrections (usually 7-14 days).</li>
+                        <li>Follow-up verification of improvements.</li>
+                        <li>Opportunity to discuss concerns with support team.</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h3 data-icon="🔒">Account Restrictions</h3>
+                    <ul class="guideline-list">
+                        <li>Temporary listing suspension for serious violations.</li>
+                        <li>Reduced search visibility for ongoing issues.</li>
+                        <li>Booking restrictions until problems are resolved.</li>
+                        <li>Required completion of hosting education modules.</li>
+                        <li>Increased monitoring period for compliance.</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h3 data-icon="❌">Account Termination</h3>
+                    <ul class="guideline-list">
+                        <li>Repeated violations after warnings and education.</li>
+                        <li>Serious safety violations that endanger guests.</li>
+                        <li>Discrimination or harassment of guests.</li>
+                        <li>Fraudulent listings or misrepresentation.</li>
+                        <li>Violation of local laws or Stayzio terms.</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h3 data-icon="🔄">Appeal Process</h3>
+                    <ul class="guideline-list">
+                        <li>Right to appeal any enforcement action.</li>
+                        <li>Detailed review of circumstances and evidence.</li>
+                        <li>Opportunity to provide additional information.</li>
+                        <li>Independent review by senior support team.</li>
+                        <li>Clear communication of final decisions.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h4>We're Here to Help</h4>
+                <p>Our goal is education and improvement, not punishment. Most issues can be resolved with guidance and support. We want every host to succeed on Stayzio.</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <div>
+                    <h2 class="section-title">Success Tips</h2>
+                    <p class="section-subtitle">Going Above and Beyond</p>
+                </div>
+            </div>
+
+            <p class="section-intro">Following these guidelines is just the beginning. Here are additional tips to become a standout host:</p>
+
+            <div class="guideline-grid">
+                <div class="guideline-card">
+                    <h3 data-icon="📊">Track Your Performance</h3>
+                    <ul class="guideline-list">
+                        <li>Monitor your response time and booking acceptance rate.</li>
+                        <li>Track guest review scores and read feedback carefully.</li>
+                        <li>Use Stayzio's host dashboard to identify improvement areas.</li>
+                        <li>Compare your performance to similar properties in your area.</li>
+                        <li>Set goals for occupancy rate and guest satisfaction.</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h3 data-icon="🔄">Continuous Improvement</h3>
+                    <ul class="guideline-list">
+                        <li>Regularly update photos and descriptions.</li>
+                        <li>Invest in property improvements based on guest feedback.</li>
+                        <li>Stay current with local attractions and restaurant recommendations.</li>
+                        <li>Learn from other successful hosts in your area.</li>
+                        <li>Attend Stayzio host education events and webinars.</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h3 data-icon="💡">Special Touches</h3>
+                    <ul class="guideline-list">
+                        <li>Provide local treats or welcome gifts.</li>
+                        <li>Create a comprehensive local guidebook.</li>
+                        <li>Offer special amenities (streaming services, board games, etc.).</li>
+                        <li>Maintain seasonal decorations and atmosphere.</li>
+                        <li>Provide convenience items guests often forget.</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h3 data-icon="🌐">Stay Connected</h3>
+                    <ul class="guideline-list">
+                        <li>Join local host groups and online communities.</li>
+                        <li>Follow Stayzio's blog and newsletter for updates.</li>
+                        <li>Network with other hosts for tips and referrals.</li>
+                        <li>Participate in host surveys and feedback programs.</li>
+                        <li>Stay informed about local tourism trends and events.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="quick-checklist">
+                <h4>Monthly Host Review Checklist</h4>
+                <div class="checklist-grid">
+                    <div class="checklist-item">Review guest feedback and ratings.</div>
+                    <div class="checklist-item">Update calendar and pricing.</div>
+                    <div class="checklist-item">Refresh photos if needed.</div>
+                    <div class="checklist-item">Check and test all amenities.</div>
+                    <div class="checklist-item">Review and update house rules.</div>
+                    <div class="checklist-item">Assess local market trends.</div>
+                    <div class="checklist-item">Plan seasonal updates or improvements.</div>
+                    <div class="checklist-item">Connect with other local hosts.</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <section class="footer-cta">
+        <div class="container">
+            <h2>Ready to Be an Outstanding Host?</h2>
+            <p>Join thousands of successful hosts who follow these guidelines and provide exceptional experiences on Stayzio</p>
+            <a href="/signup" class="cta-button">Start Hosting Today</a>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll animation for cards
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+       // Initially hide cards for animation
+        document.querySelectorAll('.guideline-card, .highlight-box, .warning-box, .example-scenario, .quick-checklist').forEach((card) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+
+
+        // Interactive checklist functionality
+        document.querySelectorAll('.checklist-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.toggle('completed');
+                if (this.classList.contains('completed')) {
+                    this.style.textDecoration = 'line-through';
+                    this.style.opacity = '0.6';
+                    this.innerHTML = this.innerHTML.replace('☐', '✅');
+                } else {
+                    this.style.textDecoration = 'none';
+                    this.style.opacity = '1';
+                    this.innerHTML = this.innerHTML.replace('✅', '☐');
+                }
+            });
+        });
+
+        // Add some dynamic interaction to guideline cards
+        document.querySelectorAll('.guideline-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -45,6 +45,9 @@ router
   .get(userController.renderResetPasswordForm)  // enter email + OTP + new password
   .post(wrapAsync(userController.resetPassword)); // verify OTP and reset password
 
+  // ====================== RESEND OTP ======================
+router.post("/resend-otp", wrapAsync(userController.resendOtp));
+
 // ====================== PROFILE PAGES ======================
 
 router.get("/profile", isLoggedIn, wrapAsync(userController.userProfile));

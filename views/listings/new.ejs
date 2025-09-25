@@ -6,7 +6,7 @@
       <div class="card-body">
         <h2 id="h2" class="text-center mb-4">Create Listing</h2>
 
-        <form method="post" action="/listings" class="needs-validation" novalidate enctype="multipart/form-data">
+        <form  id="createForm" method="post" action="/listings" class="needs-validation" novalidate enctype="multipart/form-data">
 
           <!-- Title -->
           <div class="mb-3">
@@ -71,7 +71,13 @@
           </div>
 
           <!-- Submit -->
-          <button type="submit" id="btn" class="btn w-100 btn-primary">Create Listing</button>
+        <button type="submit" id="createBtn" class="btn-submit w-100">
+          <span class="button-text">
+            <i class="fas fa-plus-circle"></i>
+            Create New Listing
+          </span>
+          <div class="button-loader"></div>
+        </button>  
         </form>
       </div>
     </div>
@@ -101,6 +107,24 @@
         }, false);
       });
     })();
+
+    document.querySelectorAll("form").forEach((form) => {
+    form.addEventListener("submit", (e) => {
+      const btn = form.querySelector(".btn-submit");
+
+      // Prevent loader if form is invalid
+      if (!form.checkValidity()) {
+        e.preventDefault(); // stop submit
+        form.reportValidity(); // show browser validation errors
+        return;
+      }
+
+      if (btn) {
+        btn.classList.add("loading");
+        btn.disabled = true;
+      }
+    });
+  });
   </script>
 
 </body>

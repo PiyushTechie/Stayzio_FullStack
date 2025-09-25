@@ -32,12 +32,25 @@
       <a href="/forgot-password" class="custom-link">Forgot password?</a>
     </div>
 
-    <!-- Button with loader inside -->
+    <!-- Button: shows Login by default, spinner on submit -->
     <button type="submit" id="loginBtn">
       <span class="btn-text">Login</span>
       <div class="spinner hidden"></div>
     </button>
   </form>
-  
+
   <p class="signup-link">Don't have an account? <a href="/signup">Sign up here</a></p>
 </div>
+
+<script>
+  const loginForm = document.getElementById("loginForm");
+  const loginBtn = document.getElementById("loginBtn");
+  const btnText = loginBtn.querySelector(".btn-text");
+  const spinner = loginBtn.querySelector(".spinner");
+
+  loginForm.addEventListener("submit", () => {
+    btnText.style.display = "none";       // hide the Login text
+    spinner.classList.remove("hidden");   // show spinner
+    loginBtn.disabled = true;             // disable button
+  });
+</script>

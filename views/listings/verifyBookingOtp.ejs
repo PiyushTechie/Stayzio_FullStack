@@ -190,6 +190,8 @@ body {
       Enter the code sent to your device for <strong><%= booking.listing.title %></strong>
     </p>
 
+    <p class="subtitle"><strong>Note:</strong> Please check your Spam folder if you don’t see the OTP confirmation in your inbox.</p>
+
     <% if (messages.error && messages.error.length) { %>
       <div class="alert alert-danger"><%= messages.error[0] %></div>
     <% } %>

@@ -24,15 +24,16 @@
         </li>
       </ul>
 
-      <!-- Search -->
-        <div class="mx-auto d-none d-lg-flex">
-          <form class="d-flex search-form" action="/listings" method="GET">
-            <input class="form-control search-input" name="q" type="search" placeholder="Search destinations...">
-            <button class="btn search-btn" type="submit">
-              <i class="fa-solid fa-magnifying-glass me-1"></i> Search
-            </button>
-          </form>
-        </div>
+<% if (typeof showSearch === 'undefined' || showSearch) { %>
+  <div class="mx-auto d-none d-lg-flex">
+    <form class="d-flex search-form" action="/listings" method="GET">
+      <input class="form-control search-input" name="q" type="search" placeholder="Search destinations...">
+      <button class="btn search-btn" type="submit">
+        <i class="fa-solid fa-magnifying-glass me-1"></i> Search
+      </button>
+    </form>
+  </div>
+<% } %>
 
       <!-- Right -->
       <ul class="navbar-nav align-items-center mb-2 mb-lg-0 gap-2">

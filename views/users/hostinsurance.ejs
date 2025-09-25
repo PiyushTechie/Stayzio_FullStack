@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Host Insurance - Peace of Mind for Every Booking | Stayzio</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fafafa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fe424d;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #fe424d;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #fe424d 0%, #ff6b6b 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 4rem 0;
+        }
+
+        .coverage-overview {
+            background: white;
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 3rem;
+        }
+
+        .coverage-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .stat:hover {
+            border-color: #fe424d;
+            transform: translateY(-2px);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fe424d;
+            display: block;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Section Styling */
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: #fe424d;
+            border-radius: 2px;
+        }
+
+        .section-intro {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 2rem;
+            max-width: 800px;
+        }
+
+        /* Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid #e9ecef;
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(254, 66, 77, 0.15);
+        }
+
+        .card h3 {
+            color: #fe424d;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .card-content {
+            margin-bottom: 1.5rem;
+        }
+
+        .examples {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+        }
+
+        .examples-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+        }
+
+        .examples ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .examples li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+
+        .examples li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #fe424d;
+            font-weight: bold;
+        }
+
+        /* Claims Process */
+        .claims-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .step {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            background: #fe424d;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin: 0 auto 1rem auto;
+        }
+
+        .step h4 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #333 0%, #555 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            border-radius: 16px;
+            margin: 4rem 0;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            background: #fe424d;
+            color: white;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            background: #e63946;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(254, 66, 77, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .coverage-overview {
+                padding: 2rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo"><i class="fa-solid fa-earth-asia brand-icon"></i>Stayzio</div>
+                <ul class="nav-links">
+                    <li><a href="#coverage">Coverage</a></li>
+                    <li><a href="#claims">Claims</a></li>
+                    <li><a href="#support">Support</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1 class="fade-in">Peace of Mind for Every Booking</h1>
+            <p class="fade-in">Hosting with confidence means knowing you're protected. Stayzio's comprehensive insurance coverage gives you the security to focus on what matters most—creating exceptional experiences for your guests.</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Coverage Overview -->
+            <section class="coverage-overview fade-in" id="coverage">
+                <h2 class="section-title">Coverage at a Glance</h2>
+                <p class="section-intro">Every Stayzio listing comes with automatic protection at no extra cost to you. Our insurance program safeguards hosts against property damage, liability claims, and unexpected guest-related incidents, so you can welcome travelers with complete peace of mind.</p>
+                
+                <div class="coverage-stats">
+                    <div class="stat">
+                        <span class="stat-number">₹1,00,000</span>
+                        <span class="stat-label">Coverage Amount<br>Per Incident</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">₹20,000</span>
+                        <span class="stat-label">Low Deductible<br>Per Claim</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Active Coverage<br>During Bookings</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- What's Covered -->
+            <section class="section fade-in">
+                <h2 class="section-title">What's Covered</h2>
+                <p class="section-intro">Our comprehensive protection covers the unexpected moments that can happen during any stay. Here's what you're protected against:</p>
+                
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3>🏠 Accidental Property Damage</h3>
+                        <div class="card-content">
+                            <p>When accidents happen, we've got you covered. Our insurance protects against unintentional damage caused by guests during their stay.</p>
+                        </div>
+                        <div class="examples">
+                            <div class="examples-title">Examples include:</div>
+                            <ul>
+                                <li>Broken furniture or appliances</li>
+                                <li>Damaged flooring, walls, or fixtures</li>
+                                <li>Spills that stain carpets or upholstery</li>
+                                <li>Kitchen accidents involving cookware</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>⚖️ Liability for Guest Injuries</h3>
+                        <div class="card-content">
+                            <p>Protect yourself against liability claims when guests are accidentally injured on your property during their stay.</p>
+                        </div>
+                        <div class="examples">
+                            <div class="examples-title">Examples include:</div>
+                            <ul>
+                                <li>Slip and fall accidents</li>
+                                <li>Injuries from property features</li>
+                                <li>Medical expenses for covered incidents</li>
+                                <li>Legal defense costs</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>🔒 Theft by Guests</h3>
+                        <div class="card-content">
+                            <p>Coverage for theft or intentional damage to your property or belongings caused by verified guests.</p>
+                        </div>
+                        <div class="examples">
+                            <div class="examples-title">Examples include:</div>
+                            <ul>
+                                <li>Missing electronics or appliances</li>
+                                <li>Stolen furniture or decor</li>
+                                <li>Intentional property damage</li>
+                                <li>Cash or other valuables (up to policy limits)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- What's Not Covered -->
+            <section class="section fade-in">
+                <h2 class="section-title">What's Not Covered</h2>
+                <p class="section-intro">Understanding your coverage limits helps you prepare and protect your investment. Here are items typically not covered by standard host protection:</p>
+                
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3>🔧 Normal Wear and Tear</h3>
+                        <div class="card-content">
+                            <p>Expected deterioration from regular use isn't covered. This includes gradual damage from normal guest activities.</p>
+                        </div>
+                        <div class="examples">
+                            <div class="examples-title">Examples include:</div>
+                            <ul>
+                                <li>Faded paint or wallpaper</li>
+                                <li>Carpet wear from foot traffic</li>
+                                <li>Scratched surfaces from normal use</li>
+                                <li>General aging of appliances</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>💎 Personal Valuables</h3>
+                        <div class="card-content">
+                            <p>High-value personal items and irreplaceable belongings require special consideration and additional coverage.</p>
+                        </div>
+                        <div class="examples">
+                            <div class="examples-title">Examples include:</div>
+                            <ul>
+                                <li>Jewelry and watches</li>
+                                <li>Art and collectibles</li>
+                                <li>Personal documents</li>
+                                <li>Family heirlooms</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>⚠️ Pre-existing Issues</h3>
+                        <div class="card-content">
+                            <p>Problems that existed before the guest's arrival aren't covered. Document your property's condition regularly.</p>
+                        </div>
+                        <div class="examples">
+                            <div class="examples-title">Examples include:</div>
+                            <ul>
+                                <li>Existing structural damage</li>
+                                <li>Malfunctioning appliances</li>
+                                <li>Previous water damage</li>
+                                <li>Known safety hazards</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Claims Process -->
+            <section class="section fade-in" id="claims">
+                <h2 class="section-title">Simple Claims Process</h2>
+                <p class="section-intro">Filing a claim shouldn't be stressful. Our streamlined process gets you the support you need quickly and efficiently.</p>
+                
+                <div class="claims-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h4>Report the Incident</h4>
+                        <p>File your claim directly through the Stayzio app or website within 24 hours of discovery. The sooner you report, the faster we can help.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h4>Document Everything</h4>
+                        <p>Upload photos, receipts, and any relevant documentation. Our app makes it easy to capture and submit everything from your phone.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h4>Get Expert Review</h4>
+                        <p>Our claims team reviews your case and may schedule a property inspection or request additional information if needed.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <h4>Receive Resolution</h4>
+                        <p>Once approved, get your reimbursement quickly. Most straightforward claims are resolved within 7-10 business days.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Extra Protection -->
+            <section class="section fade-in">
+                <h2 class="section-title">Extra Protection Options</h2>
+                <p class="section-intro">For hosts with unique needs, we offer enhanced coverage options to give you even greater peace of mind.</p>
+                
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3>🏖️ Premium Property Coverage</h3>
+                        <div class="card-content">
+                            <p>Ideal for luxury properties, vacation homes, or properties with high-value furnishings and amenities.</p>
+                            <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                                <li>Increased coverage limits up to ₹5,00,000</li>
+                                <li>Lower ₹1000 deductible</li>
+                                <li>Coverage for luxury items and art</li>
+                                <li>Expedited claims processing</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>🌟 Concierge Support</h3>
+                        <div class="card-content">
+                            <p>Get white-glove service with dedicated support for all your hosting insurance needs.</p>
+                            <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                                <li>Dedicated claims specialist</li>
+                                <li>Priority customer service</li>
+                                <li>Property risk assessment</li>
+                                <li>Personalized coverage recommendations</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 24/7 Support -->
+            <section class="section fade-in" id="support">
+                <h2 class="section-title">24/7 Assistance</h2>
+                <p class="section-intro">Emergencies don't wait for business hours. That's why our support team is available around the clock to help you handle urgent situations.</p>
+                
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3>🚨 Emergency Hotline</h3>
+                        <div class="card-content">
+                            <p>For urgent situations requiring immediate attention, our emergency hotline connects you with a specialist who can guide you through next steps and emergency protocols.</p>
+                            <p><strong>Available 24/7:</strong> +91-9920694680-Stayzio</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>💬 Live Chat Support</h3>
+                        <div class="card-content">
+                            <p>Get real-time answers to your insurance questions through our live chat feature, available directly in your host dashboard.</p>
+                            <p><strong>Response time:</strong> Under 5 minutes</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>📧 Dedicated Email Support</h3>
+                        <div class="card-content">
+                            <p>For non-urgent questions or detailed inquiries, our insurance specialists provide thorough responses via email.</p>
+                            <p><strong>Contact:</strong> piyushpraja1336@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container">
+                <h2>Ready to Host with Confidence?</h2>
+                <p>Join thousands of hosts who trust Stayzio to protect their properties and peace of mind.</p>
+                <a href="/listings/new" class="cta-button">Start Hosting Today</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+        <p>
+            &copy; 2025 Stayzio. All rights reserved. |
+            <a href="/privacy" style="color: #fe424d; text-decoration: none;"
+                onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">
+                Privacy Policy
+            </a> |
+            <a href="/terms" style="color: #fe424d; text-decoration: none;" onmouseover="this.style.textDecoration='underline'"
+                onmouseout="this.style.textDecoration='none'">
+                Terms of Service
+            </a>
+        </p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add animation classes when elements come into view
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section, .card, .step').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

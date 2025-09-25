@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Host Resources - Stayzio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
+        }
+        .navbar {
+            background: #ffffff;
+            padding: 1rem 0;
+            box-shadow: 0 4px 20px rgba(254, 66, 77, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto; /* This was the main fix */
+            width: 100%;
+            padding: 0 1rem; /* This handles spacing from the edges */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #fe424d;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            /* Removed padding-left from here */
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            /* Removed padding-left from here */
+            margin: 0; /* Good practice to reset default ul margin */
+            padding: 0;/* Good practice to reset default ul padding */
+        }
+
+        .nav-links a {
+            color: #fe424d;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .nav-links a:hover {
+            color: white;
+            background-color: #fe424d;
+            transform: translateY(-2px);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #fe424d 0%, #fe424d 100%);
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" fill="none"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="1000" height="1000" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #fe424d;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            color: #e63946;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .content-section {
+            padding: 4rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .content-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .section-icon {
+            background: linear-gradient(135deg, #fe424d 0%, #e63946 100%);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-right: 1.5rem;
+            box-shadow: 0 8px 25px rgba(254, 66, 77, 0.2);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .content-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .content-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(254, 66, 77, 0.15);
+            border-color: rgba(254, 66, 77, 0.2);
+        }
+
+        .content-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 1rem;
+        }
+
+        .content-card p {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .feature-list li {
+            padding: 0.5rem 0;
+            color: #4a5568;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #fe424d;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(254, 66, 77, 0.1) 0%, rgba(230, 57, 70, 0.05) 100%);
+            border: 2px solid rgba(254, 66, 77, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .highlight-box::before {
+            content: '💡';
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: white;
+            padding: 0 10px;
+            font-size: 1.2rem;
+        }
+
+        .highlight-box h4 {
+            color: #fe424d;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fe424d;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .support-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .support-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .support-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(254, 66, 77, 0.15);
+        }
+
+        .support-item h4 {
+            color: #1a202c;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .support-item p {
+            color: #64748b;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .support-button {
+            background: linear-gradient(135deg, #fe424d 0%, #e63946 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .support-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(254, 66, 77, 0.3);
+        }
+
+        .footer-cta {
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            padding: 4rem 0;
+            text-align: center;
+            color: white;
+        }
+
+        .footer-cta h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-cta p {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .support-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo"><i class="fa-solid fa-earth-asia brand-icon"></i>Stayzio</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/listings/new">Become a Host</a></li>
+                <li><a href="/contact">Support</a></li>
+                <li><a href="/login">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Everything You Need to Host with Confidence</h1>
+            <p>Welcome to your complete hosting toolkit. Whether you're just getting started or looking to take your hosting to the next level, we've got everything you need to succeed on Stayzio.</p>
+            <a href="/listings/new" class="cta-button">Start Your Journey</a>
+        </div>
+    </section>
+
+    <div class="container">
+        <section id="getting-started" class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🚀</div>
+                <div>
+                    <h2 class="section-title">Getting Started</h2>
+                    <p class="section-subtitle">Create Your Perfect Listing</p>
+                </div>
+            </div>
+
+            <p>New to hosting? We'll walk you through every step to get your space live and bookable.</p>
+
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3>Set Up Your Space</h3>
+                    <ul class="feature-list">
+                        <li>Complete our step-by-step listing wizard in under 30 minutes.</li>
+                        <li>Upload photos and write descriptions that attract guests.</li>
+                        <li>Set your house rules and check-in procedures.</li>
+                        <li>Choose your cancellation policy and booking requirements.</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h3>Master Your Pricing</h3>
+                    <ul class="feature-list">
+                        <li>Use our Smart Pricing tool for competitive rates.</li>
+                        <li>Set seasonal adjustments for peak and off-peak times.</li>
+                        <li>Configure weekend premiums and holiday pricing.</li>
+                        <li>Add fees for cleaning, pets, or extra guests.</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h3>Manage Your Calendar</h3>
+                    <ul class="feature-list">
+                        <li>Sync with other platforms to avoid double bookings.</li>
+                        <li>Block dates for personal use or maintenance.</li>
+                        <li>Set minimum and maximum stay requirements.</li>
+                        <li>Enable instant booking for qualified guests.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h4>Pro Tip</h4>
+                <p>Start with a competitive introductory rate for your first 3-5 bookings to build reviews quickly, then gradually increase to market rate.</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="section-header">
+                <div class="section-icon">⭐</div>
+                <div>
+                    <h2 class="section-title">Best Practices</h2>
+                    <p class="section-subtitle">Creating Memorable Guest Experiences</p>
+                </div>
+            </div>
+
+            <p>Small touches make a big difference. Here's how top hosts on Stayzio consistently earn 5-star reviews.</p>
+
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3>The Welcome Experience</h3>
+                    <ul class="feature-list">
+                        <li>Provide clear check-in instructions 24 hours before arrival.</li>
+                        <li>Offer a local guidebook with restaurant recommendations.</li>
+                        <li>Stock basic essentials: coffee, tea, toiletries, and fresh towels.</li>
+                        <li>Leave a welcome note with your contact information.</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h3>Maintaining Your Space</h3>
+                    <ul class="feature-list">
+                        <li>Deep clean between each guest (or hire professionals).</li>
+                        <li>Check and replace burnt-out bulbs and dead batteries.</li>
+                        <li>Test all appliances, WiFi, and entertainment systems.</li>
+                        <li>Keep a maintenance log to track repairs and replacements.</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h3>Communication Excellence</h3>
+                    <ul class="feature-list">
+                        <li>Respond to inquiries within 1 hour during business hours.</li>
+                        <li>Send arrival instructions and parking details in advance.</li>
+                        <li>Check in with guests 24 hours after arrival.</li>
+                        <li>Address any issues immediately and follow up.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h4>Real Host Example</h4>
+                <p>Sarah from Portland increased her bookings by 40% after adding a coffee station with local roasts and a neighborhood map with her personal recommendations marked.</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="section-header">
+                <div class="section-icon">📸</div>
+                <div>
+                    <h2 class="section-title">Photography & Presentation</h2>
+                    <p class="section-subtitle">Make Your Space Irresistible</p>
+                </div>
+            </div>
+
+            <p>Great photos can increase your booking rate by up to 60%. Here's how to showcase your space like a pro.</p>
+
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3>Photography Essentials</h3>
+                    <ul class="feature-list">
+                        <li>Take photos during golden hour (late morning or early afternoon).</li>
+                        <li>Declutter completely—remove personal items and excess furniture.</li>
+                        <li>Show the flow of your space with wide-angle shots.</li>
+                        <li>Capture key amenities: kitchen, bathroom, workspace, outdoor areas.</li>
+                        <li>Include detail shots of special features or local artwork.</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h3>Writing Compelling Descriptions</h3>
+                    <ul class="feature-list">
+                        <li>Lead with your unique selling points (ocean view, downtown location).</li>
+                        <li>Use descriptive language that helps guests visualize their stay.</li>
+                        <li>Mention nearby attractions within walking distance.</li>
+                        <li>Be specific about amenities (65" smart TV, rain shower, espresso machine).</li>
+                        <li>Address common guest questions preemptively.</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h3>Optimization Tips</h3>
+                    <ul class="feature-list">
+                        <li>Update photos seasonally to show outdoor spaces and seasonal decor.</li>
+                        <li>A/B test your main photo—it's the first thing guests see.</li>
+                        <li>Include captions that highlight special features.</li>
+                        <li>Show the space being used (table set for breakfast, cozy reading nook).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h4>Before/After Success Story</h4>
+                <p>Mark's beach condo saw a 75% increase in bookings after replacing dim, cluttered photos with bright, professionally-staged shots that highlighted the ocean view.</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="section-header">
+                <div class="section-icon">💰</div>
+                <div>
+                    <h2 class="section-title">Pricing Support</h2>
+                    <p class="section-subtitle">Maximize Your Revenue</p>
+                </div>
+            </div>
+
+            <p>Smart pricing strategies can significantly impact your earnings. Use these tools and insights to stay competitive while maximizing profit.</p>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">70-80%</div>
+                    <div class="stat-label">Target Occupancy Rate</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">15-25%</div>
+                    <div class="stat-label">Higher Revenue vs Static Pricing</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">2-3x</div>
+                    <div class="stat-label">Premium Event Pricing</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">30%</div>
+                    <div class="stat-label">Monthly Stay Discount</div>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3>Dynamic Pricing Strategies</h3>
+                    <ul class="feature-list">
+                        <li>Enable Smart Pricing for automatic market-based adjustments.</li>
+                        <li>Set floor and ceiling prices to maintain profitability.</li>
+                        <li>Adjust for local events, conferences, and seasonal demand.</li>
+                        <li>Offer discounts for longer stays (20% off weekly, 30% off monthly).</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h3>Market Analysis Tools</h3>
+                    <ul class="feature-list">
+                        <li>Use our Pricing Insights dashboard to compare with similar properties.</li>
+                        <li>Monitor your booking rate—aim for 70-80% occupancy.</li>
+                        <li>Track revenue per available night (RevPAN) to measure performance.</li>
+                        <li>Analyze seasonal trends in your area for better forecasting.</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h3>Special Pricing Scenarios</h3>
+                    <ul class="feature-list">
+                        <li>Last-minute bookings: Offer 10-15% discounts for bookings within 3 days.</li>
+                        <li>Gap nights: Reduce rates for single nights between bookings.</li>
+                        <li>New Year's Eve, major sporting events: Premium pricing 2-3x normal rate.</li>
+                        <li>Off-season: Lower base rates but maintain cleaning fees and extras.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="section-header">
+                <div class="section-icon">⚖️</div>
+                <div>
+                    <h2 class="section-title">Legal & Tax Help</h2>
+                    <p class="section-subtitle">Stay Compliant and Protected</p>
+                </div>
+            </div>
+
+            <p>Navigate regulations confidently with our comprehensive legal and tax resources.</p>
+
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3>Local Regulations</h3>
+                    <ul class="feature-list">
+                        <li>Research short-term rental laws in your city and neighborhood.</li>
+                        <li>Obtain required permits and licenses before listing.</li>
+                        <li>Understand occupancy limits and safety requirements.</li>
+                        <li>Register for local tourism or transient occupancy taxes.</li>
+                        <li>Check HOA rules if you live in a managed community.</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h3>Tax Compliance Made Simple</h3>
+                    <ul class="feature-list">
+                        <li>Download annual earning statements for tax filing.</li>
+                        <li>Track deductible expenses: cleaning, utilities, maintenance, supplies.</li>
+                        <li>Understand depreciation rules for property improvements.</li>
+                        <li>Keep receipts for all hosting-related purchases.</li>
+                        <li>Consider consulting a tax professional for complex situations.</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h3>Insurance and Liability</h3>
+                    <ul class="feature-list">
+                        <li>Verify your homeowner's/renter's insurance covers short-term rentals.</li>
+                        <li>Consider additional liability coverage for guest accidents.</li>
+                        <li>Document property condition with photos before and after each stay.</li>
+                        <li>Report any damages or incidents immediately through our platform.</li>
+                        <li>Keep detailed records of security deposits and resolutions.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h4>Real Scenario</h4>
+                <p>When Tom's guest accidentally broke a vintage lamp, he filed a claim through Stayzio's Host Guarantee program with photos and receipts. The claim was processed within 5 days, covering the full replacement cost.</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="section-header">
+                <div class="section-icon">🆘</div>
+                <div>
+                    <h2 class="section-title">Help & Support</h2>
+                    <p class="section-subtitle">We're Here When You Need Us</p>
+                </div>
+            </div>
+
+            <p>Get instant answers and personalized support whenever questions arise.</p>
+
+            <div class="support-grid">
+                <div class="support-item">
+                    <h4>24/7 Chat Support</h4>
+                    <p>Connect with our team anytime through the app or website</p>
+                    <a href="#" class="support-button">Start Chat</a>
+                </div>
+
+                <div class="support-item">
+                    <h4>Emergency Hotline</h4>
+                    <p>For urgent guest issues outside business hours</p>
+                    <a href="tel:+919920694680-STAYZIO" class="support-button">Call Now</a>
+                </div>
+
+                <div class="support-item">
+                    <h4>Community Forum</h4>
+                    <p>Connect with fellow hosts and share experiences</p>
+                    <a href="#" class="support-button">Join Community</a>
+                </div>
+                
+            </div>
+
+            <div class="highlight-box">
+                <h4>Quick Contact</h4>
+                <p>Need help right now? Click the chat bubble in the bottom right corner or call our Host Support line at <strong>+919920694680-STAYZIO</strong>.</p>
+            </div>
+        </section>
+    </div>
+
+    <section class="footer-cta">
+        <div class="container">
+            <h2>Ready to Start Hosting?</h2>
+            <p>Join thousands of successful hosts on Stayzio and start earning today!</p>
+            <a href="/listings/new" class="cta-button">Create Your Listing</a>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll animation for cards
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Initially hide cards for animation
+        document.querySelectorAll('.content-card, .support-item, .stat-item').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Add floating animation to hero button
+        const ctaButton = document.querySelector('.hero .cta-button');
+        if (ctaButton) {
+            setInterval(() => {
+                ctaButton.style.transform = 'translateY(-3px)';
+                setTimeout(() => {
+                    ctaButton.style.transform = 'translateY(0)';
+                }, 1000);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

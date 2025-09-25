@@ -51,7 +51,10 @@ router.route("/")
     wrapAsync(listingController.createListing)
   );
 
+  // ✅ NEW: API route to fetch listing data as JSON for the frontend
+router.get("/api/listings", wrapAsync(listingController.apiIndex));
 // ✅ Place this BEFORE /:id
+
 router.get("/new", isLoggedIn, listingController.renderNewForm);
 
 

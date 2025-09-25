@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Host Community - Stayzio</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: linear-gradient(135deg, #fe424d 0%, #ff6b7a 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fe424d;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #fe424d;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+
+        .content-section {
+            background: white;
+            margin: -2rem 0 0 0;
+            border-radius: 20px 20px 0 0;
+            padding: 4rem 0;
+            position: relative;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            border-radius: 15px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #fe424d, #ff6b7a);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            color: #2d3748;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .section h3 {
+            font-size: 1.3rem;
+            color: #4a5568;
+            margin: 1.5rem 0 0.5rem 0;
+            font-weight: 600;
+        }
+
+        .section p {
+            font-size: 1.1rem;
+            color: #4a5568;
+            margin-bottom: 1rem;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #fe424d, #ff6b7a);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box p {
+            color: white;
+            margin-bottom: 0;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+            color: #4a5568;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #fe424d, #ff6b7a);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(254, 66, 77, 0.3);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fe424d, #ff6b7a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .story-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 4px solid #fe424d;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .story-author {
+            font-weight: 600;
+            color: #fe424d;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .section {
+                padding: 1.5rem;
+            }
+            
+            nav ul {
+                display: none;
+            }
+        }
+
+        .navbar {
+            background: #ffffff;
+            padding: 1rem 0;
+            box-shadow: 0 4px 20px rgba(254, 66, 77, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto; /* This was the main fix */
+            width: 100%;
+            padding: 0 1rem; /* This handles spacing from the edges */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #fe424d;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            /* Removed padding-left from here */
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            /* Removed padding-left from here */
+            margin: 0; /* Good practice to reset default ul margin */
+            padding: 0;/* Good practice to reset default ul padding */
+        }
+
+        .nav-links a {
+            color: #fe424d;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .nav-links a:hover {
+            color: white;
+            background-color: #fe424d;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo"><i class="fa-solid fa-earth-asia brand-icon"></i>Stayzio</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/listings/new">Become a Host</a></li>
+                <li><a href="/contact">Support</a></li>
+                <li><a href="/login">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Connect, Learn, and Grow Together</h1>
+            <p>Welcome to the heart of Stayzio – a thriving community where hosts support each other, share insights, and celebrate success.</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">1K+</div>
+                    <p>Active Hosts</p>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">50+</div>
+                    <p>Daily Discussions</p>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <p>Success Rate</p>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <p>Community Support</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-icon">💬</div>
+                <h2>Community Forum</h2>
+                <p><strong>Join thousands of hosts sharing real experiences and practical advice.</strong></p>
+                
+                <p>Connect with fellow hosts from around the world in our active discussion forums. Get answers to your questions, share your wins and challenges, and discover insider tips that can transform your hosting journey.</p>
+
+                <h3>Popular Discussion Topics:</h3>
+                <ul>
+                    <li>• Pricing strategies for different seasons and markets.</li>
+                    <li>• Guest communication best practices.</li>
+                    <li>• Property maintenance and upgrade recommendations.</li>
+                    <li>• Local regulations and compliance guidance.</li>
+                    <li>• Creative amenities that wow guests.</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p><strong>New to hosting?</strong> Start in our "First-Time Host" section where experienced hosts share their initial experiences and offer encouraging advice for your journey ahead.</p>
+                </div>
+
+                <a href="#" class="cta-button">Join the Discussion</a>
+            </div>
+
+            <div class="section">
+                <div class="section-icon">🌟</div>
+                <h2>Success Stories</h2>
+                <p><strong>Get inspired by hosts who've turned their spaces into thriving businesses.</strong></p>
+
+                <p>Discover how ordinary people have transformed their properties into extraordinary hospitality experiences. From single spare rooms to luxury estate portfolios, these real stories showcase the possibilities that await.</p>
+
+                <div class="story-card">
+                    <div class="story-author">Maria from Barcelona</div>
+                    <p>"Started with a tiny studio apartment, now managing 5 properties across the city. The community forum taught me everything about dynamic pricing and guest experience. My revenue grew 400% in just two years!"</p>
+                </div>
+
+                <div class="story-card">
+                    <div class="story-author">David from Austin</div>
+                    <p>"The mentorship program connected me with an experienced host who guided me through my first few months. Now I consistently achieve 95% occupancy rates and 4.9-star reviews."</p>
+                </div>
+
+                <h3>What You'll Learn:</h3>
+                <ul>
+                    <li>• Revenue optimization strategies that increased earnings by 200-300%.</li>
+                    <li>• Guest service techniques that earn consistent 5-star reviews.</li>
+                    <li>• Property investment decisions that led to portfolio expansion.</li>
+                    <li>• Automation systems that save 10+ hours per week.</li>
+                </ul>
+
+                <a href="#" class="cta-button">Read More Stories</a>
+            </div>
+
+            <div class="section">
+                <div class="section-icon">📚</div>
+                <h2>Events & Webinars</h2>
+                <p><strong>Attend training sessions, workshops, and expert-led talks.</strong></p>
+
+                <p>Stay ahead of industry trends and sharpen your hosting skills with our comprehensive learning program. Join live sessions or catch up with recordings at your convenience.</p>
+
+                <h3>Upcoming Events:</h3>
+                <ul>
+                    <li><strong>• Dynamic Pricing Masterclass:</strong> Learn how to adjust your rates for maximum occupancy and revenue.</li>
+                    <li><strong>• Creating Memorable Guest Experiences:</strong> Tips and tricks to delight your guests and earn glowing reviews.</li>
+                    <li><strong>• Legal & Regulatory Updates:</strong> Stay compliant with the latest local laws affecting short-term rentals.</li>
+                    <li><strong>• Marketing Your Listing:</strong> Strategies to boost visibility and attract more bookings.</li>
+                    <li><strong>• Seasonal Hosting Strategies:</strong> Prepare your property for peak seasons and off-peak challenges.</li>
+
+                <div class="highlight-box">
+                    <p><strong>Expert-Led Training:</strong> Learn from industry professionals, successful hosts earning $100K+ annually, and Stayzio's hospitality specialists.</p>
+                </div>
+
+                <a href="#" class="cta-button">View Event Calendar</a>
+            </div>
+
+            <div class="section">
+                <div class="section-icon">📖</div>
+                <h2>Resources Hub</h2>
+                <p><strong>Download templates, guest communication scripts, and checklists.</strong></p>
+
+                <p>Access our comprehensive library of proven tools and templates that successful hosts use daily. Everything is designed to save you time and improve your guest experience.</p>
+
+                <h3>Essential Downloads:</h3>
+                <ul>
+                    <li><strong>• Welcome Message Templates:</strong> Professional greetings that set the perfect tone.</li>
+                    <li><strong>• House Rules & Policies:</strong> Clear guidelines that prevent misunderstandings.</li>
+                    <li><strong>• Cleaning Checklists:</strong> Ensure consistent, spotless turnovers every time.</li>
+                    <li><strong>• Pricing Calculators:</strong> Dynamic pricing tools for maximum revenue.</li>
+                    <li><strong>• Emergency Contact Lists:</strong> Essential numbers for any situation.</li>
+                </ul>
+
+                <h3>Example: Guest Check-in Script</h3>
+                <div class="story-card">
+                    <p>"Hi [Guest Name]! Welcome to [City]! 🎉 Your check-in is confirmed for [Time]. You'll find the keypad at the front door (code: [####]). I've left a welcome basket with local treats and my top restaurant recommendations. Need anything? I'm just a text away!"</p>
+                </div>
+
+                <a href="#" class="cta-button">Browse Resources</a>
+            </div>
+
+            <div class="section">
+                <div class="section-icon">🤝</div>
+                <h2>Mentorship Program</h2>
+                <p><strong>Get paired with experienced hosts who can guide you through your first bookings.</strong></p>
+
+                <p>Skip the learning curve with personalized guidance from hosts who've already built successful businesses. Our mentors are carefully selected based on their track record, communication skills, and passion for helping others succeed.</p>
+
+                <h3>How It Works:</h3>
+                <ul>
+                    <li><strong>• Week 1-2:</strong> Property assessment and listing optimization.</li>
+                    <li><strong>• Week 3-4:</strong> Pricing strategy and booking management.</li>
+                    <li><strong>• Week 5-8:</strong> Guest communication and experience enhancement.</li>
+                    <li><strong>• Ongoing:</strong> Monthly check-ins and support as needed.</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p><strong>Success Guarantee:</strong> 95% of mentored hosts receive their first booking within 30 days and achieve profitability within 90 days.</p>
+                </div>
+
+                <h3>What New Hosts Say:</h3>
+                <div class="story-card">
+                    <div class="story-author">Jennifer from Portland</div>
+                    <p>"My mentor Sarah helped me avoid so many rookie mistakes. She reviewed my listing photos, suggested the perfect pricing strategy, and even role-played difficult guest scenarios with me. I felt completely prepared when my first guests arrived!"</p>
+                </div>
+
+                <a href="#" class="cta-button">Apply for Mentorship</a>
+            </div>
+
+            <div class="section" style="text-align: center; background: linear-gradient(135deg, #fe424d, #ff6b7a); color: white;">
+                <h2 style="color: white;">Ready to Join Our Community?</h2>
+                <p style="color: white; font-size: 1.2rem;">Whether you're just starting out or looking to take your hosting to the next level, our community is here to support your journey.</p>
+                <a href="/listings" class="cta-button" style="background: white; color: #fe424d; margin-top: 2rem;">Get Started Today</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Add smooth scrolling animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.section');
+            
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            sections.forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(30px)';
+                section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(section);
+            });
+            
+            // Add click animations to CTA buttons
+            document.querySelectorAll('.cta-button').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'translateY(-2px)';
+                    }, 150);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

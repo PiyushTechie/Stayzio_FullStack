@@ -1,7 +1,7 @@
 <% layout("/layouts/boilerplate") %>
 
 <div class="form-container">
-  <h1>Register</h1>
+  <h1>Create Account</h1>
 
   <form id="register-form" action="/signup" method="POST" class="needs-validation" novalidate>
     <div class="form-group">
@@ -39,6 +39,9 @@
         placeholder="Create your password"
         class="form-control"
       >
+      <!-- Strength bar -->
+      <div id="strength-bar"><span></span></div>
+      <p id="strength-message"></p>
     </div>
 
     <div class="form-group">
@@ -54,23 +57,112 @@
       >
     </div>
 
-    <button type="submit">Sign Up</button>
+    <p class="terms-link">
+      By signing up, you agree to our 
+      <a href="/terms" style="text-decoration: none; color: #fe424d;">Terms of Service</a> 
+      and 
+      <a href="/privacy" style="text-decoration: none; color: #fe424d;">Privacy Policy</a>.
+    </p>
+
+    <!-- Button with text + spinner -->
+    <button type="submit" id="signupBtn">
+      <span class="btn-text">Sign Up</span>
+      <div class="spinner hidden"></div>
+    </button>
   </form>
 
   <p class="login-link">Already have an account? <a href="/login">Login here</a></p>
+
+  <p><strong>Note:</strong> Please check your Spam folder if you don’t see the OTP confirmation in your inbox.</p>
 </div>
-
 <script>
-  const registerForm = document.getElementById('register-form');
+const registerForm = document.getElementById('register-form');
+const signupBtn = document.getElementById("signupBtn");
+const btnText = signupBtn.querySelector(".btn-text");
+const spinner = signupBtn.querySelector(".spinner");
 
-  registerForm.addEventListener("submit", function(event) {
-    const password = document.getElementById("password").value;
-    const confirmPassword = document.getElementById("confirmPassword").value;
+// Password checker
+const passwordInput = document.getElementById("password");
+const strengthBar = document.querySelector("#strength-bar span");
+const strengthMessage = document.getElementById("strength-message");
 
-    if (password !== confirmPassword) {
-      alert("Passwords do not match!");
-      event.preventDefault(); // Stop the form from submitting
-    }
-    // If passwords match, the form will submit as normal
-  });
+let currentStrength = 0; // store strength globally
+
+passwordInput.addEventListener("keyup", checkPassword);
+
+function checkPassword() {
+  const password = passwordInput.value;
+  let strength = 0;
+
+  if (password.length >= 6) strength++;
+  if (/[A-Z]/.test(password)) strength++;
+  if (/[0-9]/.test(password)) strength++;
+  if (/[@$!%*?&]/.test(password)) strength++;
+  if (password.length >= 10) strength++;
+
+  currentStrength = strength; // save strength for submit validation
+
+  switch (strength) {
+    case 0:
+      strengthBar.style.width = "0%";
+      strengthMessage.textContent = "";
+      break;
+    case 1:
+      strengthBar.style.width = "20%";
+      strengthBar.style.background = "red";
+      strengthMessage.textContent = "Very Weak";
+      strengthMessage.style.color = "red";
+      break;
+    case 2:
+      strengthBar.style.width = "40%";
+      strengthBar.style.background = "orange";
+      strengthMessage.textContent = "Weak";
+      strengthMessage.style.color = "orange";
+      break;
+    case 3:
+      strengthBar.style.width = "60%";
+      strengthBar.style.background = "#ffcc00";
+      strengthMessage.textContent = "Moderate";
+      strengthMessage.style.color = "#ffcc00";
+      break;
+    case 4:
+      strengthBar.style.width = "80%";
+      strengthBar.style.background = "#66cc66";
+      strengthMessage.textContent = "Strong";
+      strengthMessage.style.color = "#66cc66";
+      break;
+    case 5:
+      strengthBar.style.width = "100%";
+      strengthBar.style.background = "green";
+      strengthMessage.textContent = "Very Strong";
+      strengthMessage.style.color = "green";
+      break;
+  }
+}
+
+// Confirm password validation + enforce minimum strength
+registerForm.addEventListener("submit", function(event) {
+  const password = document.getElementById("password").value;
+  const confirmPassword = document.getElementById("confirmPassword").value;
+
+  // ❌ Check password strength
+  if (currentStrength < 3) { // block if weaker than "Moderate"
+    alert("Password is too weak. Please choose a stronger password.");
+    event.preventDefault();
+    return;
+  }
+
+  // ❌ Check confirm password match
+  if (password !== confirmPassword) {
+    alert("Passwords do not match!");
+    event.preventDefault();
+    return;
+  }
+
+  // ✅ If all good → show spinner & disable button
+  btnText.style.display = "none";
+  spinner.classList.remove("hidden");
+  signupBtn.disabled = true;
+});
+
 </script>

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import Booking from "../models/booking.js";
 import Listing from "../models/listing.js";
 import { isLoggedIn } from "../utils/isLoggedIn.js";
-import { sendEmailFromTemplate } from "../utils/mailer.js";
+import { sendEmailFromMJML } from "../utils/mailer.js";
 const router = express.Router();
 
 
@@ -121,7 +121,7 @@ router.post("/", isLoggedIn, async (req, res) => {
     });
 
     // ✅ Send OTP email using MJML template
-    await sendEmailFromTemplate({
+    await sendEmailFromMJML({
       to: req.user.email,
       subject: "Stayzio: Booking OTP Verification",
       templateName: "bookingOtp", // put your MJML template file under /templates/bookingOtp.mjml
@@ -201,7 +201,7 @@ router.post("/:id/verify-otp", isLoggedIn, async (req, res) => {
       });
 
     // ✅ Send confirmation email using MJML template
-    await sendEmailFromTemplate({
+    await sendEmailFromMJML({
       to: booking.user.email,
       subject: "Stayzio: Booking Confirmed 🎉",
       templateName: "bookingConfirmation",

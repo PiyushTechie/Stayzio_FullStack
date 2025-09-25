@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experiences - Stayzio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #fe424d 0%, #ff6b73 100%);
+            color: white;
+            padding: 120px 20px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='3'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-60px); }
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .experiences-list {
+            padding: 80px 0;
+        }
+
+        .experience-item {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .experience-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(254, 66, 77, 0.15);
+        }
+
+        .experience-header {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            padding: 40px;
+            align-items: center;
+        }
+
+        .experience-image {
+            width: 310px;
+            height: 300px;
+            background: linear-gradient(45deg, #fe424d, #ff8a95);
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .experience-details h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .experience-details p {
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .experience-meta {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fe424d;
+        }
+
+        .rating-summary {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stars {
+            color: #ffa500;
+            font-size: 1.2rem;
+        }
+
+        .rating-text {
+            color: #666;
+            font-weight: 600;
+        }
+
+        .btn-book {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #fe424d, #ff6b73);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none; /* Remove underline */
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-book:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(254, 66, 77, 0.4);
+        }
+
+        .reviews-section {
+            border-top: 1px solid #eee;
+            padding: 30px 40px;
+            background: #f8f9fa;
+        }
+
+        .reviews-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .reviews-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .view-all-reviews {
+            color: #fe424d;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .view-all-reviews:hover {
+            color: #e63946;
+            text-decoration: underline;
+        }
+
+        .review-item {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .review-item:hover {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .reviewer-avatar {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #fe424d, #ff8a95);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .reviewer-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+
+        .reviewer-info .review-date {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .review-rating {
+            color: #ffa500;
+            font-size: 0.9rem;
+            margin-left: auto;
+        }
+
+        .review-text {
+            color: #555;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+
+        .features-section {
+            background: #f8f9fa;
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 60px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 30px 20px;
+            background: white;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #fe424d, #ff6b73);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2rem;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .feature-description {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #333 0%, #555 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .cta-description {
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .btn-cta {
+            display: inline-block;
+            padding: 18px 40px;
+            background: #fe424d;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cta:hover {
+            background: #e63946;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(254, 66, 77, 0.4);
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(254, 66, 77, 0.1);
+            animation: floatCircle 15s infinite ease-in-out;
+        }
+
+        .floating-circle:nth-child(1) {
+            width: 60px;
+            height: 60px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-circle:nth-child(2) {
+            width: 80px;
+            height: 80px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 5s;
+        }
+
+        .floating-circle:nth-child(3) {
+            width: 40px;
+            height: 40px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 10s;
+        }
+
+        @keyframes floatCircle {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 80px 20px 60px;
+            }
+            
+            .experiences-list {
+                padding: 60px 0;
+            }
+            
+            .experience-item {
+                margin: 0 10px 30px;
+            }
+            
+            .experience-header {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 30px 20px;
+                text-align: center;
+            }
+            
+            .experience-image {
+                height: 150px;
+                margin: 0 auto;
+                max-width: 250px;
+            }
+            
+            .experience-meta {
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+            
+            .reviews-section {
+                padding: 20px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+    </div>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Unforgettable Experiences</h1>
+            <p>Discover amazing activities and create lasting memories during your stay with Stayzio</p>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="experiences-list">
+            <div class="experience-item">
+                <div class="experience-header">
+                    <div class="experience-image" style="background-image: url('https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHRyYXZlbHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60');"></div>
+                    <div class="experience-details">
+                        <h3>Cozy Beachfront Cottage</h3>
+                        <p>Escape to this charming beachfront cottage for a relaxing getaway. Enjoy stunning ocean views and easy access to the beach.</p>
+                        <div class="experience-meta">
+                            <span class="price">₹1500/person</span>
+                            <div class="rating-summary">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-text">4.8 (5 reviews)</span>
+                            </div>
+                            <a class="btn-book" href="/listings/68b2bb7eb50933aaecb81b69">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="reviews-section">
+                    <div class="reviews-header">
+                        <h4 class="reviews-title">Recent Reviews</h4>
+                        <a href="/listings/68b2bb7eb50933aaecb81b69" class="view-all-reviews">View all 5 reviews</a>
+                    </div>
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">SM</div>
+                            <div class="reviewer-info">
+                                <h4>Sarah Mitchell</h4>
+                                <span class="review-date">2 days ago</span>
+                            </div>
+                            <div class="review-rating">★★★★★</div>
+                        </div>
+                        <p class="review-text">Absolutely amazing tour! Our guide Marcus was incredibly knowledgeable and showed us places we never would have found on our own. The stories about the city's history were fascinating.</p>
+                    </div>
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">JD</div>
+                            <div class="reviewer-info">
+                                <h4>James Davidson</h4>
+                                <span class="review-date">1 week ago</span>
+                            </div>
+                            <div class="review-rating">★★★★★</div>
+                        </div>
+                        <p class="review-text">Perfect way to start our vacation! The tour covered all the major landmarks and the guide provided great recommendations for restaurants and activities.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="experience-item">
+                <div class="experience-header">
+                    <div class="experience-image" style="background-image: url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8aG90ZWxzfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60');"></div>
+                    <div class="experience-details">
+                        <h3>Mountain Retreat</h3>
+                        <p>Unplug and unwind in this peaceful mountain cabin. Surrounded by nature, it's a perfect place to recharge.</p>
+                        <div class="experience-meta">
+                            <span class="price">₹1000/person</span>
+                            <div class="rating-summary">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-text">4.9 (5 reviews)</span>
+                            </div>
+                            <a class="btn-book" href="/listings/68b2bb7eb50933aaecb81b6b">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="reviews-section">
+                    <div class="reviews-header">
+                        <h4 class="reviews-title">Recent Reviews</h4>
+                        <a href="/listings/68b2bb7eb50933aaecb81b6b" class="view-all-reviews">View all 5 reviews</a>
+                    </div>
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">AL</div>
+                            <div class="reviewer-info">
+                                <h4>Anna Lopez</h4>
+                                <span class="review-date">3 days ago</span>
+                            </div>
+                            <div class="review-rating">★★★★★</div>
+                        </div>
+                        <p class="review-text">What an incredible culinary journey! Every stop was perfectly chosen and the food was outstanding. Our guide Elena was passionate about local cuisine and shared wonderful stories about each dish.</p>
+                    </div>
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">MR</div>
+                            <div class="reviewer-info">
+                                <h4>Michael Roberts</h4>
+                                <span class="review-date">5 days ago</span>
+                            </div>
+                            <div class="review-rating">★★★★★</div>
+                        </div>
+                        <p class="review-text">As a food lover, this exceeded all expectations. The wine pairings were perfect and I discovered flavors I never knew existed. Highly recommend!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="experience-item">
+                <div class="experience-header">
+                    <div class="experience-image" style="background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aG90ZWxzfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60');"></div>
+                    <div class="experience-details">
+                        <h3>Historic Villa in Tuscany</h3>
+                        <p>Experience the charm of Tuscany in this beautifully restored villa. Explore the rolling hills and vineyards.</p>
+                        <div class="experience-meta">
+                            <span class="price">₹2500/person</span>
+                            <div class="rating-summary">
+                                <span class="stars">★★★★☆</span>
+                                <span class="rating-text">4.7 (5 reviews)</span>
+                            </div>
+                            <a class="btn-book" href="/listings/68b2bb7eb50933aaecb81b6c">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="reviews-section">
+                    <div class="reviews-header">
+                        <h4 class="reviews-title">Recent Reviews</h4>
+                        <a href="/listings/68b2bb7eb50933aaecb81b6c" class="view-all-reviews">View all 5 reviews</a>
+                    </div>
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">TR</div>
+                            <div class="reviewer-info">
+                                <h4>Tom Rodriguez</h4>
+                                <span class="review-date">4 days ago</span>
+                            </div>
+                            <div class="review-rating">★★★★★</div>
+                        </div>
+                        <p class="review-text">Great adventure! The route was challenging but manageable, and the views were absolutely stunning. The guide was very attentive to safety and made sure everyone was comfortable.</p>
+                    </div>
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="reviewer-avatar">LC</div>
+                            <div class="reviewer-info">
+                                <h4>Lisa Chen</h4>
+                                <span class="review-date">1 week ago</span>
+                            </div>
+                            <div class="review-rating">★★★★☆</div>
+                        </div>
+                        <p class="review-text">Really enjoyed the cycling tour. The bikes were in excellent condition and the scenery was beautiful. Would recommend bringing water and snacks for the longer routes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-section">
+        <div class="container">
+            <h2 class="section-title">Why Choose Stayzio Experiences?</h2>
+            <p class="section-subtitle">We curate the best local experiences to make your stay unforgettable with expert guides and authentic adventures.</p>
+            
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">🏆</div>
+                    <h3 class="feature-title">Expert Guides</h3>
+                    <p class="feature-description">All our experiences are led by passionate local experts who know the best spots and stories.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Instant Booking</h3>
+                    <p class="feature-description">Book your experience instantly with our seamless booking system. No waiting, no hassle.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">🛡️</div>
+                    <h3 class="feature-title">Safety First</h3>
+                    <p class="feature-description">All experiences follow strict safety protocols and are fully insured for your peace of mind.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">💰</div>
+                    <h3 class="feature-title">Best Prices</h3>
+                    <p class="feature-description">Get the best value for money with our competitive prices and exclusive deals for Stayzio guests.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2 class="cta-title">Ready for Your Adventure?</h2>
+            <p class="cta-description">Don't miss out on these incredible experiences. Book now and create memories that will last a lifetime.</p>
+            <a href="/listings" class="btn-cta"">Book Your Experience</a>
+        </div>
+    </section>
+
+    <script>
+        // Add smooth scrolling and interactive elements
+        function bookExperience(experienceType) {
+            // Animate button click
+            event.target.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                event.target.style.transform = 'scale(1)';
+            }, 150);
+            
+            // Show booking confirmation
+            setTimeout(() => {
+                alert(`Great choice! You've selected the ${experienceType.replace('-', ' ')} experience. Redirecting to booking...`);
+            }, 200);
+        }
+        
+        function showBookingForm() {
+            alert('Redirecting to booking form...');
+        }
+        
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Animate cards on scroll
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.experience-card, .feature-item');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'all 0.6s ease';
+                card.style.transitionDelay = `${index * 0.1}s`;
+                observer.observe(card);
+            });
+        });
+        
+        // Add parallax effect to floating circles
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const circles = document.querySelectorAll('.floating-circle');
+            circles.forEach((circle, index) => {
+                const speed = 0.5 + (index * 0.2);
+                circle.style.transform = `translateY(${scrolled * speed}px) rotate(${scrolled * 0.1}deg)`;
+            });
+        });
+    </script>
+</body>
+</html>
