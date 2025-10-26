@@ -1,29 +1,43 @@
 // controllers/users.js
 import User from "../models/user.js";
 import { sendEmailFromMJML } from "../utils/mailer.js";
+import Listing from "../models/listing.js";
+import Review from "../models/reviews.js";
+
 // ====================== SIGNUP & OTP ======================
 
 // Render signup form
 const renderSignUpForm = (req, res) => {
-  res.render("users/signup");
+  res.render("users/newsignup");
 };
 
 // Signup a new user and send OTP
 const signup = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
-    
-    // 🔍 Check if username/email already exists
+    const { username, email, password, dob } = req.body;
+
+    // ✅ Age Validation (Must be 18 or older)
+    const birthDate = new Date(dob);
+    const ageDiffMs = Date.now() - birthDate.getTime();
+    const ageDate = new Date(ageDiffMs);
+    const age = Math.abs(ageDate.getUTCFullYear() - 1970);
+
+    if (age < 18) {
+      req.flash("error", "You must be 18 or older to register.");
+      return res.redirect("/signup");
+    }
+
+    // 🔍 Check if username or email already exists
     const existingUser = await User.findOne({
       $or: [{ username }, { email }],
     });
 
     if (existingUser) {
-      req.flash("error", "Username or email already in use");
+      req.flash("error", "Username or Email already in use!");
       return res.redirect("/signup");
     }
-    
-    const user = new User({ username, email });
+
+    const user = new User({ username, email, dob });
 
     await User.register(user, password);
 
@@ -35,26 +49,28 @@ const signup = async (req, res) => {
     await user.save();
 
     await sendEmailFromMJML({
-          to: email,
-          subject: "Stayzio: Verify your email",
-          templateName: "signupOtp",   // matches email-templates/signupOtp.mjml
-          templateData: {
-            username,
-            otp,
-            year: new Date().getFullYear(),
-          },
-        });
+      to: email,
+      subject: "Stayzio: Verify your email",
+      templateName: "signupOtp",
+      templateData: {
+        username,
+        otp,
+        year: new Date().getFullYear(),
+      },
+    });
 
     req.flash(
       "success",
       "Signup successful! Enter the OTP sent to your email to verify your account."
     );
     res.redirect("/verify-otp");
+
   } catch (e) {
     req.flash("error", e.message);
     res.redirect("/signup");
   }
 };
+
 
 // Verify OTP route
 const verifyOtp = async (req, res) => {
@@ -139,7 +155,7 @@ const resendOtp = async (req, res) => {
 // ====================== LOGIN / LOGOUT ======================
 
 const renderLoginForm = (req, res) => {
-  res.render("users/login");
+  res.render("users/newlogin");
 };
 
 const login = (req, res, next) => {
@@ -184,6 +200,7 @@ const publicProfile = async (req, res) => {
   const isOwner = req.user && req.user._id.equals(profileUser._id);
   res.render("users/profile", { user: profileUser, isOwner });
 };
+
 
 // ====================== FORGOT PASSWORD WITH OTP ======================
 
@@ -260,6 +277,30 @@ const resetPassword = async (req, res) => {
   res.redirect("/login");
 };
 
+const deleteAccount = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    // Delete all listings created by the user
+    await Listing.deleteMany({ author: userId });
+
+    // Delete all reviews written by the user
+    await Review.deleteMany({ author: userId });
+
+    // Finally, delete the user
+    await User.findByIdAndDelete(userId);
+
+    // Logout after deletion
+    req.logout(() => {
+      req.flash("success", "Your account has been permanently deleted.");
+      res.status(200).json({ redirect: "/" });
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to delete account." });
+  }
+};
+
 // ====================== EXPORT ======================
 
 export default {
@@ -276,4 +317,5 @@ export default {
   renderResetPasswordForm,
   resetPassword,
   resendOtp,
+  deleteAccount
 };

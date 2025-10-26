@@ -6,10 +6,8 @@ import path from "path";
 import methodOverride from "method-override";
 import { fileURLToPath } from "url";
 import ejsMate from "ejs-mate";
-import ExpressError from "./utils/ExpressError.js";
 import flash from "connect-flash";
 import session from "express-session";
-import MongoStore from "connect-mongo";
 import passport from "passport";
 import LocalStrategy from "passport-local";
 import User from "./models/user.js";
@@ -18,7 +16,12 @@ import reviewRouter from "./routes/review.js";
 import userRouter from "./routes/user.js"; // Updated import
 import bookingRoutes from "./routes/booking.js"
 import { sendEmailFromMJML }   from "./utils/mailer.js";
-
+import "./utils/passport.js";            // <-- registers Google (and other) strategies
+import authRoutes from "./routes/authRoutes.js"; // <-- routes for /auth/google etc.
+import hostRoutes from "./routes/hostRoutes.js";
+import { globalLimiter } from "./utils/rateLimiters.js";
+import redisModule from './utils/redisClient.js'; // default import
+const { client, connectRedis } = redisModule;     // destructure after import
 
 // Setup __dirname in ES Module style
 const __filename = fileURLToPath(import.meta.url);
@@ -28,6 +31,7 @@ const app = express();
 const port = 8080;
 
 // App config
+app.set('trust proxy', 1);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.engine("ejs", ejsMate);
@@ -39,18 +43,6 @@ app.use(express.static(path.join(__dirname, "public")));
 // DB connection
 const dbUrl = process.env.ATLASDB_URL;
 const localDb = "mongodb://127.0.0.1:27017/wanderlust";
-
-async function main() {
-  try {
-    await mongoose.connect(dbUrl);
-    console.log("✅ DB Connected Successfully");
-  } catch (err) {
-    console.log("❌ Connection error:", err);
-    process.exit(1); // Exit if DB connection fails
-  }
-}
-main();
-
 
 const store = MongoStore.create({
   mongoUrl:dbUrl,
@@ -66,16 +58,18 @@ store.on("error", () =>{
 // Session Config
 
 const sessionOptions = {
-   store,      
+  store,         
   secret: process.env.SECRET,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000, // 1 week
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
   }
 };
+
+app.use(globalLimiter);
 
 app.use(session(sessionOptions));
 app.use(flash());
@@ -94,6 +88,7 @@ app.use((req, res, next) => {
   res.locals.error = req.flash("error");
   next();
 });
+
 app.use((req, res, next) => {
   res.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
   res.set("Pragma", "no-cache");
@@ -110,7 +105,10 @@ app.get("/", (req, res) => {
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
+app.use("/auth", authRoutes);   
 app.use('/bookings', bookingRoutes);
+app.use("/host", hostRoutes);
+
 
 app.get("/privacy", (req, res) => {
     res.render("listings/privacy");
@@ -152,7 +150,7 @@ app.post("/contact", async (req, res) => {
         await sendEmailFromMJML({
               to: "piyushpraja1336@gmail.com",
               subject: `New Contact Form Submission: ${subject}`,
-              templateName: "contactAdmin",   // matches email-templates/signupOtp.mjml
+              templateName: "contactAdmin",
               templateData: { name, email, subject, message, year: new Date().getFullYear() }
             });
 
@@ -198,20 +196,48 @@ app.get("/host-insurance", (req, res) => {
   res.render("users/hostinsurance");
 })
 
+app.get("/offline", (req, res) => {
+  res.render("listings/offline");
+});
+
+app.get("/faq", (req, res) => {
+  res.render("users/faq");
+});
+
+
+// app.get("/test-error", (req, res) => {
+//   // Throw a server error intentionally
+//   throw new Error("This is a test 500 error");
+// });
 
 // 404 handler
-app.all("/*\w", (req, res, next) => {
-  next(new ExpressError(404, "Page Not Found!"));
+app.use((req, res) => {
+  res.status(404).render('listings/404error'); // separate 404 page
 });
 
-// Error handler
+// ===== 500 handler =====
 app.use((err, req, res, next) => {
-  const { statusCode = 500 } = err;
-  if (!err.message) err.message = "Something went wrong";
-  res.status(statusCode).render("listings/error", { err });
+  res.status(500).render('listings/505error'); // separate 500 page
 });
 
-// Server
-app.listen(port, () => {
-  console.log(`🚀 App is listening on port ${port}`);
-});
+async function startServer() {
+  try {
+    // 1️⃣ Connect MongoDB
+    await mongoose.connect(dbUrl);
+    console.log("✅ DB Connected Successfully");
+
+    // 2️⃣ Connect Redis
+    await connectRedis();
+    console.log('✅ Connected to Redis successfully!');
+
+    // 3️⃣ Start server
+    app.listen(port, () => {
+      console.log(`🚀 App listening on port ${port}`);
+    });
+  } catch (err) {
+    console.error('❌ Failed to connect to DB or Redis:', err);
+    process.exit(1);
+  }
+}
+
+startServer();

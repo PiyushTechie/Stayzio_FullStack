@@ -1,130 +1,302 @@
-.form-container {
-    max-width: 450px;
-    margin: 50px auto;
-    background: white;
-    border-radius: 12px;
-    padding: 40px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    border: 1px solid #e5e5e5;
-  }
+* {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-h1{
-    color: #FF5A5F;
-    text-align: center;
-    font-size: 2rem;
-    font-weight: 600;
-    margin-bottom: 30px;
-}
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      min-height: 100vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
 
-.form-group {
-    margin-bottom: 20px;
-}
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
 
-label{
-    display: block;
-    color: #333;
-    font-weight: 500;
-    margin-bottom: 8px;
-    font-size: 14px;
-}
+    /* Hero Section */
+    .hero-section {
+      flex: 1;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 50%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+    }
 
-input{
-    width: 100%;
-    padding: 12px 16px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 16px;
-    background: white;
-    transition: border-color 0.3s ease;
-    box-sizing: border-box;
-}
+    .hero-box {
+      width: 100%;
+      height: 100%;
+      background: url('https://i.natgeofe.com/n/c15761fa-d631-4a41-bd23-8e339560709c/nationalgeographic_2670050crop.jpg') center/cover;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    }
 
-input:focus {
-    outline: none;
-    border-color: #FF5A5F;
-    box-shadow: 0 0 0 2px rgba(255, 90, 95, 0.1);
-}
+    /* Form Section */
+    .form-section {
+      flex: 1;
+      background: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      overflow-y: auto;
+      margin-left: 50%;
+    }
 
-button[type="submit"] {
-    width: 100%;
-    background: #FF5A5F;
-    color: white;
-    border: none;
-    padding: 14px;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
-}
+    .form-box {
+      background: #fff;
+      padding: 35px 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 480px;
+    }
 
-button:hover {
-    background: #e04348;
-}
+    .form-container {
+      width: 100%;
+    }
 
-  .signup-link {
-    text-align: center;
-    margin-top: 20px;
-    color: #666;
-    font-size: 14px;
-  }
+    .brand-header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
 
-  .signup-link a {
-    color: #FF5A5F;
-    text-decoration: none;
-    font-weight: 500;
-  }
+    .brand-name {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fe424d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
 
-  .custom-link {
-    color: var(--primary-color);
-    text-decoration: none; /* Remove default underline */
-    font-weight: 500; /* Optional: Make the text slightly bold */
-    transition: all 0.3s ease; /* Smooth hover effect */
-  }
+    .brand-icon {
+      font-size: 28px;
+    }
 
-  .custom-link:hover {
-    text-decoration: underline; /* Add underline on hover */
-    color: var(--primary-dark); /* Optional: Darken the color on hover */
-  }
+    .form-container h2 {
+      text-align: center;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 6px;
+    }
 
-  button[type="submit"] {
-  width: 100%;
-  background: #FF5A5F;
-  color: white;
-  border: none;
-  padding: 14px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 10px;
+    .welcome-subtitle {
+      text-align: center;
+      color: #999;
+      font-size: 13px;
+      margin-bottom: 25px;
+    }
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
+    .form-group {
+      margin-bottom: 16px;
+    }
 
-button:hover {
-  background: #e04348;
-}
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 8px;
+    }
 
-/* Spinner */
-.spinner {
-  width: 20px;
-  height: 20px;
-  border: 3px solid rgba(255, 255, 255, 0.4);
-  border-top: 3px solid #fff;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
 
-.hidden {
-  display: none;
-}
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      color: #999;
+      pointer-events: none;
+      z-index: 1;
+    }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+    input {
+      width: 100%;
+      padding: 13px 16px 13px 44px;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      background: #f8f9fa;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #fe424d;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(254,66,77,0.1);
+    }
+
+    input:focus ~ .input-icon {
+      color: #fe424d;
+    }
+
+    input::placeholder {
+      color: #ccc;
+    }
+
+    .forgot-password {
+      text-align: right;
+      margin-bottom: 14px;
+    }
+
+    .forgot-password a {
+      color: #999;
+      font-size: 13px;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .forgot-password a:hover {
+      color: #fe424d;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      background: #fe424d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .login-btn:hover {
+      background: #e03943;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(254,66,77,0.3);
+    }
+
+    .login-btn:active {
+      transform: translateY(0);
+    }
+
+    .divider {
+      text-align: center;
+      margin: 20px 0;
+      position: relative;
+      color: #999;
+      font-size: 13px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 45%;
+      height: 1px;
+      background: #e0e0e0;
+    }
+
+    .divider::before {
+      left: 0;
+    }
+
+    .divider::after {
+      right: 0;
+    }
+
+    .social-login {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .social-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: none;
+      background: #f5f5f5;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: all 0.3s ease;
+    }
+
+    .social-btn:hover {
+      background: #e0e0e0;
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .register-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 13px;
+      color: #666;
+    }
+
+    .register-link a {
+      color: #fe424d;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.4);
+      border-top: 3px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 968px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .hero-section {
+        display: none;
+      }
+
+      .form-section {
+        margin-left: 0;
+        width: 100%;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .form-box {
+        padding: 35px 30px;
+      }
+    }

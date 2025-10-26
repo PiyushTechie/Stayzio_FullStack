@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 Error - Server Problem - Stayzio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #fe424d;
+            --dark-color: #333333;
+            --light-color: #f4f4f4;
+            --font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family);
+            color: var(--dark-color);
+            background-color: #fff;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: hidden; /* For background particles */
+            position: relative;
+        }
+
+        /* Background Particle Animation */
+        .particle {
+            position: absolute;
+            background-color: rgba(254, 66, 77, 0.1); /* Primary color with transparency */
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            animation: floatAndFade 10s ease-in-out infinite;
+        }
+
+        .particle:nth-child(1) { width: 15px; height: 15px; top: 10%; left: 5%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 10px; height: 10px; top: 20%; left: 25%; animation-delay: 1.5s; }
+        .particle:nth-child(3) { width: 20px; height: 20px; top: 5%; left: 70%; animation-delay: 3s; }
+        .particle:nth-child(4) { width: 12px; height: 12px; top: 40%; left: 15%; animation-delay: 4.5s; }
+        .particle:nth-child(5) { width: 18px; height: 18px; top: 60%; left: 85%; animation-delay: 6s; }
+        .particle:nth-child(6) { width: 14px; height: 14px; top: 80%; left: 30%; animation-delay: 7.5s; }
+        .particle:nth-child(7) { width: 9px; height: 9px; top: 90%; left: 50%; animation-delay: 9s; }
+        .particle:nth-child(8) { width: 16px; height: 16px; top: 30%; left: 95%; animation-delay: 10.5s; }
+
+
+        @keyframes floatAndFade {
+            0% { transform: translateY(0) translateX(0) scale(0.5); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(50px) scale(1); opacity: 0; }
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            position: relative; /* Above particles */
+            z-index: 10;
+        }
+
+        .error-code {
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            line-height: 1;
+            animation: textStagger 1s ease-out forwards;
+            opacity: 0;
+            display: inline-block; /* For staggered effect */
+        }
+
+        @keyframes textStagger {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .error-code span:nth-child(1) { animation-delay: 0.1s; }
+        .error-code span:nth-child(2) { animation-delay: 0.2s; }
+        .error-code span:nth-child(3) { animation-delay: 0.3s; }
+
+
+        .error-graphic {
+            width: 150px;
+            height: auto;
+            margin: 1.5rem auto 2rem;
+            animation: wobble 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes wobble {
+            0%, 100% { transform: translateX(0px) rotate(0deg); }
+            25% { transform: translateX(-3px) rotate(-1deg); }
+            50% { transform: translateX(3px) rotate(1deg); }
+            75% { transform: translateX(-2px) rotate(-0.5deg); }
+        }
+        
+        .error-graphic .stroke {
+            stroke: var(--dark-color);
+        }
+        
+        .error-graphic .accent {
+            fill: var(--primary-color);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 0;
+            animation: fadeIn 1s ease-out forwards;
+            animation-delay: 0.8s;
+            opacity: 0;
+        }
+        
+        h1 span {
+            color: var(--primary-color);
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin: 1rem 0 2.5rem;
+            color: #666;
+            animation: fadeIn 1s ease-out forwards;
+            animation-delay: 1.2s;
+            opacity: 0;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            animation: fadeIn 1s ease-out forwards;
+            animation-delay: 1.6s;
+            opacity: 0;
+        }
+
+        .cta-button:hover {
+            background-color: #e43a45;
+            transform: scale(0.98); /* Subtle "reset" or "press" */
+            box-shadow: 0 0 0 5px rgba(254, 66, 77, 0.3); /* Ring effect */
+        }
+
+        .nav-links {
+            margin-top: 3rem;
+            border-top: 1px solid #eee;
+            padding-top: 2rem;
+            animation: fadeIn 1s ease-out forwards;
+            animation-delay: 2s;
+            opacity: 0;
+        }
+
+        .nav-links p {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 0 0 1rem;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        .nav-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 600;
+            transition: color 0.3s ease, transform 0.2s ease;
+            display: inline-block;
+        }
+
+        .nav-links a:hover {
+            color: var(--dark-color);
+            transform: scale(1.05); /* Slight enlarge */
+        }
+        
+        /* General Fade In (used by multiple elements with delays) */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive styles */
+        @media (max-width: 480px) {
+            .error-code {
+                font-size: 3.5rem;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .nav-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .nav-links a {
+                margin: 0;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+
+    <div class="container">
+
+        <div class="error-code">
+            <span>5</span><span>0</span><span>0</span>
+        </div>
+
+        <svg class="error-graphic" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <rect class="stroke" x="47" y="50" width="6" height="40" rx="3" fill="#666" stroke="none"/>
+            <path class="accent" d="M20 50 L50 20 L80 50 L50 80 Z" stroke="#333" stroke-width="3" fill="#fe424d"/>
+            <line class="stroke" x1="50" y1="35" x2="50" y2="60" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+            <circle class="stroke" cx="50" cy="70" r="4" fill="#fff" stroke="none"/>
+        </svg>
+
+        <h1>Internal Server <span>Error</span></h1>
+
+        <p>
+            Uh oh! Looks like our adventure map has a temporary glitch. The server encountered an unexpected situation and couldn't complete your request.
+            Our team is already working to get things back on track.
+        </p>
+
+        <a href="/" class="cta-button">Go Back to Safety (Homepage)</a>
+
+        <div class="nav-links">
+            <p>While we fix things, you could:</p>
+            <div>
+                <a href="/faq">Visit our Help Center</a>
+                <a href="/contact">Contact Support</a>
+            </div>
+        </div>
+        
+    </div>
+<script>
+  // Check on page load
+  if (!navigator.onLine) {
+    window.location.href = '/offline';
+  }
+
+  // Listen for going offline while browsing
+  window.addEventListener('offline', () => {
+    window.location.href = '/offline';
+  });
+</script>
+
+
+<style>
+  :root {
+            --primary-gradient: linear-gradient(135deg, #ff385c 0%, #e31c5f 100%);
+             --text-secondary: #718096;
+          }
+  /* Brand Styling */
+  .navbar-brand {
+    text-decoration: none !important;
+    transition: transform 0.2s ease;
+  }
+  
+  .navbar-brand:hover {
+    transform: scale(1.05);
+  }
+  
+  .brand-icon {
+    color: #fe424d;
+    font-size: 1.5rem;
+  }
+  
+  .brand-text {
+    color: #fe424d;
+    font-size: 1.4rem;
+  }
+
+  /* Search Form */
+        .search-form {
+            position: relative;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 6px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 400px;
+            margin-bottom: 2px;
+        }
+
+        .search-input {
+            border: none !important;
+            background: transparent !important;
+            padding: 10px 18px !important;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            border-radius: 16px !important;
+            box-shadow: none !important;
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 56, 92, 0.2) !important;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .search-btn {
+            /* Add this line to make the button narrower */
+            padding: 0.5rem 0.9rem 0.5rem 0.5rem !important; /* Adjust the second value (1.2rem) to change the width */
+            background: var(--primary-gradient) !important;
+            border: none !important;
+            color: white !important;
+            margin-bottom: 2px;
+            border-radius: 16px !important;
+            font-weight: 600;
+            font-size: 0.85rem; 
+            box-shadow: 0 4px 15px rgba(255, 56, 92, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .search-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        .search-btn:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 56, 92, 0.4);
+        }
+
+  /* Navbar Toggle */
+  .navbar-toggler {
+    padding: 0.5rem;
+    border-radius: 8px;
+    width: auto;
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+  
+  .navbar-toggler:focus {
+    box-shadow: 0 0 0 0.2rem rgba(254, 66, 77, 0.25);
+  }
+
+  /* Navigation Links */
+  .navbar .nav-link {
+    font-weight: 500;
+    position: relative;
+    transition: all 0.3s ease;
+    padding: 0.75rem 1rem !important;
+    border-radius: 8px;
+    margin: 0 0.25rem;
+  }
+
+  .navbar .nav-link:hover {
+    color: #fe424d !important;
+    background-color: rgba(254, 66, 77, 0.1);
+  }
+
+  /* Add Listing Button */
+  .btn-add-listing {
+    background: linear-gradient(135deg, #fe424d, #fe424d);
+    color: white !important;
+    border: none;
+    border-radius: 25px;
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(254, 66, 77, 0.3);
+  }
+
+  .btn-add-listing:hover {
+    background: linear-gradient(135deg, #fe424d, #fe424d);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(254, 66, 77, 0.4);
+    color: white !important;
+  }
+
+  .btn-add-listing:active {
+    transform: translateY(0);
+  }
+
+  /* User Profile Button */
+  .user-profile-btn {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    text-decoration: none !important;
+    min-width: 50px;
+  }
+
+  .user-profile-btn:hover {
+    background-color: rgba(254, 66, 77, 0.1);
+    border-color: #fe424d;
+    color: #fe424d !important;
+  }
+
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #fe424d, #ff5a6b);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+  }
+
+  .user-info .user-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.2;
+  }
+
+  /* Dropdown Styling */
+  .user-dropdown {
+    border: none;
+    border-radius: 12px;
+    padding: 0.5rem 0;
+    min-width: 280px;
+    margin-top: 0.5rem;
+  }
+
+  .user-header {
+    padding: 1rem 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: 12px 12px 0 0;
+    margin: -0.5rem -0rem 0.5rem -0rem;
+  }
+
+  .user-avatar-large {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #fe424d, #ff5a6b);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+  }
+
+  .dropdown-item {
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  .dropdown-item:hover {
+    background-color: rgba(254, 66, 77, 0.1);
+    color: #fe424d;
+  }
+
+  .dropdown-item.text-danger:hover {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+  }
+
+  /* Auth Links */
+  .auth-link {
+    color: #6c757d !important;
+    font-weight: 600;
+  }
+
+  .auth-link:hover {
+    color: #fe424d !important;
+  }
+
+  .btn-auth-primary {
+    background-color: transparent;
+    color: #fe424d !important;
+    border: 2px solid #fe424d;
+    border-radius: 25px;
+    padding: 0.5rem 1.2rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .btn-auth-primary:hover {
+    background-color: #fe424d;
+    color: white !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(254, 66, 77, 0.3);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 991.98px) {
+    .add-listing-text {
+      display: none;
+    }
+    
+    .btn-add-listing {
+      padding: 0.6rem;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .navbar-nav {
+      gap: 0.5rem !important;
+    }
+    
+    .user-profile-btn {
+      border-radius: 8px;
+      padding: 0.5rem !important;
+    }
+    
+    .nav-item {
+      margin: 0.25rem 0;
+    }
+
+    .search-form {
+    width: 100%; /* Make search form full-width inside collapsed menu */
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+  @media (max-width: 575.98px) {
+   
+    
+    .brand-text {
+      font-size: 1.2rem;
+    }
+    
+    .brand-icon {
+      font-size: 1.3rem;
+    }
+  }
+
+  /* Smooth animations */
+  .navbar-collapse {
+    transition: all 0.3s ease;
+  }
+
+  /* Focus states for accessibility */
+  .btn-add-listing:focus,
+  .btn-auth-primary:focus,
+  .user-profile-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(254, 66, 77, 0.25);
+  }
+
+  .nav-link:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(254, 66, 77, 0.15);
+    border-radius: 8px;
+  }
+</style>
+</body>
+</html>

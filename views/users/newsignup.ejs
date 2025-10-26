@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Your Account - Adventure Awaits</title>
+  <link rel="stylesheet" href="/css/signup.css">
+</head>
+<body>
+
+<div class="container">
+  <!-- Left Hero Section -->
+  <div class="hero-section">
+    <div class="hero-box">
+      <div class="hero-content">
+        <h1>Your Next Adventure Begins with the Right Stay.</h1>
+        <p class="subtitle">From cozy cottages to luxury escapes — Stayzio has you covered.</p>
+      </div>
+      <div class="feature-box">
+        <h2>Discover the Art of Traveling Smart.</h2>
+        <p>Experience trusted listings, smooth booking, and real-time availability — all in one place.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Form Section -->
+  <div class="form-section">
+    <div class="form-box">
+      <div class="form-container">
+        <h2>Create Your Stayzio Account</h2>      
+
+        <!-- Signup Form -->
+        <form id="register-form" action="/signup" method="POST">
+          <!-- Username -->
+          <div class="form-group">
+            <label for="username">Username</label>
+            <div class="input-wrapper">
+              <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <input type="text" id="username" name="username" required placeholder="Enter your username">
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="form-group">
+            <label for="email">Email</label>
+            <div class="input-wrapper">
+              <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                <path d="m2 7 10 6 10-6"></path>
+              </svg>
+              <input type="email" id="email" name="email" required placeholder="Email">
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-wrapper">
+              <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <input type="password" id="password" name="password" required minlength="6" placeholder="Create your password">
+              <button type="button" class="password-toggle" id="togglePassword">
+                <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg class="eye-off-icon hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+              </button>
+            </div>
+            <div id="strength-bar"><span></span></div>
+            <p id="strength-message"></p>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <div class="input-wrapper">
+              <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <input type="password" id="confirmPassword" name="confirmPassword" required minlength="6" placeholder="Confirm your password">
+              <button type="button" class="password-toggle" id="toggleConfirmPassword">
+                <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg class="eye-off-icon hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Date of Birth -->
+          <div class="form-group">
+            <label for="dob">Date of Birth</label>
+            <div class="input-wrapper">
+              <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 4h18M3 10h18M3 16h18M8 2v4M16 2v4M21 8v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8"></path>
+                <rect x="5" y="12" width="4" height="4"></rect>
+              </svg>
+              <input type="date" id="dob" name="dob" required>
+            </div>
+          </div>
+
+
+          <!-- Terms -->
+          <div class="checkbox-group">
+            <input type="checkbox" id="terms" required>
+            <label for="terms">I agree to the <a href="/terms">Terms and Conditions</a> and <a href="/privacy">Privacy Policy</a></label>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="submit-btn" id="signupBtn">
+            <span class="btn-text">Create Your Account</span>
+            <div class="spinner hidden"></div>
+          </button>
+        </form>
+
+        <div class="divider">OR</div>
+
+        <div class="social-login">
+          <button class="social-btn" type="button" title="Login with Google" onclick="window.location.href='/auth/google'">
+            <svg width="20" height="20" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+          </button>
+
+          <button class="social-btn" type="button" title="Login with Facebook" onclick="window.location.href='/auth/facebook'">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877F2">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+          </button>
+
+          <button class="social-btn" type="button" title="Login with GitHub" onclick="window.location.href='/auth/github'">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#000">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </button>
+        </div>
+
+        <p class="login-link">Already Have An Account? <a href="/login">Log In</a></p>
+        <p class="note-text"><strong>Note:</strong> Please check your Spam folder if you don't see the OTP confirmation in your inbox.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script type="module">
+  import { showError, showSuccess } from '/utils/alerts.js';
+
+  const registerForm = document.getElementById('register-form');
+  const signupBtn = document.getElementById("signupBtn");
+  const btnText = signupBtn.querySelector(".btn-text");
+  const spinner = signupBtn.querySelector(".spinner");
+
+  const passwordInput = document.getElementById("password");
+  const confirmPasswordInput = document.getElementById("confirmPassword");
+  const strengthBar = document.querySelector("#strength-bar span");
+  const strengthMessage = document.getElementById("strength-message");
+
+  const togglePassword = document.getElementById("togglePassword");
+  const eyeIcon = togglePassword.querySelector('.eye-icon');
+  const eyeOffIcon = togglePassword.querySelector('.eye-off-icon');
+
+  const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+  const eyeIconConfirm = toggleConfirmPassword.querySelector('.eye-icon');
+  const eyeOffIconConfirm = toggleConfirmPassword.querySelector('.eye-off-icon');
+
+  let currentStrength = 0;
+
+  // ================= PASSWORD TOGGLE =================
+  togglePassword.addEventListener('click', function() {
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      eyeIcon.classList.add('hidden');
+      eyeOffIcon.classList.remove('hidden');
+    } else {
+      passwordInput.type = 'password';
+      eyeIcon.classList.remove('hidden');
+      eyeOffIcon.classList.add('hidden');
+    }
+  });
+
+  toggleConfirmPassword.addEventListener('click', function() {
+    if (confirmPasswordInput.type === 'password') {
+      confirmPasswordInput.type = 'text';
+      eyeIconConfirm.classList.add('hidden');
+      eyeOffIconConfirm.classList.remove('hidden');
+    } else {
+      confirmPasswordInput.type = 'password';
+      eyeIconConfirm.classList.remove('hidden');
+      eyeOffIconConfirm.classList.add('hidden');
+    }
+  });
+
+  // ================= PASSWORD STRENGTH =================
+  passwordInput.addEventListener("keyup", function() {
+    const password = passwordInput.value;
+    let strength = 0;
+
+    if (password.length >= 6) strength++;
+    if (/[A-Z]/.test(password)) strength++;
+    if (/[0-9]/.test(password)) strength++;
+    if (/[@$!%*?&]/.test(password)) strength++;
+    if (password.length >= 10) strength++;
+
+    currentStrength = strength;
+
+    switch (strength) {
+      case 0:
+        strengthBar.style.width = "0%";
+        strengthMessage.textContent = "";
+        break;
+      case 1:
+        strengthBar.style.width = "20%";
+        strengthBar.style.background = "red";
+        strengthMessage.textContent = "Very Weak";
+        strengthMessage.style.color = "red";
+        break;
+      case 2:
+        strengthBar.style.width = "40%";
+        strengthBar.style.background = "orange";
+        strengthMessage.textContent = "Weak";
+        strengthMessage.style.color = "orange";
+        break;
+      case 3:
+        strengthBar.style.width = "60%";
+        strengthBar.style.background = "#ffcc00";
+        strengthMessage.textContent = "Moderate";
+        strengthMessage.style.color = "#ffcc00";
+        break;
+      case 4:
+        strengthBar.style.width = "80%";
+        strengthBar.style.background = "#66cc66";
+        strengthMessage.textContent = "Strong";
+        strengthMessage.style.color = "#66cc66";
+        break;
+      case 5:
+        strengthBar.style.width = "100%";
+        strengthBar.style.background = "green";
+        strengthMessage.textContent = "Very Strong";
+        strengthMessage.style.color = "green";
+        break;
+    }
+  });
+
+  // ================= FORM SUBMIT =================
+  registerForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    if (currentStrength < 3) {
+      showError('Weak Password', 'Password is too weak. Please choose a stronger password.');
+      return;
+    }
+
+    if (passwordInput.value !== confirmPasswordInput.value) {
+      showError('Password Mismatch', 'Passwords do not match!');
+      return;
+    }
+
+    btnText.style.display = "none";
+    spinner.classList.remove("hidden");
+    signupBtn.disabled = true;
+
+    registerForm.submit();
+  });
+
+  // ================= SERVER MESSAGES =================
+  const __serverError = <%- typeof error !== 'undefined' ? JSON.stringify(error && error.length > 0 ? error[0] : null) : 'null' %>;
+  const __serverSuccess = <%- typeof success !== 'undefined' ? JSON.stringify(success && success.length > 0 ? success[0] : null) : 'null' %>;
+
+  if (__serverError) showError('Error', __serverError);
+  if (__serverSuccess) showSuccess('Success', __serverSuccess);
+</script>
+<script>
+  document.getElementById("register-form").addEventListener("submit", function(e) {
+    const dob = document.getElementById("dob").value;
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    if (age < 18) {
+      e.preventDefault(); // stops the form submission
+    }
+  });
+</script>
+
+</body>
+</html>

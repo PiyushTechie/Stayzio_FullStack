@@ -4,8 +4,9 @@ import Booking from "../models/booking.js";
 import Listing from "../models/listing.js";
 import { isLoggedIn } from "../utils/isLoggedIn.js";
 import { sendEmailFromMJML } from "../utils/mailer.js";
+import { calculateDynamicPrice } from "../utils/calculatePrice.js";
+import { authLimiter } from "../utils/rateLimiters.js";
 const router = express.Router();
-
 
 // --- STEP 1: Show Guest Details Page ---
 router.get("/details", isLoggedIn, (req, res) => {
@@ -15,7 +16,7 @@ router.get("/details", isLoggedIn, (req, res) => {
 });
 
 // --- STEP 2: Process Guest Details ---
-router.post("/details", isLoggedIn, (req, res) => {
+router.post("/details", isLoggedIn, authLimiter, (req, res) => {
   if (!req.session.bookingData) {
     req.flash("error", "Session expired. Please start again.");
     return res.redirect("/listings");
@@ -24,6 +25,7 @@ router.post("/details", isLoggedIn, (req, res) => {
   req.session.bookingData.contactNumber = req.body.contactNumber;
   res.redirect("/bookings/confirm");
 });
+
 
 // --- STEP 3: Show Confirmation Page ---
 router.get("/confirm", isLoggedIn, async (req, res) => {
@@ -46,6 +48,16 @@ router.get("/confirm", isLoggedIn, async (req, res) => {
       return res.redirect("/listings");
     }
 
+    // --- Ensure pricing exists for old listings ---
+    if (!listing.pricing) {
+      listing.pricing = {
+        basePrice: listing.price || 1000, // fallback to existing price
+        weekendMultiplier: 1.2,
+        seasonalPricing: [],
+        demandBased: { enabled: false, multiplier: 1.1 },
+      };
+    }
+
     const checkInDate = new Date(checkIn);
     const checkOutDate = new Date(checkOut);
     const numberOfNights = Math.ceil((checkOutDate - checkInDate) / (1000 * 3600 * 24));
@@ -55,7 +67,27 @@ router.get("/confirm", isLoggedIn, async (req, res) => {
       return res.redirect(`/listings/${listingId}`);
     }
 
-    const subtotal = listing.price * numberOfNights;
+    // --- Dynamic pricing calculation ---
+    let subtotal = 0;
+    const perNightPrices = [];
+
+    for (let i = 0; i < numberOfNights; i++) {
+      const nightDate = new Date(checkInDate);
+      nightDate.setDate(checkInDate.getDate() + i);
+
+      const { price: priceForNight, isWeekend, seasonalMultiplier, demandMultiplier } = calculateDynamicPrice(listing, nightDate);
+
+      subtotal += priceForNight;
+
+      perNightPrices.push({
+        date: new Date(nightDate),
+        price: priceForNight,
+        isWeekend,
+        seasonalMultiplier,
+        demandMultiplier,
+      });
+    }
+
     const gst = subtotal * 0.18;
     const convenienceFee = subtotal * 0.05;
     const finalTotal = subtotal + gst + convenienceFee;
@@ -71,16 +103,18 @@ router.get("/confirm", isLoggedIn, async (req, res) => {
       gst,
       convenienceFee,
       finalTotal,
+      perNightPrices, // for EJS night-by-night breakdown
     });
   } catch (err) {
-    console.error(err);
+    console.error("--- CONFIRM PAGE ERROR ---", err);
     req.flash("error", "Could not load confirmation page.");
     res.redirect("/listings");
   }
 });
 
+
 // --- STEP 4: Create Booking + Send OTP ---
-router.post("/", isLoggedIn, async (req, res) => {
+router.post("/", isLoggedIn, authLimiter, async (req, res) => {
   try {
     if (!req.session.bookingData) {
       req.flash("error", "Booking session expired.");
@@ -105,26 +139,45 @@ router.post("/", isLoggedIn, async (req, res) => {
       return res.redirect(`/listings/${listingId}`);
     }
 
+    // --- Calculate Total Price Dynamically ---
+   // --- Calculate Total Price Dynamically ---
+    const checkInDate = new Date(checkIn);
+    const checkOutDate = new Date(checkOut);
+    let subtotal = 0; // Renamed for clarity
+    let current = new Date(checkInDate);
+
+    while (current < checkOutDate) {
+      // Destructure the 'price' from the returned object
+      const { price } = calculateDynamicPrice(listing, current); 
+      subtotal += price; // Add the number, not the object
+      current.setDate(current.getDate() + 1);
+    }
+
+    // Add GST & Convenience Fee
+    const gst = subtotal * 0.18;
+    const convenienceFee = subtotal * 0.05;
+    const finalTotal = subtotal + gst + convenienceFee;
+    
     // Generate OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
     const newBooking = await Booking.create({
       user: req.user._id,
       listing: listingId,
-      checkIn: new Date(checkIn),
-      checkOut: new Date(checkOut),
+      checkIn: checkInDate,
+      checkOut: checkOutDate,
       guests,
       contactNumber,
+      finalTotal,
       status: "pending",
       otp,
       otpExpiresAt: Date.now() + 10 * 60 * 1000,
     });
 
-    // ✅ Send OTP email using MJML template
     await sendEmailFromMJML({
       to: req.user.email,
       subject: "Stayzio: Booking OTP Verification",
-      templateName: "bookingOtp", // put your MJML template file under /templates/bookingOtp.mjml
+      templateName: "bookingOtp",
       templateData: {
         username: req.user.username,
         listingTitle: listing.title,
@@ -166,9 +219,8 @@ router.get("/:id/verify-otp", isLoggedIn, async (req, res) => {
   }
 });
 
-
 // --- STEP 6: Verify OTP ---
-router.post("/:id/verify-otp", isLoggedIn, async (req, res) => {
+router.post("/:id/verify-otp", isLoggedIn, authLimiter, async (req, res) => {
   try {
     const { otp } = req.body;
     const booking = await Booking.findById(req.params.id).populate("listing user");
@@ -188,7 +240,6 @@ router.post("/:id/verify-otp", isLoggedIn, async (req, res) => {
     booking.otpExpiresAt = undefined;
     await booking.save();
 
-    // ✅ Format guest details for email
     const guestDetails = (booking.guests || [])
       .map((g, i) => `${i + 1}. ${g.name} (${g.type}, Age: ${g.age}, Gender: ${g.gender})`)
       .join("<br/>") || "No guest details provided";
@@ -200,7 +251,6 @@ router.post("/:id/verify-otp", isLoggedIn, async (req, res) => {
         year: "numeric",
       });
 
-    // ✅ Send confirmation email using MJML template
     await sendEmailFromMJML({
       to: booking.user.email,
       subject: "Stayzio: Booking Confirmed 🎉",
@@ -238,14 +288,16 @@ router.get("/:id/success", isLoggedIn, async (req, res) => {
   }
 });
 
-router.get("/my", isLoggedIn, async (req, res) => {
+// --- User Bookings ---
+router.get("/my", isLoggedIn,  async (req, res) => {
   const bookings = await Booking.find({ user: req.user._id })
     .populate("listing")
     .sort({ checkIn: -1 });
   res.render("listings/bookings_my", { bookings });
 });
 
-router.post("/:id/cancel", isLoggedIn, async (req, res) => {
+// --- Cancel Booking ---
+router.post("/:id/cancel", isLoggedIn, authLimiter ,async (req, res) => {
   try {
     const booking = await Booking.findById(req.params.id);
     if (!booking || !booking.user.equals(req.user._id)) {
@@ -270,6 +322,7 @@ router.post("/:id/cancel", isLoggedIn, async (req, res) => {
   }
 });
 
+// --- API: Get Booked Dates ---
 router.get("/api/booked-dates", async (req, res) => {
   try {
     const { listingId } = req.query;

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>429 - Too Many Requests | Stayzio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #fef5f6 0%, #fff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            background-image: radial-gradient(circle, #fe424d 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .icon-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+
+        .pulse-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 180px;
+            height: 180px;
+            background: rgba(254, 66, 77, 0.1);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        .traffic-light {
+            font-size: 5rem;
+            color: #fe424d;
+            position: relative;
+            z-index: 2;
+            animation: swing 2s ease-in-out infinite;
+        }
+
+        @keyframes swing {
+            0%, 100% {
+                transform: rotate(0deg);
+            }
+            25% {
+                transform: rotate(-5deg);
+            }
+            75% {
+                transform: rotate(5deg);
+            }
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .error-code {
+            display: inline-block;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fe424d;
+            background: rgba(254, 66, 77, 0.1);
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+        }
+
+        .lead {
+            font-size: 1.125rem;
+            color: #4a5568;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .error-message {
+            background: #fff;
+            border-left: 4px solid #fe424d;
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .error-message strong {
+            color: #fe424d;
+            font-weight: 600;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .info-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .info-list {
+            text-align: left;
+            color: #4a5568;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .info-list li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .info-list li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #fe424d;
+            font-weight: bold;
+        }
+
+        .btn-home {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 14px 32px;
+            background: #fe424d;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(254, 66, 77, 0.3);
+        }
+
+        .btn-home:hover {
+            background: #e63946;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(254, 66, 77, 0.4);
+        }
+
+        .countdown {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #718096;
+        }
+
+        .countdown strong {
+            color: #fe424d;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .traffic-light {
+                font-size: 4rem;
+            }
+
+            .info-list {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-pattern"></div>
+    
+    <div class="container">
+        <div class="icon-wrapper">
+            <div class="pulse-circle"></div>
+            <i class="fas fa-traffic-light traffic-light"></i>
+        </div>
+
+        <div class="error-code">ERROR 429</div>
+        
+        <h1>Too Many Requests</h1>
+        
+        <p class="lead">
+            You've sent too many requests in a short period.
+        </p>
+
+        <div class="error-message">
+            <strong>Rate limit exceeded</strong> — Please wait a moment before trying again.
+        </div>
+
+        <div class="info-card">
+            <div class="info-title">
+                <i class="fas fa-info-circle" style="color: #fe424d;"></i>
+                What can you do?
+            </div>
+            <ul class="info-list">
+                <li>Wait a few moments before making another request</li>
+                <li>Reduce the frequency of your actions</li>
+                <li>Check if you have multiple tabs or apps accessing Stayzio</li>
+                <li>Contact support if this issue persists</li>
+            </ul>
+        </div>
+
+        <div class="countdown">
+            Try again in <strong id="timer">...</strong> seconds 
+        </div>
+    </div>
+<script>
+        let totalSeconds = 900; // <-- CHANGED: 15 minutes * 60 seconds = 900
+        const timerEl = document.getElementById('timer');
+        const countdownContainer = timerEl.parentElement; // The <div.countdown>
+        
+        function updateTimerDisplay() {
+            // Calculate minutes and remaining seconds
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            
+            // Format seconds to always have two digits (e.g., "05")
+            const formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
+            
+            if (minutes > 0) {
+                // Display in minutes:seconds format
+                timerEl.textContent = `${minutes}:${formattedSeconds}`;
+                // Update the trailing text to "minutes"
+                timerEl.nextSibling.textContent = ' minutes'; 
+            } else {
+                // Display only seconds when under a minute
+                timerEl.textContent = seconds;
+                // Update the trailing text to "seconds"
+                timerEl.nextSibling.textContent = ' seconds';
+            }
+        }
+
+        const countdown = setInterval(() => {
+            totalSeconds--; // Decrement the time
+
+            if (totalSeconds <= 0) {
+                clearInterval(countdown);
+                countdownContainer.innerHTML = '<strong style="color: #10b981;">You can try again now!</strong>';
+                return;
+            }
+            
+            // Update the display with the new time
+            updateTimerDisplay();
+        }, 1000);
+
+        // Run immediately on page load to set the initial time
+        updateTimerDisplay();
+    </script>
+</body>
+</html>

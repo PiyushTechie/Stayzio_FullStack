@@ -50,7 +50,18 @@ const bookingSchema = new mongoose.Schema({
   },
   otpExpires: {
     type: Date,
-  }
+  },
+
+  finalTotal: { 
+    type: Number, 
+    required: true
+  },
+
+  hiddenFromHost: {
+  type: Boolean,
+  default: false
+}
+
 });
 
 // Index to prevent overlapping bookings

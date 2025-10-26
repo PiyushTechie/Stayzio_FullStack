@@ -1,83 +1,442 @@
-<% layout("/layouts/boilerplate") %>
-<body class="bg-light">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Listing - Stayzio</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #ffffff;
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 2rem 0;
+    }
+
+    .container {
+      max-width: 700px;
+    }
+
+    .form-card {
+      background: #ffffff;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-header {
+      background: linear-gradient(135deg, #fe424d 0%, #ff6b6b 100%);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .form-header h2 {
+      color: #ffffff;
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-header p {
+      color: rgba(255, 255, 255, 0.9);
+      margin: 0.5rem 0 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .form-body {
+      padding: 2.5rem;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .form-label i {
+      color: #fe424d;
+      font-size: 1rem;
+    }
+
+    .form-control, .form-select {
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 0.85rem 1rem;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: #f8fafc;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: #fe424d;
+      box-shadow: 0 0 0 4px rgba(254, 66, 77, 0.1);
+      background: #ffffff;
+      outline: none;
+    }
+
+    .form-control:hover, .form-select:hover {
+      border-color: #fe424d;
+      background: #ffffff;
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .input-group-text {
+      background: #fe424d;
+      border: 2px solid #fe424d;
+      color: white;
+      border-radius: 12px 0 0 12px;
+      font-weight: 600;
+    }
+
+    .input-group .form-control {
+      border-left: none;
+      border-radius: 0 12px 12px 0;
+    }
+
+    .input-group .form-control:focus {
+      border-left: 2px solid #fe424d;
+    }
+
+    .file-upload-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .file-upload-wrapper input[type=file] {
+      position: absolute;
+      left: -9999px;
+    }
+
+    .file-upload-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      border: 3px dashed #cbd5e0;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .file-upload-label:hover {
+      border-color: #fe424d;
+      background: linear-gradient(135deg, #fff5f5 0%, #ffe5e7 100%);
+      transform: translateY(-2px);
+    }
+
+    .file-upload-label i {
+      font-size: 2.5rem;
+      color: #fe424d;
+      margin-bottom: 0.5rem;
+    }
+
+    .file-name {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: #4a5568;
+      font-weight: 500;
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, #fe424d 0%, #ff6b6b 100%);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 15px rgba(254, 66, 77, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-submit::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn-submit:hover::before {
+      left: 100%;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(254, 66, 77, 0.4);
+    }
+
+    .btn-submit:active {
+      transform: translateY(0);
+    }
+
+    .btn-submit.loading .button-text {
+      opacity: 0;
+    }
+
+    .btn-submit.loading .button-loader {
+      display: block;
+    }
+
+    .button-loader {
+      display: none;
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      position: absolute;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .valid-feedback, .invalid-feedback {
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+      font-weight: 500;
+    }
+
+    .valid-feedback {
+      color: #10b981;
+    }
+
+    .invalid-feedback {
+      color: #ef4444;
+    }
+
+    .was-validated .form-control:valid,
+    .was-validated .form-select:valid {
+      border-color: #10b981;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2310b981' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right calc(0.375em + 0.1875rem) center;
+      background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    }
+
+    .was-validated .form-control:invalid,
+    .was-validated .form-select:invalid {
+      border-color: #ef4444;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23ef4444'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23ef4444' stroke='none'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right calc(0.375em + 0.1875rem) center;
+      background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 576px) {
+      .form-body {
+        padding: 1.5rem;
+      }
+
+      .form-header h2 {
+        font-size: 1.5rem;
+      }
+    }
+
+    .mb-4 {
+      margin-bottom: 1.5rem;
+    }
+  </style>
+</head>
+<body>
 
   <div class="container py-5">
-    <div class="card mx-auto shadow-sm" style="max-width: 650px; border-radius: 12px;">
-      <div class="card-body">
-        <h2 id="h2" class="text-center mb-4">Create Listing</h2>
+    <div class="form-card">
+      <div class="form-header">
+        <h2 id="h2"><i class="fas fa-home"></i> Create Listing</h2>
+        <p>Share your amazing space with travelers worldwide</p>
+      </div>
 
-        <form  id="createForm" method="post" action="/listings" class="needs-validation" novalidate enctype="multipart/form-data">
+      <div class="form-body">
+        <form id="createForm" method="post" action="/listings" class="needs-validation" novalidate enctype="multipart/form-data">
 
           <!-- Title -->
-          <div class="mb-3">
-            <input type="text" name="listing[title]" class="form-control" placeholder="Title" required>
+          <div class="mb-4">
+            <label class="form-label">
+              <i class="fas fa-heading"></i>
+              Property Title
+            </label>
+            <input type="text" name="listing[title]" class="form-control" placeholder="e.g., Cozy Beachfront Villa" required>
             <div class="valid-feedback">Looks good!</div>
             <div class="invalid-feedback">Please enter a title.</div>
           </div>
 
           <!-- Description -->
-          <div class="mb-3">
-            <textarea name="listing[description]" class="form-control" rows="3" placeholder="Description" required></textarea>
+          <div class="mb-4">
+            <label class="form-label">
+              <i class="fas fa-align-left"></i>
+              Description
+            </label>
+            <textarea name="listing[description]" class="form-control" rows="4" placeholder="Describe your property, amenities, and what makes it special..." required></textarea>
             <div class="valid-feedback">Looks good!</div>
             <div class="invalid-feedback">Please provide a description.</div>
           </div>
 
           <!-- Image Upload -->
-          <div class="mb-3">
-            <input type="file" name="listing[image]" class="form-control" accept="image/*" required>
+          <div class="mb-4">
+            <label class="form-label">
+              <i class="fas fa-image"></i>
+              Property Image
+            </label>
+            <div class="file-upload-wrapper">
+              <input type="file" name="listing[image]" id="file-input" class="form-control" accept="image/*" required>
+              <label for="file-input" class="file-upload-label">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span><strong>Click to upload</strong> or drag and drop</span>
+                <span style="font-size: 0.85rem; color: #718096;">PNG, JPG, JPEG (MAX. 5MB)</span>
+              </label>
+            </div>
+            <div class="file-name" id="file-name"></div>
             <div class="invalid-feedback">Please upload an image.</div>
           </div>
 
           <!-- Price -->
-          <div class="mb-3">
-            <input type="number" id="price" name="listing[price]" class="form-control" placeholder="Price per night" required min="0" step="0.01">
+          <div class="mb-4">
+            <label class="form-label">
+              <i class="fas fa-rupee-sign"></i>
+              Price per Night
+            </label>
+            <div class="input-group">
+              <span class="input-group-text">₹</span>
+              <input type="number" id="price" name="listing[price]" class="form-control" placeholder="999.00" required min="0" step="0.01">
+            </div>
             <div class="valid-feedback">Looks good!</div>
             <div class="invalid-feedback">Please enter a valid price.</div>
           </div>
 
           <!-- Location -->
-          <div class="mb-3">
-            <input type="text" name="listing[location]" class="form-control" placeholder="Location" required>
+          <div class="mb-4">
+            <label class="form-label">
+              <i class="fas fa-map-marker-alt"></i>
+              Location
+            </label>
+            <input type="text" name="listing[location]" class="form-control" placeholder="e.g., Miami Beach" required>
             <div class="valid-feedback">Looks good!</div>
             <div class="invalid-feedback">Please provide a location.</div>
           </div>
 
           <!-- Country -->
-          <div class="mb-3">
-            <input type="text" name="listing[country]" class="form-control" placeholder="Country" required>
+          <div class="mb-4">
+            <label class="form-label">
+              <i class="fas fa-globe-americas"></i>
+              Country
+            </label>
+            <input type="text" name="listing[country]" class="form-control" placeholder="e.g., United States" required>
             <div class="valid-feedback">Looks good!</div>
             <div class="invalid-feedback">Please provide a country.</div>
           </div>
 
           <!-- Category -->
           <div class="mb-4">
-            <label for="category" class="form-label fw-semibold">Category</label>
+            <label for="category" class="form-label">
+              <i class="fas fa-tag"></i>
+              Category
+            </label>
             <select class="form-select" id="category" name="listing[category]" required>
-              <option selected disabled value="">Choose...</option>
-              <option value="rooms">Rooms</option>
-              <option value="cities">Iconic Cities</option>
-              <option value="mountains">Mountains</option>
-              <option value="castles">Castles</option>
-              <option value="pools">Amazing Pools</option>
-              <option value="camping">Camping</option>
-              <option value="farms">Farms</option>
-              <option value="beach">Beachfront</option>
-              <option value="luxury">Luxury</option>
-              <option value="cabins">Cabins</option>
-              <option value="boats">Boats</option>
+              <option selected disabled value="">Choose a category...</option>
+              <option value="rooms">🛏️ Rooms</option>
+              <option value="cities">🏙️ Iconic Cities</option>
+              <option value="mountains">⛰️ Mountains</option>
+              <option value="castles">🏰 Castles</option>
+              <option value="pools">🏊 Amazing Pools</option>
+              <option value="camping">⛺ Camping</option>
+              <option value="farms">🌾 Farms</option>
+              <option value="beach">🏖️ Beachfront</option>
+              <option value="luxury">💎 Luxury</option>
+              <option value="cabins">🏡 Cabins</option>
+              <option value="boats">⛵ Boats</option>
             </select>
             <div class="valid-feedback">Category selected!</div>
             <div class="invalid-feedback">Please select a category.</div>
           </div>
 
           <!-- Submit -->
-        <button type="submit" id="createBtn" class="btn-submit w-100">
-          <span class="button-text">
-            <i class="fas fa-plus-circle"></i>
-            Create New Listing
-          </span>
-          <div class="button-loader"></div>
-        </button>  
+          <button type="submit" id="createBtn" class="btn-submit">
+            <span class="button-text">
+              <i class="fas fa-plus-circle"></i>
+              Create New Listing
+            </span>
+            <div class="button-loader"></div>
+          </button>
         </form>
       </div>
     </div>
@@ -85,6 +444,16 @@
 
   <!-- Scripts -->
   <script>
+    // File upload name display
+    document.getElementById('file-input').addEventListener('change', function(e) {
+      const fileName = e.target.files[0]?.name;
+      const fileNameDisplay = document.getElementById('file-name');
+      if (fileName) {
+        fileNameDisplay.textContent = '✓ ' + fileName;
+        fileNameDisplay.style.color = '#10b981';
+      }
+    });
+
     // Ensure only numbers for price
     document.getElementById("price").addEventListener("input", function(e) {
       this.value = this.value.replace(/[^0-9.]/g, ""); 
@@ -99,7 +468,7 @@
           if (!form.checkValidity()) {
             event.preventDefault();
             event.stopPropagation();
-            console.log("❌ Form blocked by client-side validation");
+            
           } else {
             console.log("✅ Form is valid, submitting");
           }
@@ -109,22 +478,23 @@
     })();
 
     document.querySelectorAll("form").forEach((form) => {
-    form.addEventListener("submit", (e) => {
-      const btn = form.querySelector(".btn-submit");
+      form.addEventListener("submit", (e) => {
+        const btn = form.querySelector(".btn-submit");
 
-      // Prevent loader if form is invalid
-      if (!form.checkValidity()) {
-        e.preventDefault(); // stop submit
-        form.reportValidity(); // show browser validation errors
-        return;
-      }
+        // Prevent loader if form is invalid
+        if (!form.checkValidity()) {
+          e.preventDefault(); // stop submit
+          form.reportValidity(); // show browser validation errors
+          return;
+        }
 
-      if (btn) {
-        btn.classList.add("loading");
-        btn.disabled = true;
-      }
+        if (btn) {
+          btn.classList.add("loading");
+          btn.disabled = true;
+        }
+      });
     });
-  });
   </script>
 
 </body>
+</html>

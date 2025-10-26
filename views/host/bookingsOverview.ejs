@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Bookings</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    :root {
+      --brand-primary: #fe424d;
+      --brand-primary-dark: #e63946;
+      --brand-primary-light: #ff6b74;
+      --text-primary: #1a1a1a;
+      --text-secondary: #6c757d;
+      --bg-light: #f8f9fa;
+      --border-color: #e9ecef;
+    }
+
+    body {
+      background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    .container {
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      position: relative;
+      padding-bottom: 1rem;
+    }
+
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--brand-primary), var(--brand-primary-light));
+      border-radius: 2px;
+    }
+
+    .table-container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(254, 66, 77, 0.08);
+      overflow: hidden;
+      margin-top: 2rem;
+      border: 1px solid var(--border-color);
+      overflow-x: auto; 
+    }
+
+    .table {
+      margin-bottom: 0 !important;
+      min-width: 800px;
+    }
+
+    .table thead {
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark)) !important;
+    }
+
+    .table thead th {
+      color: white !important;
+      font-weight: 600 !important;
+      font-size: 0.875rem !important;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 1rem 1.25rem !important;
+      border: none !important;
+      white-space: nowrap;
+      background: transparent !important;
+    }
+
+    .table tbody tr {
+      transition: all 0.3s ease;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .table tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    .table tbody tr:hover {
+      background-color: #fff5f5 !important;
+      transform: translateX(4px);
+    }
+
+    .table tbody td {
+      padding: 1.25rem !important;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      vertical-align: middle;
+      border: none !important;
+      white-space: nowrap;
+    }
+
+    .table tbody td:first-child {
+      white-space: normal;
+    }
+
+    .table tbody td:nth-child(5) {
+      font-weight: 700;
+      color: var(--brand-primary);
+      font-size: 1.05rem;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+      background-color: rgba(254, 66, 77, 0.02) !important;
+    }
+    
+    .actions-cell {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-sm {
+      padding: 0.5rem 1rem !important;
+      font-size: 0.875rem !important;
+      border-radius: 8px !important;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border: none !important;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-info {
+      background: linear-gradient(135deg, #0dcaf0, #0aa2c0) !important;
+      color: white !important;
+    }
+
+    .btn-info:hover {
+      background: linear-gradient(135deg, #0aa2c0, #088a9f) !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(13, 202, 240, 0.3);
+    }
+    
+    /* Added btn-danger style from previous context */
+    .btn-danger {
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark)) !important;
+      color: white !important;
+    }
+    .btn-danger:hover {
+      background: linear-gradient(135deg, var(--brand-primary-dark), #d32f3a) !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(254, 66, 77, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      /* ... (all your other media query styles) ... */
+      .table {
+        min-width: auto;
+      }
+      .table tbody tr:hover {
+        transform: none;
+      }
+      .actions-cell {
+        flex-direction: column;
+      }
+      .btn-sm {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container mt-5">
+    <h1>All Bookings</h1>
+    <div class="table-container">
+      <table class="table table-striped mt-4">
+        <thead>
+          <tr>
+            <th>Listing</th>
+            <th>Guest</th>
+            <th>Check-In</th>
+            <th>Check-Out</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% bookings.forEach(b => { %>
+            <tr>
+              <td><%= b.listing.title %></td>
+              <td><%= b.user.username %></td>
+              <td><%= b.checkIn.toDateString() %></td>
+              <td><%= b.checkOut.toDateString() %></td>
+              <td>₹<%= b.finalTotal %></td>
+              <td><%= b.status %></td>
+              <td class="actions-cell">
+                      <a href="/host/bookings/<%= b._id %>" class="btn btn-sm btn-info">Details</a>
+              
+              <button type="button" class="btn btn-sm btn-danger" onclick="hideFromHost('<%= b._id %>')">
+                Remove
+              </button>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  
+    <script>
+  function hideFromHost(bookingId) {
+    Swal.fire({
+      title: "Remove from your view?",
+      text: "This booking will no longer appear in your list, but won’t be deleted.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, remove",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#e63946", // Match your brand color
+      cancelButtonColor: "#6c757d"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/host/bookings/${bookingId}/hide?_method=PATCH`;
+//        form.style.display = 'none'; // Hide the form
+        document.body.appendChild(form);
+        form.submit();
+      }
+    });
+  }
+</script>
+
+</body>
+</html>

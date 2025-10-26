@@ -8,7 +8,6 @@ import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding.js';
 const mapToken = process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 
-
 const index = async (req, res) => {
   res.render("listings/index", {showSearch: true} );
 };
@@ -48,12 +47,20 @@ const apiIndex = async (req, res) => {
       return { ...listing.toObject(), avgRating: avg };
     });
 
-     // ✅ FIX: Send data as JSON, do not render the page
+    // ===================================================
+    // Cache the data if middleware exists
+    // ===================================================
+    if (res.setCache) {
+      console.log(`CONTROLLER: Setting cache for key: listings:${req.originalUrl}`);
+      await res.setCache(listingsWithAvg);
+    }
+
+    // Send data as JSON
     res.json(listingsWithAvg);
 
   } catch (error) {
     console.error("Error fetching listings:", error);
-    res.status(500).render("error", { error: "Failed to fetch listings" });
+    res.status(500).json({ error: "Failed to fetch listings" });
   }
 };
 

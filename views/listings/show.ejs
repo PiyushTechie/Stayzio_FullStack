@@ -5,14 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stayzio</title>
 </head>
-<link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/showlisting.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">  
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <link rel="stylesheet" href="/css/footer.css">
+<script src="https://cdn.tailwindcss.com"></script>
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.js"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          primary: '#fe424d',
+        }
+      }
+    }
+  }
+</script>
  <script>
   const mapToken = "<%= process.env.MAP_TOKEN%>";
   const coordinates = <%-JSON.stringify(listing.geometry.coordinates)%>;
@@ -22,27 +33,288 @@
     country: "<%= listing.country %>"
   };
 </script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background: #f8f9fa;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .property-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+  }
+
+  .property-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  }
+
+  .hero-image {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+  }
+
+  .hero-image img {
+    transition: transform 0.4s ease;
+  }
+
+  .hero-image:hover img {
+    transform: scale(1.02);
+  }
+
+  .info-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+    transition: all 0.2s ease;
+  }
+
+  .info-badge:hover {
+    background: #fff;
+    border-color: #fe424d;
+    transform: translateY(-2px);
+  }
+
+  .info-badge i {
+    color: #fe424d;
+    font-size: 1.1rem;
+  }
+
+  .booking-panel {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e9ecef;
+    position: sticky;
+    top: 100px;
+  }
+
+  .input-modern {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid #e9ecef;
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+  }
+
+  .input-modern:focus {
+    outline: none;
+    border-color: #fe424d;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(254, 66, 77, 0.08);
+  }
+
+  .btn-modern {
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-primary-modern {
+    background: linear-gradient(135deg, #fe424d 0%, #ff5a64 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(254, 66, 77, 0.3);
+  }
+
+  .btn-primary-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(254, 66, 77, 0.4);
+  }
+
+  .btn-outline-modern {
+    background: white;
+    color: #495057;
+    border: 1.5px solid #dee2e6;
+  }
+
+  .btn-outline-modern:hover {
+    background: #f8f9fa;
+    border-color: #adb5bd;
+  }
+
+  .star-rating i {
+    cursor: pointer;
+    font-size: 1.75rem;
+    color: #dee2e6;
+    transition: all 0.2s ease;
+  }
+
+  .star-rating i:hover,
+  .star-rating i.active {
+    color: #ffc107;
+    transform: scale(1.1);
+  }
+
+  .review-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+  }
+
+  .review-card:hover {
+    border-color: #fe424d;
+    box-shadow: 0 4px 16px rgba(254, 66, 77, 0.1);
+  }
+
+  .avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fe424d 0%, #ff5a64 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.25rem;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-left: 16px;
+  }
+
+  .section-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 28px;
+    background: linear-gradient(180deg, #fe424d 0%, #ff5a64 100%);
+    border-radius: 2px;
+  }
+
+  .price-tag {
+    background: linear-gradient(135deg, #fff5f5 0%, #ffe8ea 100%);
+    border: 2px solid #fe424d;
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, #dee2e6 50%, transparent 100%);
+    margin: 48px 0;
+  }
+
+  #map {
+    height: 450px;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .loading .button-loader {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+
+  .loading .button-text {
+    display: none;
+  }
+
+  .button-loader {
+    display: none;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 6px 14px;
+    background: #f8f9fa;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #495057;
+    border: 1px solid #dee2e6;
+  }
+
+  .action-header {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 32px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+</style>
 </head>
 
 <body>
   <%- include("../includes/navbar.ejs") %>
 
-  <div class="container-custom">
-    <%- include("../includes/flash.ejs") %>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     
-    <div class="hero-section">
-      <div class="hero-header">
-        <h1 class="hero-title"><%= listing.title %></h1>
-        <div class="action-bar">
-          <a href="/listings" class="btn-modern btn-white">
-            <i class="fa-solid fa-arrow-left"></i> Back to Listings
+    <!-- Header Actions -->
+    <div class="action-header">
+      <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+        <div class="flex-1">
+          <h1 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-3"><%= listing.title %></h1>
+          <div class="flex flex-wrap items-center gap-3">
+            <div class="flex items-center gap-2 text-gray-600">
+              <i class="fa-solid fa-location-dot text-[#fe424d]"></i>
+              <span class="font-medium"><%= listing.location %>, <%= listing.country %></span>
+            </div>
+            <span class="tag capitalize">
+              <i class="fa-solid fa-layer-group"></i> <%= listing.category %>
+            </span>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <a href="/listings" class="btn-modern btn-outline-modern">
+            <i class="fa-solid fa-arrow-left"></i> Back
           </a>
           <% if (currentUser && listing.owner._id.equals(currentUser._id)) { %>
-            <a href="/listings/<%= listing._id %>/edit" class="btn-modern btn-outline">
-              <i class="fa-solid fa-pen-to-square"></i> Edit Listing
+            <a href="/listings/<%= listing._id %>/edit" class="btn-modern btn-outline-modern">
+              <i class="fa-solid fa-pen-to-square"></i> Edit
             </a>
-            <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST" class="d-inline">
-              <button type="submit" class="btn-modern btn-danger">
+            <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST" class="inline">
+              <button type="submit" class="btn-modern bg-red-600 text-white hover:bg-red-700">
                 <i class="fa-solid fa-trash"></i> Delete
               </button>
             </form>
@@ -51,129 +323,143 @@
       </div>
     </div>
 
-    <div class="image-section">
-      <img src="<%= listing.image.url %>" alt="Listing Image" class="main-image">
+    <!-- Hero Image -->
+    <div class="hero-image mb-8">
+      <img src="<%= listing.image.url %>" alt="<%= listing.title %>" class="w-full h-[500px] object-cover">
     </div>
 
-    <div class="content-grid">
-      <div class="main-content">
-        <div class="detail-grid">
-          <div class="detail-card">
-            <div class="detail-header">
-              <div class="detail-icon"><i class="fa-solid fa-user"></i></div>
-              <div>
-                <div class="detail-label">Hosted By</div>
-                <div class="detail-value">
-                  <% if (listing.owner) { %>
-                    <%= listing.owner.username %>
-                  <% } else { %>
-                    Unknown
-                  <% } %>
-                </div>
-              </div>
+    <!-- Content Grid -->
+    <div class="grid lg:grid-cols-3 gap-8">
+      
+      <!-- Main Content -->
+      <div class="lg:col-span-2 space-y-8">
+        
+        <!-- Host Info -->
+        <div class="property-card p-6">
+          <div class="flex items-center gap-4">
+            <div class="avatar">
+              <% if (listing.owner) { %>
+                <%= listing.owner.username.charAt(0).toUpperCase() %>
+              <% } else { %>
+                ?
+              <% } %>
             </div>
-          </div>
-          <div class="detail-card">
-            <div class="detail-header">
-              <div class="detail-icon"><i class="fa-solid fa-align-left"></i></div>
-              <div>
-                <div class="detail-label">Description</div>
-                <div class="detail-value"><%= listing.description %></div>
-              </div>
-            </div>
-          </div>
-          <div class="detail-card">
-            <div class="detail-header">
-              <div class="detail-icon"><i class="fa-solid fa-location-dot"></i></div>
-              <div>
-                <div class="detail-label">Location</div>
-                <div class="detail-value"><%= listing.location %></div>
-              </div>
-            </div>
-          </div>
-          <div class="detail-card">
-            <div class="detail-header">
-              <div class="detail-icon"><i class="fa-solid fa-flag"></i></div>
-              <div>
-                <div class="detail-label">Country</div>
-                <div class="detail-value"><%= listing.country %></div>
-              </div>
-            </div>
-          </div>
-          <div class="detail-card">
-            <div class="detail-header">
-              <div class="detail-icon"><i class="fa-solid fa-layer-group"></i></div>
-              <div>
-                <div class="detail-label">Category</div>
-                <div class="detail-value text-capitalize"><%= listing.category %></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="sidebar">
-        <div class="detail-card">
-          <div class="detail-header">
-            <div class="detail-icon"><i class="fa-solid fa-rupee-sign"></i></div>
             <div>
-              <div class="detail-label">Price per Night</div>
-              <div class="detail-value price-highlight">₹ <%= listing.price ? listing.price.toLocaleString("en-IN") : 'Not Available' %></div>
+              <div class="text-sm text-gray-500 font-medium">Hosted by</div>
+              <div class="text-xl font-bold text-gray-900">
+                <% if (listing.owner) { %>
+                  <%= listing.owner.username %>
+                <% } else { %>
+                  Unknown Host
+                <% } %>
+              </div>
             </div>
           </div>
         </div>
-        <br>
-        <div class="booking-section">
-            <h3 class="booking-title">Reserve Your Stay</h3>
 
-            <form id="booking-form" action="/bookings/details" method="GET" class="booking-form needs-validation" novalidate>
-              <input type="hidden" name="listingId" value="<%= listing._id %>">
-              
-              <div class="form-group">
-                <label class="form-label">Check In</label>
-                <input type="text" id="checkIn" name="checkIn" class="form-input" required placeholder="Select Date">
+        <!-- Description -->
+        <div class="property-card p-6">
+          <h2 class="section-title">About This Property</h2>
+          <p class="text-gray-700 leading-relaxed text-[15px]"><%= listing.description %></p>
+        </div>
+
+        <!-- Property Details -->
+        <div class="property-card p-6">
+          <h2 class="section-title">Property Details</h2>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="info-badge">
+              <i class="fa-solid fa-location-dot"></i>
+              <div>
+                <div class="text-xs text-gray-500 font-medium">Location</div>
+                <div class="font-semibold text-gray-900"><%= listing.location %></div>
               </div>
-              
-              <div class="form-group">
-                <label class="form-label">Check Out</label>
-                <input type="text" id="checkOut" name="checkOut" class="form-input" required placeholder="Select Date">
+            </div>
+            <div class="info-badge">
+              <i class="fa-solid fa-flag"></i>
+              <div>
+                <div class="text-xs text-gray-500 font-medium">Country</div>
+                <div class="font-semibold text-gray-900"><%= listing.country %></div>
               </div>
-
-              <div id="date-error" class="text-white text-center mt-2" style="font-weight: 600; min-height: 1.2rem;"></div>
-
-              <button type="submit" id="bookBtn" class="btn-book">
-        <span class="button-text">
-          <i class="fa-solid fa-calendar-check"></i> Proceed to Book
-        </span>
-        <span class="button-loader"></span>
-      </button>
-            </form>
+            </div>
+            <div class="info-badge">
+              <i class="fa-solid fa-layer-group"></i>
+              <div>
+                <div class="text-xs text-gray-500 font-medium">Category</div>
+                <div class="font-semibold text-gray-900 capitalize"><%= listing.category %></div>
+              </div>
+            </div>
+            <div class="info-badge">
+              <i class="fa-solid fa-rupee-sign"></i>
+              <div>
+                <div class="text-xs text-gray-500 font-medium">Price per Night</div>
+                <div class="font-semibold text-gray-900">₹ <%= listing.price ? listing.price.toLocaleString("en-IN") : 'N/A' %></div>
+              </div>
+            </div>
           </div>
+        </div>
+
+        <!-- Map Section -->
+        <div class="property-card p-6">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="section-title mb-0">Where You'll Be</h2>
+            <button id="loadMapBtn" class="btn-modern btn-primary-modern">
+              <i class="fa-solid fa-map-location-dot"></i> Show Map
+            </button>
+          </div>
+          <div id="map" style="display:none;"></div>
+        </div>
+
+      </div>
+
+      <!-- Booking Sidebar -->
+      <div class="lg:col-span-1">
+        <div class="booking-panel p-6">
+          <div class="price-tag">
+            <div class="text-sm text-gray-600 font-semibold mb-1">Price per Night</div>
+            <div class="text-4xl font-bold text-[#fe424d]">
+              ₹ <%= listing.price ? listing.price.toLocaleString("en-IN") : 'N/A' %>
+            </div>
+          </div>
+
+          <form id="booking-form" action="/bookings/details" method="GET" class="needs-validation" novalidate>
+            <input type="hidden" name="listingId" value="<%= listing._id %>">
+            
+            <div class="mb-4">
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Check-in Date</label>
+              <input type="text" id="checkIn" name="checkIn" class="input-modern" required placeholder="Select date">
+            </div>
+            
+            <div class="mb-4">
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Check-out Date</label>
+              <input type="text" id="checkOut" name="checkOut" class="input-modern" required placeholder="Select date">
+            </div>
+
+            <div id="date-error" class="text-red-600 text-sm text-center mb-4 font-semibold min-h-[1.25rem]"></div>
+
+            <button type="submit" id="bookBtn" class="w-full btn-modern btn-primary-modern text-lg">
+              <span class="button-text">
+                <i class="fa-solid fa-calendar-check"></i> Reserve Now
+              </span>
+              <span class="button-loader"></span>
+            </button>
+          </form>
+        </div>
       </div>
     </div>
 
-    <div class="map-section">
-      <div class="map-header">
-        <h3 class="map-title">Explore the Area</h3>
-        <button id="loadMapBtn" class="btn-map">
-          <i class="fa-solid fa-map-location-dot"></i> View Map
-        </button>
-      </div>
-      <div id="map" style="display:none;"></div>
-    </div>
+    <!-- Reviews Section -->
+    <div class="divider"></div>
 
-    <div class="reviews-section">
-      <div class="section-header">
-        <h2 class="section-title">Guest Reviews</h2>
-        <p class="section-subtitle">See what others have to say</p>
-      </div>
+    <div class="property-card p-8">
+      <h2 class="section-title">Guest Reviews</h2>
 
       <% if (currentUser) { %>
-        <div class="review-form-container">
+        <div class="bg-gray-50 rounded-2xl p-6 mb-8 border border-gray-200">
+          <h3 class="font-bold text-lg text-gray-900 mb-4">Share Your Experience</h3>
           <form action="/listings/<%= listing._id %>/reviews" method="POST" class="needs-validation" novalidate>
-            <div class="form-group text-center">
-              <label class="form-label">Your Rating</label>
-              <div class="star-rating">
+            <div class="mb-5">
+              <label class="block text-sm font-semibold text-gray-700 mb-3">Your Rating</label>
+              <div class="star-rating flex gap-2">
                 <i class="fa-solid fa-star" data-value="1"></i>
                 <i class="fa-solid fa-star" data-value="2"></i>
                 <i class="fa-solid fa-star" data-value="3"></i>
@@ -182,57 +468,76 @@
               </div>
               <input type="hidden" name="review[rating]" id="ratingValue" value="1" required>
             </div>
-            <div class="form-group">
-              <label class="form-label">Your Review</label>
-              <textarea id="comment" name="review[comment]" class="review-textarea" placeholder="Tell others about your experience..." required></textarea>
+            
+            <div class="mb-5">
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Your Review</label>
+              <textarea id="comment" name="review[comment]" class="input-modern resize-none" rows="4" placeholder="Tell us about your stay..." required></textarea>
             </div>
-            <button type="submit" class="btn-submit">
+            
+            <button type="submit" class="btn-modern btn-primary-modern">
               <i class="fa-solid fa-paper-plane"></i> Submit Review
             </button>
           </form>
         </div>
       <% } else { %>
-        <div class="login-prompt">
-          <i class="fa-solid fa-lock"></i>
-          <p>You must be logged in to leave a review.</p>
-          <br>
-          <a href="/login" class="btn-submit" style="text-decoration: none; display: inline; margin: 0; width: 150px; height: 150px;">
-            </i>Login
+        <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-12 text-center border border-gray-200 mb-8">
+          <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-md">
+            <i class="fa-solid fa-lock text-3xl text-gray-400"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Login Required</h3>
+          <p class="text-gray-600 mb-6">Please log in to share your review</p>
+          <a href="/login" class="btn-modern btn-primary-modern">
+            <i class="fa-solid fa-sign-in-alt"></i> Login to Continue
           </a>
         </div>
       <% } %>
 
-      <hr style="margin: 3rem 0;">
-
       <% if (listing.reviews.length === 0) { %>
-        <div class="no-reviews">
-          <i class="fa-regular fa-comments"></i>
-          <p>No reviews yet. Be the first to share your experience!</p>
+        <div class="text-center py-16">
+          <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fa-regular fa-comments text-5xl text-gray-300"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">No Reviews Yet</h3>
+          <p class="text-gray-500">Be the first to share your experience!</p>
         </div>
       <% } else { %>
-        <div class="reviews-grid">
+        <div class="grid md:grid-cols-2 gap-6">
           <% listing.reviews.forEach(review => { %>
             <div class="review-card">
-              <div class="reviewer-info">
+              <div class="flex items-start gap-4 mb-4">
                 <% if (review.author && review.author.username) { %>
-                  <div class="reviewer-avatar"><%= review.author.username.charAt(0) %></div>
-                  <div class="reviewer-name"><%= review.author.username %></div>
+                  <div class="avatar flex-shrink-0">
+                    <%= review.author.username.charAt(0).toUpperCase() %>
+                  </div>
+                  <div class="flex-1">
+                    <div class="font-bold text-gray-900 text-lg"><%= review.author.username %></div>
+                    <div class="flex gap-1 mt-1">
+                      <% for (let i = 1; i <= 5; i++) { %>
+                        <i class="<%= i <= review.rating ? 'fa-solid fa-star' : 'fa-regular fa-star' %>" style="color: #ffc107; font-size: 0.875rem;"></i>
+                      <% } %>
+                    </div>
+                  </div>
                 <% } else { %>
-                  <div class="reviewer-avatar"><i class="fa-solid fa-user-secret"></i></div>
-                  <div class="reviewer-name"><em>Anonymous</em></div>
+                  <div class="avatar flex-shrink-0 bg-gray-400">
+                    <i class="fa-solid fa-user-secret"></i>
+                  </div>
+                  <div class="flex-1">
+                    <div class="font-bold text-gray-900 text-lg italic">Anonymous</div>
+                    <div class="flex gap-1 mt-1">
+                      <% for (let i = 1; i <= 5; i++) { %>
+                        <i class="<%= i <= review.rating ? 'fa-solid fa-star' : 'fa-regular fa-star' %>" style="color: #ffc107; font-size: 0.875rem;"></i>
+                      <% } %>
+                    </div>
+                  </div>
                 <% } %>
               </div>
-              <div class="review-rating">
-                <% for (let i = 1; i <= 5; i++) { %>
-                  <i class="<%= i <= review.rating ? 'fa-solid fa-star' : 'fa-regular fa-star' %>" style="color: var(--primary-color);"></i>
-                <% } %>
-              </div>
-              <p class="review-comment">"<%= review.comment %>"</p>
+              
+              <p class="text-gray-700 leading-relaxed mb-4"><%= review.comment %></p>
 
               <% if (currentUser && review.author && review.author._id.equals(currentUser._id)) { %>
-                <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST" class="d-inline">
-                  <button type="submit" class="btn-modern btn-danger">
-                    <i class="fa-solid fa-trash"></i> Delete
+                <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                  <button type="submit" class="text-red-600 text-sm font-semibold hover:text-red-700 transition">
+                    <i class="fa-solid fa-trash"></i> Delete Review
                   </button>
                 </form>
               <% } %>
@@ -241,7 +546,9 @@
         </div>
       <% } %>
     </div>
+
   </div>
+
   <%- include("../includes/footer.ejs") %>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
@@ -284,7 +591,7 @@
     mapBtn.addEventListener('click', () => {
       const isHidden = mapDiv.style.display === 'none';
       mapDiv.style.display = isHidden ? 'block' : 'none';
-      mapBtn.innerHTML = isHidden ? '<i class="fa-solid fa-eye-slash"></i> Hide Map' : '<i class="fa-solid fa-map-location-dot"></i> View Map';
+      mapBtn.innerHTML = isHidden ? '<i class="fa-solid fa-eye-slash"></i> Hide Map' : '<i class="fa-solid fa-map-location-dot"></i> Show Map';
 
       if (isHidden && !mapInitialized) {
         initializeMap();
@@ -384,9 +691,21 @@ if (bookingForm) {
     bookBtn.disabled = true;
   });
 }
+</script>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  </script>
+<!-- Load your alert utilities -->
+<script type="module" src="/utils/alerts.js"></script>
 
+<script type="module">
+  import { showError, showSuccess } from '/utils/alerts.js';
+
+  const __serverError = <%- JSON.stringify(error && error.length > 0 ? error[0] : null) %>;
+  const __serverSuccess = <%- JSON.stringify(success && success.length > 0 ? success[0] : null) %>;
+
+  if (__serverError) showError('Error', __serverError);
+  if (__serverSuccess) showSuccess('Success', __serverSuccess);
+</script>
 </body>
 </html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Details</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <style>
+    :root {
+      --brand-primary: #fe424d;
+      --brand-primary-dark: #e63946;
+      --brand-primary-light: #ff6b74;
+      --text-primary: #1a1a1a;
+      --text-secondary: #6c757d;
+      --bg-light: #f8f9fa;
+      --border-color: #e9ecef;
+    }
+
+    body {
+      background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    .container {
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+      max-width: 800px;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 2rem;
+      position: relative;
+      padding-bottom: 1rem;
+    }
+
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--brand-primary), var(--brand-primary-light));
+      border-radius: 2px;
+    }
+
+    .detail-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(254, 66, 77, 0.08);
+      padding: 2.5rem;
+      border: 1px solid var(--border-color);
+    }
+
+    p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap; /* Added for responsiveness */
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    p strong {
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      min-width: 140px;
+    }
+    
+    p span {
+      text-align: right; /* Aligns value to the right */
+      flex-grow: 1;
+    }
+
+    p:nth-child(2) {
+      font-size: 1.15rem;
+    }
+
+    p:nth-child(2) strong {
+      font-size: 0.9rem;
+    }
+
+    p:nth-child(6) {
+      color: var(--brand-primary);
+      font-weight: 700;
+      font-size: 1.25rem;
+    }
+
+    p:nth-child(6) strong {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding-top: 1rem;
+      }
+
+      h1 {
+        font-size: 1.75rem;
+      }
+
+      .detail-card {
+        padding: 1.5rem;
+      }
+
+      p {
+        font-size: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+      
+      p span {
+        text-align: left; /* Aligns value to the left on mobile */
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      p strong {
+        font-size: 0.8rem;
+      }
+
+      p:nth-child(2) {
+        font-size: 1.05rem;
+      }
+      
+      p:nth-child(2) span {
+        font-size: 1.1rem; /* Make guest name slightly larger */
+      }
+
+      p:nth-child(6) {
+        font-size: 1.15rem;
+      }
+      
+      p:nth-child(6) span {
+         color: var(--brand-primary);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container mt-5">
+    <h1>Booking Details</h1>
+    <div class="detail-card">
+      <p><strong>Booking ID:</strong> <span><%= booking._id %></span></p>
+      <p><strong>Listing:</strong> <span><%= booking.listing.title %></span></p>
+      <p><strong>Guest:</strong> <span><%= booking.user.username %></span></p>
+      <p><strong>Check-In:</strong> <span><%= booking.checkIn.toDateString() %></span></p>
+      <p><strong>Check-Out:</strong> <span><%= booking.checkOut.toDateString() %></span></p>
+      <p><strong>Status:</strong> <span><%= booking.status %></span></p>
+      <p><strong>Amount:</strong> <span>₹<%= booking.finalTotal %></span></p>
+      
+      
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

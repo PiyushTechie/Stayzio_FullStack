@@ -3,11 +3,10 @@ const router = express.Router({mergeParams: true});
 import wrapAsync from "../utils/wrapAsync.js";
 import {reviewSchema} from "../schema.js"
 import ExpressError from "../utils/ExpressError.js";
-import Listing from "../models/listing.js";
-import Review from "../models/reviews.js";
 import {isLoggedIn} from "../utils/isLoggedIn.js";
 import isReviewAuthor from "../utils/isreviewAuthor.js";
 import reviewControlller from "../controllers/reviews.js";
+import { authLimiter } from "../utils/rateLimiters.js";
 
 const validateReview = (req, res, next) => {
   let {error} = reviewSchema.validate(req.body);
@@ -20,9 +19,21 @@ const validateReview = (req, res, next) => {
 }
 
 //REVIEWS
-router.post("/", validateReview, isLoggedIn, wrapAsync(reviewControlller.createReview));
+router.post(
+  "/", 
+  isLoggedIn, 
+  authLimiter, 
+  validateReview, 
+  wrapAsync(reviewControlller.createReview)
+);
 
 //DELETE REVIEWS
-router.delete("/:reviewId", isLoggedIn, isReviewAuthor, wrapAsync(reviewControlller.destroyReview));
+router.delete(
+  "/:reviewId", 
+  isLoggedIn, 
+  isReviewAuthor, 
+  authLimiter, 
+  wrapAsync(reviewControlller.destroyReview)
+);
 
 export default router;

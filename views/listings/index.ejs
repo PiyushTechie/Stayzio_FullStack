@@ -1,299 +1,696 @@
-<% layout("/layouts/boilerplate") %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stayzio - Listings</title>
+<link rel="stylesheet" href="/css/output.css">
+<link rel="stylesheet" href="/css/index.css">
+<script>
+  tailwind = window.tailwind || {};
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          'brand-red': '#fe424d'
+        }
+      }
+    }
+  }
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<body>
-  <div class="listings-container">
-    <div class="floating-elements"></div>
+</head>
+   
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-black min-h-screen">
+  <%- include("../includes/navbar.ejs") %>
+  <!-- Hero Section with Search -->
+  <div class="relative overflow-hidden bg-gradient-to-r from-[#fe424d]/10 via-pink-500/10 to-purple-500/10 dark:from-[#fe424d]/20 dark:via-pink-500/20 dark:to-purple-500/20">
+    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTQsNjYsNzcsMC4wNSkiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')] opacity-30"></div>
     
-    <div class="container mt-4">
-      <div class="listings-header">
-        <h1 class="listings-title">
-          <i class="fas fa-home me-3" style="color: var(--primary-color);"></i>
-          Discover Amazing Stays
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+      <!-- Header -->
+      <div class="text-center mb-8 md:mb-12">
+        <div class="inline-block mb-4 px-4 py-2 bg-[#fe424d]/10 rounded-full backdrop-blur-sm">
+          <span class="text-[#fe424d] font-semibold text-sm flex items-center gap-2">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
+            </svg>
+            Discover Your Perfect Stay
+          </span>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-gray-900 via-[#fe424d] to-pink-600 dark:from-white dark:via-[#fe424d] dark:to-pink-400 bg-clip-text text-transparent">
+          Find Amazing Stays
         </h1>
-        <p class="listings-subtitle">Find your perfect getaway from our curated collection</p>
+        <p class="text-gray-600 dark:text-gray-400 text-lg md:text-xl max-w-2xl mx-auto">
+          Explore our curated collection of unique accommodations worldwide
+        </p>
       </div>
 
-      <div class="category-section">
-        <div class="category-scroll-container">
-          <div class="scroll-button scroll-button-left" onclick="scrollCategories('left')">
-            <i class="fas fa-chevron-left"></i>
-          </div>
-          <div class="scroll-button scroll-button-right" onclick="scrollCategories('right')">
-            <i class="fas fa-chevron-right"></i>
+      <!-- Enhanced Search Bar -->
+      <form class="search-form max-w-4xl mx-auto">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-2 flex flex-col md:flex-row gap-2 backdrop-blur-lg border border-gray-200 dark:border-gray-700">
+          <!-- Search Input -->
+          <div class="flex-1 relative">
+            <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <input 
+              type="text" 
+              name="q"
+              placeholder="Search destinations, properties, or experiences..."
+              class="w-full pl-12 pr-4 py-4 bg-transparent border-0 focus:outline-none focus:ring-0 text-gray-900 dark:text-white placeholder-gray-500"
+            >
           </div>
           
-          <div class="category-container" id="categoryContainer">
-            <a href="#" class="category-item active" data-category="all">
-              <div class="category-icon"><i class="fas fa-fire"></i></div>
-              <div class="category-label">Trending</div>
-            </a>
-            <a href="#" class="category-item" data-category="rooms">
-              <div class="category-icon"><i class="fas fa-bed"></i></div>
-              <div class="category-label">Rooms</div>
-            </a>
-            <a href="#" class="category-item" data-category="cities">
-              <div class="category-icon"><i class="fas fa-city"></i></div>
-              <div class="category-label">Iconic Cities</div>
-            </a>
-            <a href="#" class="category-item" data-category="mountains">
-              <div class="category-icon"><i class="fas fa-mountain"></i></div>
-              <div class="category-label">Mountains</div>
-            </a>
-            <a href="#" class="category-item" data-category="castles">
-              <div class="category-icon"><i class="fas fa-chess-rook"></i></div>
-              <div class="category-label">Castles</div>
-            </a>
-            <a href="#" class="category-item" data-category="pools">
-              <div class="category-icon"><i class="fas fa-swimmer"></i></div>
-              <div class="category-label">Amazing Pools</div>
-            </a>
-            <a href="#" class="category-item" data-category="camping">
-              <div class="category-icon"><i class="fas fa-campground"></i></div>
-              <div class="category-label">Camping</div>
-            </a>
-            <a href="#" class="category-item" data-category="farms">
-              <div class="category-icon"><i class="fas fa-tractor"></i></div>
-              <div class="category-label">Farms</div>
-            </a>
-            <a href="#" class="category-item" data-category="beach">
-              <div class="category-icon"><i class="fas fa-umbrella-beach"></i></div>
-              <div class="category-label">Beachfront</div>
-            </a>
-            <a href="#" class="category-item" data-category="luxury">
-              <div class="category-icon">
-                <i class="fas fa-gem"></i>
-              </div>
-              <div class="category-label">Luxury</div>
-            </a>
-            
-            <a href="#" class="category-item" data-category="cabins">
-              <div class="category-icon">
-                <i class="fas fa-home"></i>
-              </div>
-              <div class="category-label">Cabins</div>
-            </a>
-            
-            <a href="#" class="category-item" data-category="boats">
-              <div class="category-icon">
-                <i class="fas fa-ship"></i>
-              </div>
-              <div class="category-label">Boats</div>
-            </a>
-          </div>
+          <!-- Search Button -->
+          <button 
+            type="submit"
+            class="px-8 py-4 bg-gradient-to-r from-[#fe424d] to-pink-500 text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 whitespace-nowrap"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <span>Search</span>
+          </button>
         </div>
-
-        <div class="tax-toggle">
-          <div class="form-check-reverse form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-            <label class="form-check-label" for="flexSwitchCheckDefault">Display Total after Taxes</label>
-          </div>
-        </div>
-      </div>
-
-      <div class="listings-grid row row-cols-1 row-cols-lg-4 row-cols-md-3 g-4" id="listingsGrid">
-          <% for(let i = 0; i < 8; i++) { %>
-          <div class="col">
-              <div class="skeleton-card">
-                  <div class="skeleton-image shimmer"></div>
-                  <div class="skeleton-body">
-                      <div class="skeleton-text medium shimmer"></div>
-                      <div class="skeleton-text short shimmer"></div>
-                  </div>
-              </div>
-          </div>
-          <% } %>
-      </div>
+      </form>
 
     </div>
   </div>
 
-  <script>
-  // --- STATE MANAGEMENT ---
-  let currentPage = 1;
-  let isLoading = false;
-  let noMoreListings = false;
-
-  // --- CORE FUNCTIONS ---
-  async function fetchListings() {
-    if (isLoading || noMoreListings) return;
-    isLoading = true;
-
-    const listingsGrid = document.getElementById("listingsGrid");
-
-    // Get search query from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const searchQuery = (urlParams.get('q') || '').toLowerCase();
-
-    // If first page, reset grid and scroll state
-    if (currentPage === 1) {
-      listingsGrid.innerHTML = '';
-      noMoreListings = false;
-    }
-
-    try {
-      // Fetch listings from backend (includes query param)
-      urlParams.set("page", currentPage); // ensure page param is included
-      const response = await fetch(`/listings/api/listings?${urlParams.toString()}`);
-      if (!response.ok) throw new Error('Network response was not ok');
-
-      const newListings = await response.json();
-
-      if (newListings.length > 0) {
-        // Append new listings
-        newListings.forEach(listing => {
-          const listingCard = createListingCard(listing);
-          listingsGrid.appendChild(listingCard);
-        });
-
-        // Only filter by category, search handled by backend
-        const activeCategory = document.querySelector('.category-item.active')?.getAttribute('data-category') || 'all';
-        if (activeCategory !== 'all') {
-          const listingCards = document.querySelectorAll('.listing-card-wrapper');
-          listingCards.forEach(card => {
-            const cardCategory = card.getAttribute('data-category');
-            card.style.display = (cardCategory === activeCategory) ? '' : 'none';
-          });
-        }
-
-        currentPage++;
-      } else {
-        noMoreListings = true;
-      }
-
-    } catch (error) {
-      console.error("Failed to fetch listings:", error);
-      listingsGrid.innerHTML = '<p class="text-center text-danger col-12">Could not load listings. Please try again later.</p>';
-    } finally {
-      isLoading = false;
-      initializeDynamicContent();
-    }
-  }
-
-  function createListingCard(listing) {
-    const col = document.createElement('div');
-    col.className = 'col listing-card-wrapper';
-    col.setAttribute('data-category', listing.category || 'all');
-    col.style.animation = 'fadeIn 0.5s ease-in-out';
-    const avgRating = listing.avgRating > 0 ? listing.avgRating : '4.5';
-
-    col.innerHTML = `
-      <a href="/listings/${listing._id}" class="listing-link">
-        <div class="card listing-card h-100 position-relative">
-          <img src="${listing.image.url}" class="card-img-top listing-image" alt="${listing.title} Image" loading="lazy">
-          <div class="card-img-overlay image-overlay d-flex align-items-end p-2">
-            <h5 class="text-white listing-title-overlay mb-1">
-              <i class="fas fa-map-marker-alt me-2" style="font-size: 0.9rem; opacity: 0.8;"></i>
-              ${listing.title}
-            </h5>
-          </div>
-          <div class="card-body card-body-enhanced">
-            <div class="location-text">
-              <i class="fas fa-location-dot location-icon"></i>
-              ${listing.location}, ${listing.country}
-            </div>
-            <p class="card-text description-text">
-              <i class="fas fa-quote-left me-2" style="color: var(--primary-color); font-size: 0.8rem; opacity: 0.6;"></i>
-              ${listing.description}
-            </p>
-            <div class="price-rating-container">
-              <div class="price-tag" data-price="${listing.price}">
-                <i class="fas fa-rupee-sign me-1" style="font-size: 0.9rem;"></i>
-                <span class="price-value">${listing.price}</span>/night
-                <i class="tax-info">&nbsp; +18% GST</i>
-              </div>
-              <div class="rating-badge">
-                <i class="fa-solid fa-star rating-star"></i>
-                ${avgRating}
-              </div>
-            </div>
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Categories Section -->
+    <div class="mb-8">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Browse by Category</h2>
+        
+        <!-- Tax Toggle -->
+        <div class="tax-toggle flex items-center gap-3 bg-white dark:bg-gray-800 px-4 py-2 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
+          <label class="text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer" for="flexSwitchCheckDefault">
+            Show Total with Tax
+          </label>
+          <div class="relative inline-block w-12 h-6">
+            <input 
+              type="checkbox" 
+              id="flexSwitchCheckDefault"
+              class="sr-only peer"
+            >
+            <label 
+              for="flexSwitchCheckDefault"
+              class="absolute cursor-pointer inset-0 bg-gray-300 dark:bg-gray-600 rounded-full transition-all peer-checked:bg-gradient-to-r peer-checked:from-[#fe424d] peer-checked:to-pink-500"
+            ></label>
+            <label 
+              for="flexSwitchCheckDefault"
+              class="absolute cursor-pointer left-1 top-1 w-4 h-4 bg-white rounded-full transition-all peer-checked:translate-x-6 shadow-md"
+            ></label>
           </div>
         </div>
-      </a>`;
-    return col;
-  }
+      </div>
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const listingsGrid = document.getElementById("listingsGrid");
-    if (listingsGrid) {
-      currentPage = 1;
-      noMoreListings = false;
-      listingsGrid.innerHTML = '';
-      fetchListings();
+      <!-- Category Scroll Container -->
+      <div class="relative group">
+        <!-- Scroll Buttons -->
+        <button 
+          onclick="scrollCategories('left')"
+          class="scroll-button-left absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white dark:bg-gray-800 rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700"
+        >
+          <svg class="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+        </button>
+        
+        <button 
+          onclick="scrollCategories('right')"
+          class="scroll-button-right absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white dark:bg-gray-800 rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700"
+        >
+          <svg class="w-5 h-5 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
+
+        <!-- Categories -->
+        <div 
+          id="categoryContainer"
+          class="flex gap-3 overflow-x-auto scrollbar-hide scroll-smooth pb-2"
+          style="scrollbar-width: none; -ms-overflow-style: none;"
+        >
+          <a href="#" class="category-item active flex-shrink-0" data-category="all">
+            <div class="flex flex-col items-center gap-2 px-6 py-4 rounded-xl bg-gradient-to-br from-[#fe424d] to-pink-500 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 min-w-[120px]">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"/>
+              </svg>
+              <span class="text-sm font-semibold">Trending</span>
+            </div>
+          </a>
+
+          <a href="#" class="category-item flex-shrink-0" data-category="rooms">
+            <div class="flex flex-col items-center gap-2 px-6 py-4 rounded-xl bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-200 dark:border-gray-700 min-w-[120px]">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+              </svg>
+              <span class="text-sm font-semibold">Rooms</span>
+            </div>
+          </a>
+
+          <a href="#" class="category-item flex-shrink-0" data-category="cities">
+            <div class="flex flex-col items-center gap-2 px-6 py-4 rounded-xl bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-200 dark:border-gray-700 min-w-[120px]">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clip-rule="evenodd"/>
+              </svg>
+              <span class="text-sm font-semibold">Cities</span>
+            </div>
+          </a>
+
+          <a href="#" class="category-item flex-shrink-0" data-category="mountains">
+            <div class="flex flex-col items-center gap-2 px-6 py-4 rounded-xl bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-200 dark:border-gray-700 min-w-[120px]">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="m2.25 15.75 5.159-5.159a.75.75 0 0 1 1.06 0l5.159 5.159m-1.5-1.5 1.409-1.409a.75.75 0 0 1 1.06 0l.69.69m-11.55-.219.53-.53a.75.75 0 0 1 1.06 0l1.94 1.94m-2.53 1.299V4.75A.75.75 0 0 1 4.75 4h10.5a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-.75.75H4.75a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd" />
+                </svg>
+              <span class="text-sm font-semibold">Mountains</span>
+            </div>
+          </a>
+
+          <a href="#" class="category-item flex-shrink-0" data-category="castles">
+            <div class="flex flex-col items-center gap-2 px-6 py-4 rounded-xl bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-200 dark:border-gray-700 min-w-[120px]">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 640 640">
+  <path fill-rule="evenodd" d="M128 96L128 197.5C128 214.5 134.7 230.8 146.7 242.8L192 288L192 448L135.8 518.3C130.7 524.6 128 532.4 128 540.5C128 560.1 143.9 576 163.5 576L476.4 576C496 576 511.9 560.1 511.9 540.5C511.9 532.4 509.2 524.6 504.1 518.3L447.9 448L447.9 288L493.2 242.7C505.2 230.7 511.9 214.4 511.9 197.4L512 96C512 78.3 497.7 64 480 64L448 64C430.3 64 416 78.3 416 96L416 128L368 128L368 96C368 78.3 353.7 64 336 64L304 64C286.3 64 272 78.3 272 96L272 128L224 128L224 96C224 78.3 209.7 64 192 64L160 64C142.3 64 128 78.3 128 96z" clip-rule="evenodd"/>
+</svg>
+              <span class="text-sm font-semibold">Castles</span>
+            </div>
+          </a>
+
+          <a href="#" class="category-item flex-shrink-0" data-category="pools">
+            <div class="flex flex-col items-center gap-2 px-6 py-4 rounded-xl bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-200 dark:border-gray-700 min-w-[120px]">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 640 640">
+  <path fill-rule="evenodd" d="M552 216C552 185.1 526.9 160 496 160C465.1 160 440 185.1 440 216C440 246.9 465.1 272 496 272C526.9 272 552 246.9 552 216zM293.4 262.2L204.8 336.1C205.9 336.1 207 336 208.1 336C241.2 335.8 274.4 346.2 302.5 367.4C324.6 384 331.6 384 353.7 367.4C381.2 346.7 413.6 336.2 446.1 336C450.9 336 455.8 336.2 460.6 336.6C452.3 306.6 436.3 278.9 413.8 256.4C395.4 238 373.2 223.7 348.8 214.6L280.2 188.9C252.8 178.6 222.2 181.4 197.1 196.5L143.6 228.6C128.4 237.7 123.5 257.3 132.6 272.5C141.7 287.7 161.3 292.6 176.5 283.5L230 251.3C238.4 246.3 248.6 245.4 257.7 248.8L293.4 262.2zM403.4 444.1C424.7 428 453.3 428 474.6 444.1C493.6 458.5 516.5 472.3 541.8 477.4C568.3 482.8 596.1 478.2 622.5 458.3C633.1 450.3 635.2 435.3 627.2 424.7C619.2 414.1 604.2 412 593.6 420C578.7 431.2 565 433.1 551.3 430.3C536.4 427.3 520.4 418.4 503.5 405.7C465.1 376.7 413 376.7 374.5 405.7C350.5 423.8 333.8 432 320 432C306.2 432 289.5 423.8 265.5 405.7C227.1 376.7 175 376.7 136.5 405.7C114.9 422 95.2 431.5 77.6 431.4C68 431.3 57.7 428.4 46.4 419.9C35.8 411.9 20.8 414 12.8 424.6C4.8 435.2 7 450.3 17.6 458.3C36.7 472.7 57 479.3 77.4 479.4C111.3 479.6 141.7 462 165.5 444.1C186.8 428 215.4 428 236.7 444.1C260.9 462.4 289 480 320.1 480C351.2 480 379.2 462.3 403.5 444.1z" clip-rule="evenodd"/>
+</svg>
+              <span class="text-sm font-semibold">Pools</span>
+            </div>
+          </a>
+
+          <a href="#" class="category-item flex-shrink-0" data-category="camping">
+            <div class="flex flex-col items-center gap-2 px-6 py-4 rounded-xl bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-200 dark:border-gray-700 min-w-[120px]">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 640 640">
+  <path fill-rule="evenodd" d="M408.8 116.3C420 102.6 418 82.5 404.3 71.3C390.6 60.1 370.5 62.1 359.3 75.8L320.1 123.8L280.9 75.8C269.6 62.1 249.4 60 235.7 71.2C222 82.4 220 102.6 231.2 116.2L278.6 174.2L76.6 421.1C68.5 431.1 64 443.6 64 456.6L64 496C64 522.5 85.5 544 112 544L528 544C554.5 544 576 522.5 576 496L576 456.6C576 443.7 571.5 431.1 563.3 421.1L361.3 174.2L408.7 116.2zM320 352L432 480L208 480L320 352z" clip-rule="evenodd"/>
+</svg>
+              <span class="text-sm font-semibold">Camping</span>
+            </div>
+          </a>
+
+          <a href="#" class="category-item flex-shrink-0" data-category="farms">
+            <div class="flex flex-col items-center gap-2 px-6 py-4 rounded-xl bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-200 dark:border-gray-700 min-w-[120px]">
+             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 640 640">
+                <path fill-rule="evenodd" d="M96 288L96 480C96 497.7 110.3 512 128 512L160 512C177.7 512 192 497.7 192 480L192 391.8C201.9 398.4 212.6 403.8 224 407.9L224 432.1C224 440.9 231.2 448.1 240 448.1C248.8 448.1 256 440.9 256 432.1L256 415.2C261.3 415.8 266.6 416.1 272 416.1C277.4 416.1 282.7 415.8 288 415.2L288 432.1C288 440.9 295.2 448.1 304 448.1C312.8 448.1 320 440.9 320 432.1L320 407.9C331.4 403.9 342.1 398.5 352 391.8L352 480C352 497.7 366.3 512 384 512L416 512C433.7 512 448 497.7 448 480L448 320L480 352L480 401.5C480 411 482.8 420.2 488.1 428.1L530 491C538.8 504.1 553.5 512 569.3 512C591.8 512 611.2 496.1 615.6 474L635.9 372.4C638.5 359.4 635.6 345.9 627.9 335.1L624 329.6L624 248C624 234.7 613.3 224 600 224C586.7 224 576 234.7 576 248L576 262.4L523.1 188.3C496 150.5 452.4 128 405.9 128L144 128C77.7 128 24 181.7 24 248L24 302C9.4 313.8 0 331.8 0 352L0 369.6C0 377.6 6.4 384 14.4 384C46.2 384 72 358.2 72 326.4L72 248C72 223.7 84.1 202.2 102.5 189.1C98.3 199.9 96 211.7 96 224L96 288zM560 400C560 391.2 567.2 384 576 384C584.8 384 592 391.2 592 400C592 408.8 584.8 416 576 416C567.2 416 560 408.8 560 400zM166.6 230.6C162.4 226.4 160 220.6 160 214.6C160 202.1 170.1 192 182.6 192L361.3 192C373.8 192 383.9 202.1 383.9 214.6C383.9 220.6 381.5 226.4 377.3 230.6L353.9 254C332.2 275.8 302.7 288 272 288C241.3 288 211.8 275.8 190.1 254.1L166.7 230.7z" clip-rule="evenodd"/>
+            </svg>
+              <span class="text-sm font-semibold">Farms</span>
+            </div>
+          </a>
+
+          <a href="#" class="category-item flex-shrink-0" data-category="beach">
+            <div class="flex flex-col items-center gap-2 px-6 py-4 rounded-xl bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-200 dark:border-gray-700 min-w-[120px]">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 640 640">
+  <path fill-rule="evenodd" d="M561.5 405.1C555.6 421.8 536.2 428.1 520.4 420.2L342.2 331.1L340.6 334.3L251.8 512L544 512C561.7 512 576 526.3 576 544C576 561.7 561.7 576 544 576L96 576C78.3 576 64 561.7 64 544C64 526.3 78.3 512 96 512L180.2 512L283.4 305.7L285 302.5L119.6 219.8C103.8 211.9 97.2 192.5 107.1 177.8C153 109.2 231.2 64 320 64C461.4 64 576 178.6 576 320C576 349.8 570.9 378.5 561.5 405.1z" clip-rule="evenodd"/>
+</svg>
+              <span class="text-sm font-semibold">Beach</span>
+            </div>
+          </a>
+
+          <a href="#" class="category-item flex-shrink-0" data-category="luxury">
+            <div class="flex flex-col items-center gap-2 px-6 py-4 rounded-xl bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-200 dark:border-gray-700 min-w-[120px]">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z" clip-rule="evenodd"/>
+              </svg>
+              <span class="text-sm font-semibold">Luxury</span>
+            </div>
+          </a>
+
+          <a href="#" class="category-item flex-shrink-0" data-category="cabins">
+            <div class="flex flex-col items-center gap-2 px-6 py-4 rounded-xl bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-200 dark:border-gray-700 min-w-[120px]">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+              </svg>
+              <span class="text-sm font-semibold">Cabins</span>
+            </div>
+          </a>
+
+          <a href="#" class="category-item flex-shrink-0" data-category="boats">
+            <div class="flex flex-col items-center gap-2 px-6 py-4 rounded-xl bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-200 dark:border-gray-700 min-w-[120px]">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 640 640">
+  <path fill-rule="evenodd" d="M304 99.9L304 448L80 448C71.2 448 64 455.2 64 464C64 525.9 114.1 576 176 576L464 576C525.9 576 576 525.9 576 464C576 455.2 568.8 448 560 448L352 448L352 400L513.7 400C526.6 400 534.2 385.6 526.9 375L333.2 90.9C324.3 77.9 304 84.2 304 99.9zM256 384L256 199.8C256 183.7 235 177.7 226.4 191.3L111.3 375.5C104.6 386.2 112.3 400 124.9 400L240 400C248.8 400 256 392.8 256 384z" clip-rule="evenodd"/>
+</svg>
+              <span class="text-sm font-semibold">Boats</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Listings Grid -->
+    <div class="mb-8">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Available Properties</h2>
+        <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+          <span id="listingCount">Loading...</span>
+        </div>
+      </div>
+
+      <div id="listingsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Listings will be dynamically inserted here -->
+      </div>
+    </div>
+
+    <!-- Infinite Scroll Loader -->
+    <div id="infinite-scroll-loader" class="text-center py-12" style="display: none;">
+      <div class="inline-flex items-center gap-3 px-6 py-3 bg-white dark:bg-gray-800 rounded-full shadow-lg">
+        <div class="spinner w-6 h-6 border-3 border-[#fe424d] border-t-transparent rounded-full animate-spin"></div>
+        <p class="loader-text text-gray-700 dark:text-gray-300 font-medium">Loading more stays...</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+        <div class="footer-grid">
+            <!-- Brand Info -->
+            <div class="footer-brand">
+                <div class="logo"><i class="fa-solid fa-earth-asia brand-icon"></i>Stayzio</div>
+                <p>Discover extraordinary accommodations worldwide. From cozy apartments to luxury villas, we help you find the perfect stay for every journey.</p>
+                <div class="social-links">
+                    <a href="#" title="Facebook">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+                    <a href="#" title="Twitter">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                        </svg>
+                    </a>
+                    <a href="#" title="Instagram">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                    </a>
+                    <a href="#" title="LinkedIn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Footer Columns -->
+            <div class="footer-column">
+                <h4>Discover</h4>
+                <ul>
+                    <li><a href="/listings">Top Destinations</a></li>
+                    <li><a href="/listings">Luxury Stays</a></li>
+                    <li><a href="/listings">Budget Options</a></li>
+                    <li><a href="/listings">Unique Properties</a></li>
+                    <li><a href="/listings">Last Minute Deals</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="#">Partnerships</a></li>
+                    <li><a href="/faq">FAQ</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="/contact">Help Center</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
+                    <li><a href="/safety">Safety Tips</a></li>
+                    <li><a href="/cancelPolicy">Cancellation</a></li>
+                    <li><a href="/insurance">Insurance</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Host</h4>
+                <ul>
+                    <li><a href="/listings/new">Become a Host</a></li>
+                    <li><a href="/host-resources">Host Resources</a></li>
+                    <li><a href="/host-guidelines">Host Guidelines</a></li>
+                    <li><a href="/host-community">Host Community</a></li>
+                    <li><a href="/host-insurance">Host Insurance</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <p>&copy; 2025 Stayzio, Inc. All rights reserved.</p>
+            <div class="footer-legal">
+                <a href="/privacy">Privacy Policy</a>
+                <a href="/terms">Terms of Service</a>
+                <a href="/cookie">Cookie Policy</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script>
+    // --- STATE MANAGEMENT ---
+    let currentPage = 1;
+    let isLoading = false;
+    let noMoreListings = false;
+    let loaderElement;
+
+    // --- SKELETON HELPER FUNCTIONS ---
+    function getSkeletonCardHTML() {
+      return `
+        <div class="skeleton-card">
+          <div class="skeleton-image"></div>
+          <div class="skeleton-body">
+            <div class="skeleton-text medium"></div>
+            <div class="skeleton-text short"></div>
+            <div class="skeleton-text medium"></div>
+          </div>
+        </div>`;
     }
 
-    initializeStaticContent();
-    initializeDynamicContent();
-
-    // --- SEARCH FORM HANDLER ---
-    const searchForm = document.querySelector('.search-form');
-    searchForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const query = this.q.value.trim();
-      currentPage = 1;
-      noMoreListings = false;
+    function showSkeletons(count = 8) {
+      const listingsGrid = document.getElementById("listingsGrid");
       listingsGrid.innerHTML = '';
-      const newUrl = query ? `/listings?q=${encodeURIComponent(query)}` : '/listings';
-      history.pushState(null, '', newUrl); // update URL without reload
-      fetchListings();
-    });
-  });
+      for (let i = 0; i < count; i++) {
+        listingsGrid.insertAdjacentHTML('beforeend', getSkeletonCardHTML());
+      }
+    }
 
-  function initializeStaticContent() {
-    const categoryItems = document.querySelectorAll('.category-item');
-    categoryItems.forEach(item => {
-      item.addEventListener('click', function(e) {
+    // --- INFINITE LOADER FUNCTIONS ---
+    function showInfiniteLoader() {
+      if (loaderElement) {
+        loaderElement.querySelector('.spinner').style.display = 'block';
+        loaderElement.querySelector('.loader-text').textContent = 'Loading more stays...';
+        loaderElement.style.display = 'block';
+      }
+    }
+
+    function hideInfiniteLoader() {
+      if (loaderElement) {
+        loaderElement.style.display = 'none';
+      }
+    }
+
+    function showNoMoreListingsMessage() {
+      if (loaderElement) {
+        loaderElement.querySelector('.spinner').style.display = 'none';
+        loaderElement.querySelector('.loader-text').textContent = '🎉 You have reached the end!';
+        loaderElement.style.display = 'block';
+      }
+    }
+
+    // --- CORE FUNCTIONS ---
+    async function fetchListings() {
+      if (isLoading || noMoreListings) return;
+      isLoading = true;
+
+      const listingsGrid = document.getElementById("listingsGrid");
+      const urlParams = new URLSearchParams(window.location.search);
+      
+      if (currentPage > 1) {
+        showInfiniteLoader();
+      }
+
+      if (currentPage === 1) {
+        noMoreListings = false;
+        hideInfiniteLoader();
+      }
+
+      try {
+        urlParams.set("page", currentPage);
+        const response = await fetch(`/listings/api/listings?${urlParams.toString()}`);
+        if (!response.ok) throw new Error('Network response was not ok');
+
+        const newListings = await response.json();
+
+        if (currentPage === 1) {
+          listingsGrid.innerHTML = '';
+        } else {
+          hideInfiniteLoader();
+        }
+
+        if (newListings.length > 0) {
+          newListings.forEach(listing => {
+            const listingCard = createListingCard(listing);
+            listingsGrid.appendChild(listingCard);
+          });
+
+          // Update count
+          const totalListings = document.querySelectorAll('.listing-card-wrapper').length;
+          document.getElementById('listingCount').textContent = `${totalListings} properties found`;
+
+          const activeCategory = document.querySelector('.category-item.active')?.getAttribute('data-category') || 'all';
+          if (activeCategory !== 'all') {
+            const listingCards = document.querySelectorAll('.listing-card-wrapper');
+            listingCards.forEach(card => {
+              const cardCategory = card.getAttribute('data-category');
+              card.style.display = (cardCategory === activeCategory) ? '' : 'none';
+            });
+          }
+
+          currentPage++;
+        } else {
+          noMoreListings = true;
+          if (currentPage > 1) {
+            showNoMoreListingsMessage();
+          }
+        }
+
+      } catch (error) {
+        console.error("Failed to fetch listings:", error);
+        listingsGrid.innerHTML = `
+          <div class="col-span-full text-center py-12">
+            <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <p class="text-gray-600 dark:text-gray-400 text-lg">Could not load listings. Please try again later.</p>
+          </div>`;
+        hideInfiniteLoader();
+      } finally {
+        isLoading = false;
+        initializeDynamicContent();
+      }
+    }
+
+    function createListingCard(listing) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'listing-card-wrapper';
+      wrapper.setAttribute('data-category', listing.category || 'all');
+      wrapper.style.animation = 'fadeIn 0.5s ease-in-out';
+      
+      const avgRating = listing.avgRating > 0 ? listing.avgRating : '4.5';
+
+      wrapper.innerHTML = `
+        <a href="/listings/${listing._id}" class="block group">
+          <div class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 group-hover:scale-[1.02]">
+            <!-- Image -->
+            <div class="relative overflow-hidden aspect-[4/3]">
+              <img 
+                src="${listing.image.url}" 
+                alt="${listing.title}" 
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                loading="lazy"
+              >
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              
+              <!-- Location Badge -->
+              <div class="absolute top-3 left-3">
+                <div class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-2 text-sm font-medium">
+                  <svg class="w-4 h-4 text-[#fe424d]" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                  </svg>
+                  <span class="text-gray-900 dark:text-white">${listing.location}</span>
+                </div>
+              </div>
+
+              <!-- Rating Badge -->
+              <div class="absolute top-3 right-3">
+                <div class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-1.5 text-sm font-semibold">
+                  <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                  </svg>
+                  <span class="text-gray-900 dark:text-white">${avgRating}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-4">
+              <!-- Title -->
+              <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-1 group-hover:text-[#fe424d] transition-colors">
+                ${listing.title}
+              </h3>
+
+              <!-- Country -->
+              <p class="text-sm text-gray-600 dark:text-gray-400 mb-3 flex items-center gap-2">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clip-rule="evenodd"/>
+                </svg>
+                ${listing.country}
+              </p>
+
+              <!-- Description -->
+              <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+                ${listing.description}
+              </p>
+
+              <!-- Price -->
+              <div class="flex items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700">
+                <div class="price-tag" data-price="${listing.price}">
+                  <div class="flex items-baseline gap-1">
+                    <span class="text-2xl font-bold text-[#fe424d]">₹<span class="price-value">${listing.price}</span></span>
+                    <span class="text-sm text-gray-600 dark:text-gray-400">/night</span>
+                  </div>
+                  <p class="tax-info text-xs text-gray-500 dark:text-gray-500 mt-0.5">+18% GST</p>
+                </div>
+                
+                <button class="px-4 py-2 bg-[#fe424d] text-white rounded-lg text-sm font-semibold hover:bg-[#e63946] transition-colors">
+                  View Details
+                </button>
+              </div>
+            </div>
+          </div>
+        </a>`;
+      
+      return wrapper;
+    }
+
+    // --- INITIALIZATION ---
+    document.addEventListener("DOMContentLoaded", () => {
+      loaderElement = document.getElementById('infinite-scroll-loader');
+
+      const listingsGrid = document.getElementById("listingsGrid");
+      if (listingsGrid) {
+        currentPage = 1;
+        noMoreListings = false;
+        showSkeletons(8);
+        fetchListings();
+      }
+
+      initializeStaticContent();
+      initializeDynamicContent();
+
+      // Search Form Handler
+      const searchForm = document.querySelector('.search-form');
+      searchForm.addEventListener('submit', function(e) {
         e.preventDefault();
-        categoryItems.forEach(cat => cat.classList.remove('active'));
-        this.classList.add('active');
-        const selectedCategory = this.getAttribute('data-category');
-        const listingCards = document.querySelectorAll('.listing-card-wrapper');
-        listingCards.forEach(card => {
-          const cardCategory = card.getAttribute('data-category');
-          card.style.display = (selectedCategory === 'all' || cardCategory === selectedCategory) ? '' : 'none';
+        const query = this.q.value.trim();
+        currentPage = 1;
+        noMoreListings = false;
+        showSkeletons(8);
+        const newUrl = query ? `/listings?q=${encodeURIComponent(query)}` : '/listings';
+        history.pushState(null, '', newUrl);
+        fetchListings();
+      });
+    });
+
+    function initializeStaticContent() {
+      const categoryItems = document.querySelectorAll('.category-item');
+      categoryItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          categoryItems.forEach(cat => cat.classList.remove('active'));
+          this.classList.add('active');
+          const selectedCategory = this.getAttribute('data-category');
+
+          const urlParams = new URLSearchParams(window.location.search);
+          
+          if (selectedCategory === 'all') {
+            urlParams.delete('category');
+          } else {
+            urlParams.set('category', selectedCategory);
+          }
+          
+          const searchQuery = urlParams.get('q');
+          if (searchQuery) {
+            urlParams.set('q', searchQuery);
+          } else {
+            urlParams.delete('q');
+          }
+
+          currentPage = 1;
+          noMoreListings = false;
+          showSkeletons(8);
+          
+          const newUrl = `/listings?${urlParams.toString()}`;
+          history.pushState(null, '', newUrl);
+          fetchListings();
         });
       });
-    });
-
-    const style = document.createElement('style');
-    style.textContent = `@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }`;
-    document.head.appendChild(style);
-  }
-
-  function initializeDynamicContent() {
-    const taxSwitch = document.getElementById('flexSwitchCheckDefault');
-    const updatePrices = () => {
-      document.querySelectorAll(".price-tag").forEach(tag => {
-        const basePrice = parseFloat(tag.getAttribute("data-price"));
-        const priceValue = tag.querySelector(".price-value");
-        const taxInfo = tag.querySelector(".tax-info");
-        if (taxSwitch.checked) {
-          priceValue.textContent = Math.round(basePrice * 1.18);
-          taxInfo.style.display = "none";
-        } else {
-          priceValue.textContent = basePrice;
-          taxInfo.style.display = "inline";
-        }
-      });
-    };
-    taxSwitch.onchange = updatePrices;
-    updatePrices();
-  }
-
-  function scrollCategories(direction) {
-    const container = document.getElementById('categoryContainer');
-    const scrollAmount = 200;
-    if (direction === 'left') container.scrollLeft -= scrollAmount;
-    else container.scrollLeft += scrollAmount;
-  }
-
-  // Infinite Scroll Listener
-  window.addEventListener('scroll', () => {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
-      fetchListings();
     }
-  });
 
+    function initializeDynamicContent() {
+      const taxSwitch = document.getElementById('flexSwitchCheckDefault');
+      
+      const updatePrices = () => {
+        document.querySelectorAll(".price-tag").forEach(tag => {
+          const basePrice = parseFloat(tag.getAttribute("data-price"));
+          const priceValue = tag.querySelector(".price-value");
+          const taxInfo = tag.querySelector(".tax-info");
+          if (taxSwitch.checked) {
+            priceValue.textContent = Math.round(basePrice * 1.18);
+            taxInfo.style.display = "none";
+          } else {
+            priceValue.textContent = basePrice;
+            taxInfo.style.display = "block";
+          }
+        });
+      };
+      
+      if (!taxSwitch.onchange) {
+        taxSwitch.onchange = updatePrices;
+      }
+      updatePrices();
+    }
+
+    function scrollCategories(direction) {
+      const container = document.getElementById('categoryContainer');
+      const scrollAmount = 300;
+      if (direction === 'left') {
+        container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      } else {
+        container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      }
+    }
+
+    // Infinite Scroll Listener
+    window.addEventListener('scroll', () => {
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+        fetchListings();
+      }
+    });
+  
+
+  </script>
+<!-- Load your alert utilities -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="module" src="/utils/alerts.js"></script>
+
+<script type="module">
+  import { showError, showSuccess } from '/utils/alerts.js';
+
+  const __serverError = <%- JSON.stringify(error && error.length > 0 ? error[0] : null) %>;
+  const __serverSuccess = <%- JSON.stringify(success && success.length > 0 ? success[0] : null) %>;
+
+  if (__serverError) showError('Error', __serverError);
+  if (__serverSuccess) showSuccess('Success', __serverSuccess);
 </script>
-
 </body>
 </html>

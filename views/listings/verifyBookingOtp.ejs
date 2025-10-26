@@ -221,5 +221,18 @@ body {
     verifyButton.classList.add('loading');
   });
 </script>
+<script type="module" src="/utils/alerts.js"></script>
+
+<script type="module">
+  import { showError, showSuccess } from '/utils/alerts.js';
+
+  const __serverError = <%- JSON.stringify(error && error.length > 0 ? error[0] : null) %>;
+  const __serverSuccess = <%- JSON.stringify(success && success.length > 0 ? success[0] : null) %>;
+
+  if (__serverError) showError('Error', __serverError);
+  if (__serverSuccess) showSuccess('Success', __serverSuccess);
+</script>
+
+
 </body>
 </html>
