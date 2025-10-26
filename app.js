@@ -22,6 +22,7 @@ import hostRoutes from "./routes/hostRoutes.js";
 import { globalLimiter } from "./utils/rateLimiters.js";
 import redisModule from './utils/redisClient.js'; // default import
 const { client, connectRedis } = redisModule;     // destructure after import
+import MongoStore from "connect-mongo";
 
 // Setup __dirname in ES Module style
 const __filename = fileURLToPath(import.meta.url);
