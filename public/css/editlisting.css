@@ -17,6 +17,12 @@
     font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
   }
 
+  @media (max-width: 768px) {
+  .social-links {
+    justify-content: center; /* center on mobile */
+  }
+}
+
   .edit-container {
     max-width: 600px !important;
     margin-top: 3rem !important;

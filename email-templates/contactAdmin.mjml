@@ -1,53 +1,61 @@
 <mjml>
   <mj-head>
-    <mj-font name="Inter" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" />
-    <mj-style>
-      .heading { font-family: 'Inter', sans-serif; font-size: 24px; font-weight: 700; color: #fe424d; }
-      .label { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 600; color: #fe424d; }
-      .value { font-family: 'Inter', sans-serif; font-size: 16px; color: #374151; }
-      .footer { font-family: 'Inter', sans-serif; font-size: 14px; color: #6b7280; }
-    </mj-style>
+    <mj-preview>New enquiry from your website</mj-preview>
+    <mj-font name="Inter" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+    <mj-attributes>
+      <mj-text font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" line-height="1.6" />
+    </mj-attributes>
   </mj-head>
-
-  <mj-body background-color="#fef2f2">
-    <!-- Header Section -->
-    <mj-section background-color="#fe424d" padding="30px 0">
+  <mj-body background-color="#f5f5f5">
+    <!-- Logo Header -->
+    <mj-section background-color="#fe424d" padding="30px 20px">
       <mj-column>
-        <mj-text align="center" color="#ffffff" font-size="22px" font-weight="bold" font-family="Inter">
-          📩 New Enquiry Received
+        <mj-text align="center" font-size="32px" font-weight="900" color="#ffffff" padding="0"> 
+          🌏︎Stayzio
         </mj-text>
       </mj-column>
     </mj-section>
 
-    <!-- Content Section -->
-    <mj-section background-color="#ffffff" padding="30px">
+    <!-- Main Content Container -->
+    <mj-section background-color="#ffffff" padding="0">
       <mj-column>
-        <mj-text css-class="label">Name: </mj-text>
-        <mj-text css-class="value">{{name}}</mj-text>
-
-        <mj-text css-class="label">Email:</mj-text>
-        <mj-text css-class="value">{{email}}</mj-text>
-
-        <mj-text css-class="label">Subject:</mj-text>
-        <mj-text css-class="value">{{subject}}</mj-text>
-
-        <mj-text css-class="label">Message:</mj-text>
-        <mj-text css-class="value">{{message}}</mj-text>
+        <!-- Title -->
+        <mj-text align="center" font-size="24px" font-weight="600" color="#333333" padding="40px 40px 30px">
+          New Contact Enquiry
+        </mj-text>
+        
+        <!-- Enquiry Details Table -->
+        <mj-text font-size="15px" color="#333333" padding="0 40px 40px" line-height="2">
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 16px 0; font-weight: 600; color: #666666; width: 120px; vertical-align: top;">Name</td>
+              <td style="padding: 16px 0; color: #333333;">{{name}}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 16px 0; font-weight: 600; color: #666666; width: 120px; vertical-align: top;">Email</td>
+              <td style="padding: 16px 0; color: #333333;">{{email}}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e5e7eb;">
+              <td style="padding: 16px 0; font-weight: 600; color: #666666; width: 120px; vertical-align: top;">Subject</td>
+              <td style="padding: 16px 0; color: #333333;">{{subject}}</td>
+            </tr>
+            <tr>
+              <td style="padding: 16px 0; font-weight: 600; color: #666666; width: 120px; vertical-align: top;">Message</td>
+              <td style="padding: 16px 0; color: #333333;">{{message}}</td>
+            </tr>
+          </table>
+        </mj-text>
       </mj-column>
     </mj-section>
 
-    <!-- Divider -->
-    <mj-section padding="0">
+    <!-- Footer Info -->
+    <mj-section background-color="#f5f5f5" padding="30px 40px">
       <mj-column>
-        <mj-divider border-color="#fe424d" border-width="2px" />
-      </mj-column>
-    </mj-section>
-
-    <!-- Footer -->
-    <mj-section background-color="#fef2f2" padding="20px">
-      <mj-column>
-        <mj-text align="center" css-class="footer">
-          © {{year}} Stayzio, Inc. All rights reserved.
+        <mj-text font-size="12px" color="#999999" line-height="1.6" align="center">
+          This is an automated notification from your Stayzio contact form.
+        </mj-text>
+        <mj-text align="center" font-size="12px" color="#999999" padding="10px 0 0">
+          © {{year}} Stayzio. All Rights Reserved.
         </mj-text>
       </mj-column>
     </mj-section>

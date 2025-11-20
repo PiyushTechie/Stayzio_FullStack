@@ -3,214 +3,689 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stayzio</title>
-<link rel="stylesheet" href="/css/style.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">  
-<link rel="stylesheet" href="/css/editlisting.css">
+    <title>Edit Listing - Stayzio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        :root {
+            --primary: #fe424d;
+            --primary-light: #ff6b75;
+            --primary-dark: #e63946;
+            --success: #10b981;
+            --error: #ef4444;
+            --text-dark: #1f2937;
+            --text-gray: #6b7280;
+            --bg-light: #f9fafb;
+            --border: #e5e7eb;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #fef2f3 0%, #ffffff 50%, #fef2f3 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Floating Background Elements */
+        .floating-bg {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(254, 66, 77, 0.08) 0%, rgba(254, 66, 77, 0.02) 70%);
+        }
+
+        .float-1 {
+            width: 400px;
+            height: 400px;
+            top: -100px;
+            left: -100px;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .float-2 {
+            width: 300px;
+            height: 300px;
+            bottom: -50px;
+            right: -50px;
+            animation: float 10s ease-in-out infinite 2s;
+        }
+
+        .float-3 {
+            width: 250px;
+            height: 250px;
+            top: 50%;
+            right: 10%;
+            animation: float 12s ease-in-out infinite 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.05); }
+            66% { transform: translate(-20px, 20px) scale(0.95); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Container */
+        .container {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .icon-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(254, 66, 77, 0.3);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .icon-badge:hover {
+            transform: translateY(-5px) rotate(5deg);
+        }
+
+        .icon-badge i {
+            font-size: 36px;
+            color: white;
+        }
+
+        .header h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 18px;
+            color: var(--text-gray);
+        }
+
+        /* Form Card */
+        .form-card {
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            padding: 50px;
+            animation: fadeInUp 0.6s ease-out 0.2s backwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            opacity: 0.05;
+            border-radius: 0 0 0 100%;
+        }
+
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 30px;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .form-group label i {
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        /* Inputs */
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input[type="text"]:hover,
+        input[type="number"]:hover,
+        textarea:hover,
+        select:hover {
+            border-color: #d1d5db;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(254, 66, 77, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Validation States */
+        input.border-green-500,
+        textarea.border-green-500,
+        select.border-green-500 {
+            border-color: var(--success);
+        }
+
+        input.border-red-500,
+        textarea.border-red-500,
+        select.border-red-500 {
+            border-color: var(--error);
+        }
+
+        /* Price Input */
+        .price-wrapper {
+            position: relative;
+        }
+
+        .price-wrapper .currency {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: 600;
+            color: var(--text-gray);
+            pointer-events: none;
+        }
+
+        .price-wrapper input {
+            padding-left: 40px;
+        }
+
+        /* File Input */
+        input[type="file"] {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px dashed #d1d5db;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        input[type="file"]:hover {
+            border-color: var(--primary);
+            background: #fef2f3;
+        }
+
+        input[type="file"]::file-selector-button {
+            margin-right: 15px;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 8px;
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Image Display */
+        .image-preview {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            margin-top: 10px;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .image-preview:hover img {
+            transform: scale(1.05);
+        }
+
+        .image-preview::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .image-preview:hover::after {
+            opacity: 1;
+        }
+
+        /* Grid Layout */
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        /* Validation Messages */
+        .text-green-600,
+        .text-red-600 {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+            font-size: 13px;
+        }
+
+        .text-green-600 {
+            color: var(--success);
+        }
+
+        .text-red-600 {
+            color: var(--error);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 18px 32px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 8px 20px rgba(254, 66, 77, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(254, 66, 77, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Help Text */
+        .help-text {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--text-gray);
+            font-size: 14px;
+            animation: fadeInUp 0.6s ease-out 0.4s backwards;
+        }
+
+        .help-text i {
+            color: var(--primary);
+            margin-right: 5px;
+        }
+
+        /* File Info Text */
+        .file-info {
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--text-gray);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .form-card {
+                padding: 30px 20px;
+                border-radius: 20px;
+            }
+
+            .header h2 {
+                font-size: 32px;
+            }
+
+            .icon-badge {
+                width: 60px;
+                height: 60px;
+            }
+
+            .icon-badge i {
+                font-size: 28px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Select Arrow */
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23fe424d' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+    </style>
 </head>
 <body>
-  <div class="floating-elements"></div>
-  
-  <div class="container edit-container">
-    <!-- Header Section -->
-    <div class="edit-header">
-      <h2 class="edit-title">
-        <i class="fas fa-edit me-3" style="color: var(--primary-color);"></i>
-        Edit Listing
-      </h2>
-      <p class="edit-subtitle">Update your property details</p>
+    <!-- Floating Background -->
+    <div class="floating-bg">
+        <div class="floating-element float-1"></div>
+        <div class="floating-element float-2"></div>
+        <div class="floating-element float-3"></div>
     </div>
 
-    <!-- Progress Indicator -->
-    <div class="form-step-indicator">
-      <div class="step-dot active"></div>
-      <div class="step-dot active"></div>
-      <div class="step-dot active"></div>
-      <div class="step-dot active"></div>
-      <div class="step-dot active"></div>
-      <div class="step-dot active"></div>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="icon-badge">
+                <i class="fas fa-edit"></i>
+            </div>
+            <h2>Edit Listing</h2>
+            <p>Update your property details</p>
+        </div>
+
+        <!-- Form Card -->
+        <div class="form-card">
+            <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                
+                <!-- Title -->
+                <div class="form-group">
+                    <label for="title">
+                        <i class="fas fa-heading"></i>
+                        Title
+                    </label>
+                    <input type="text" name="listing[title]" value="<%= listing.title %>" id="title" placeholder="Enter property title" required>
+                    <div class="text-green-600 hidden">
+                        <i class="fas fa-check-circle"></i> Looks good!
+                    </div>
+                    <div class="text-red-600 hidden">
+                        <i class="fas fa-exclamation-circle"></i> Please enter a title.
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+                    <label for="description">
+                        <i class="fas fa-align-left"></i>
+                        Description
+                    </label>
+                    <textarea name="listing[description]" id="description" placeholder="Describe your property" required><%= listing.description %></textarea>
+                    <div class="text-green-600 hidden">
+                        <i class="fas fa-check-circle"></i> Looks good!
+                    </div>
+                    <div class="text-red-600 hidden">
+                        <i class="fas fa-exclamation-circle"></i> Please enter a description.
+                    </div>
+                </div>
+
+                <!-- Category -->
+                <div class="form-group">
+                    <label for="category">
+                        <i class="fas fa-layer-group"></i>
+                        Category
+                    </label>
+                    <select name="listing[category]" id="category" required>
+                        <option value="rooms" <%= listing.category === "rooms" ? "selected" : "" %>>Rooms</option>
+                        <option value="cities" <%= listing.category === "cities" ? "selected" : "" %>>Iconic Cities</option>
+                        <option value="mountains" <%= listing.category === "mountains" ? "selected" : "" %>>Mountains</option>
+                        <option value="castles" <%= listing.category === "castles" ? "selected" : "" %>>Castles</option>
+                        <option value="pools" <%= listing.category === "pools" ? "selected" : "" %>>Amazing Pools</option>
+                        <option value="camping" <%= listing.category === "camping" ? "selected" : "" %>>Camping</option>
+                        <option value="farms" <%= listing.category === "farms" ? "selected" : "" %>>Farms</option>
+                        <option value="beach" <%= listing.category === "beach" ? "selected" : "" %>>Beachfront</option>
+                        <option value="luxury" <%= listing.category === "luxury" ? "selected" : "" %>>Luxury</option>
+                        <option value="cabins" <%= listing.category === "cabins" ? "selected" : "" %>>Cabins</option>
+                        <option value="boats" <%= listing.category === "boats" ? "selected" : "" %>>Boats</option>
+                    </select>
+                    <div class="text-red-600 hidden">
+                        <i class="fas fa-exclamation-circle"></i> Please select a category.
+                    </div>
+                </div>
+
+                <!-- Current Image -->
+                <div class="form-group">
+                    <label>
+                        <i class="fas fa-image"></i>
+                        Current Image
+                    </label>
+                    <div class="image-preview">
+                        <img src="<%= listing.image.url %>" alt="Current Property">
+                    </div>
+                </div>
+
+                <!-- Upload New Image -->
+                <div class="form-group">
+                    <label for="imageFile">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        Upload New Image (Optional)
+                    </label>
+                    <input type="file" name="listing[image]" id="imageFile" accept="image/*">
+                    <p class="file-info">PNG, JPG, JPEG up to 10MB</p>
+                </div>
+
+                <!-- Price and Location -->
+                <div class="form-row">
+                    <!-- Price -->
+                    <div class="form-group">
+                        <label for="price">
+                            <i class="fas fa-rupee-sign"></i>
+                            Price per Night
+                        </label>
+                        <div class="price-wrapper">
+                            <span class="currency">₹</span>
+                            <input type="number" name="listing[price]" value="<%= listing.price %>" id="price" placeholder="0.00" required min="0" step="0.01">
+                        </div>
+                        <div class="text-green-600 hidden">
+                            <i class="fas fa-check-circle"></i> Looks good!
+                        </div>
+                        <div class="text-red-600 hidden">
+                            <i class="fas fa-exclamation-circle"></i> Please enter a valid price.
+                        </div>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="form-group">
+                        <label for="location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Location
+                        </label>
+                        <input type="text" name="listing[location]" value="<%= listing.location %>" id="location" placeholder="City, State" required>
+                        <div class="text-green-600 hidden">
+                            <i class="fas fa-check-circle"></i> Looks good!
+                        </div>
+                        <div class="text-red-600 hidden">
+                            <i class="fas fa-exclamation-circle"></i> Please enter a location.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Country -->
+                <div class="form-group">
+                    <label for="country">
+                        <i class="fas fa-flag"></i>
+                        Country
+                    </label>
+                    <input type="text" name="listing[country]" value="<%= listing.country %>" id="country" placeholder="Enter country" required>
+                    <div class="text-green-600 hidden">
+                        <i class="fas fa-check-circle"></i> Looks good!
+                    </div>
+                    <div class="text-red-600 hidden">
+                        <i class="fas fa-exclamation-circle"></i> Please enter a country.
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-save"></i>
+                    Update Listing
+                </button>
+            </form>
+        </div>
+
+        <!-- Help Text -->
+        <div class="help-text">
+            <i class="fas fa-info-circle"></i>
+            Need help? Contact our support team
+        </div>
     </div>
 
-    <!-- Form Container -->
-    <div class="form-container">
-      <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" class="needs-validation" enctype="multipart/form-data">
-        
-        <div class="form-group-enhanced mb-3">
-          <label for="title" class="form-label form-label-enhanced">
-            <i class="fas fa-heading label-icon"></i>
-            Title:
-          </label>
-          <input type="text" name="listing[title]" value="<%= listing.title %>" id="title" class="form-control form-control-enhanced input-hover" required>
-          <div class="valid-feedback valid-feedback-enhanced">
-            <i class="fas fa-check-circle"></i>
-            Looks good!
-          </div>
-          <div class="invalid-feedback invalid-feedback-enhanced">
-            <i class="fas fa-exclamation-circle"></i>
-            Please enter a title.
-          </div>
-        </div>
+    <script>
+        // Price input validation
+        document.getElementById("price").addEventListener("input", function(e) {
+            this.value = this.value.replace(/[^0-9.]/g, "");
+        });
 
-        <div class="form-group-enhanced mb-3">
-          <label for="description" class="form-label form-label-enhanced">
-            <i class="fas fa-align-left label-icon"></i>
-            Description:
-          </label>
-          <input type="text" name="listing[description]" value="<%= listing.description %>" class="form-control form-control-enhanced input-hover" required>
-          <div class="valid-feedback valid-feedback-enhanced">
-            <i class="fas fa-check-circle"></i>
-            Looks good!
-          </div>
-          <div class="invalid-feedback invalid-feedback-enhanced">
-            <i class="fas fa-exclamation-circle"></i>
-            Please enter a description.
-          </div>
-        </div>
-
-                <div class="form-group-enhanced mb-3">
-          <label for="category" class="form-label form-label-enhanced">
-            <i class="fas fa-layer-group label-icon"></i>
-            Category:
-          </label>
-          <select name="listing[category]" id="category" class="form-control form-control-enhanced input-hover" required>
-            <option value="rooms" <%= listing.category === "rooms" ? "selected" : "" %>>Rooms</option>
-            <option value="cities" <%= listing.category === "cities" ? "selected" : "" %>>Iconic Cities</option>
-            <option value="mountains" <%= listing.category === "mountains" ? "selected" : "" %>>Mountains</option>
-            <option value="castles" <%= listing.category === "castles" ? "selected" : "" %>>Castles</option>
-            <option value="pools" <%= listing.category === "pools" ? "selected" : "" %>>Amazing Pools</option>
-            <option value="camping" <%= listing.category === "camping" ? "selected" : "" %>>Camping</option>
-            <option value="farms" <%= listing.category === "farms" ? "selected" : "" %>>Farms</option>
-            <option value="beach" <%= listing.category === "beach" ? "selected" : "" %>>Beachfront</option>
-            <option value="luxury" <%= listing.category === "luxury" ? "selected" : "" %>>Luxury</option>
-            <option value="cabins" <%= listing.category === "cabins" ? "selected" : "" %>>Cabins</option>
-            <option value="boats" <%= listing.category === "boats" ? "selected" : "" %>>Boats</option>
-          </select>
-          <div class="invalid-feedback invalid-feedback-enhanced">
-            <i class="fas fa-exclamation-circle"></i>
-            Please select a category.
-          </div>
-        </div>
-
-
-         <div class="form-group-enhanced mb-3">
-          <label for="imageUrl" class="form-label form-label-enhanced">
-            <i class="fas fa-image label-icon"></i>
-            Original Image:
-          </label>
-          <img src="<%= listing.image.url %>" alt="Old Preview" class="img-fluid">
-        </div>
-
-        <div class="form-group-enhanced mb-3">
-          <label for="imageUrl" class="form-label form-label-enhanced">
-            <i class="fas fa-image label-icon"></i>
-            Upload Image:
-          </label>
-          <input type="file" name="listing[image]" class="form-control form-control-enhanced input-hover">
-          <div class="invalid-feedback invalid-feedback-enhanced">
-            <i class="fas fa-exclamation-circle"></i>
-            Please upload a valid image .
-          </div>
-        </div>
-
-        <div class="form-group-enhanced mb-3">
-          <label for="price" class="form-label form-label-enhanced">
-            <i class="fas fa-rupee-sign label-icon"></i>
-            Price:
-          </label>
-          <div class="input-group-enhanced">
-            <span class="input-prefix">₹</span>
-            <input type="number" name="listing[price]" value="<%= listing.price %>" class="form-control form-control-enhanced with-prefix input-hover" required min="0" step="0.01" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode === 46">
-          </div>
-          <div class="valid-feedback valid-feedback-enhanced">
-            <i class="fas fa-check-circle"></i>
-            Looks good!
-          </div>
-          <div class="invalid-feedback invalid-feedback-enhanced">
-            <i class="fas fa-exclamation-circle"></i>
-            Please enter a valid price.
-          </div>
-        </div>
-
-        <div class="form-group-enhanced mb-3">
-          <label for="location" class="form-label form-label-enhanced">
-            <i class="fas fa-map-marker-alt label-icon"></i>
-            Location:
-          </label>
-          <input type="text" name="listing[location]" value="<%= listing.location %>" class="form-control form-control-enhanced input-hover" required>
-          <div class="valid-feedback valid-feedback-enhanced">
-            <i class="fas fa-check-circle"></i>
-            Looks good!
-          </div>
-          <div class="invalid-feedback invalid-feedback-enhanced">
-            <i class="fas fa-exclamation-circle"></i>
-            Please enter a location.
-          </div>
-        </div>
-
-        <div class="form-group-enhanced mb-4">
-          <label for="country" class="form-label form-label-enhanced">
-            <i class="fas fa-flag label-icon"></i>
-            Country:
-          </label>
-          <input type="text" name="listing[country]" value="<%= listing.country %>" class="form-control form-control-enhanced input-hover" required>
-          <div class="valid-feedback valid-feedback-enhanced">
-            <i class="fas fa-check-circle"></i>
-            Looks good!
-          </div>
-          <div class="invalid-feedback invalid-feedback-enhanced">
-            <i class="fas fa-exclamation-circle"></i>
-            Please enter a country.
-          </div>
-        </div>
-
-        <button type="submit" class="btn submit-button">
-          <i class="fas fa-save me-2"></i>
-          Update Listing
-        </button>
-      </form>
-    </div>
-  </div>
-   
-   <script>
-      document.getElementById("price").addEventListener("input", function(e) {
-      this.value = this.value.replace(/[^0-9.]/g, ""); // strip non-numeric chars
-    });
+        // Form validation
+        (() => {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            
+            Array.from(forms).forEach(form => {
+                const inputs = form.querySelectorAll('input[required], textarea[required], select[required]');
+                
+                // Real-time validation
+                inputs.forEach(input => {
+                    input.addEventListener('input', function() {
+                        validateField(this);
+                    });
+                    
+                    input.addEventListener('blur', function() {
+                        validateField(this);
+                    });
+                });
+                
+                // Form submission
+                form.addEventListener('submit', event => {
+                    let isValid = true;
+                    
+                    inputs.forEach(input => {
+                        if (!input.checkValidity()) {
+                            isValid = false;
+                            showError(input);
+                        }
+                    });
+                    
+                    if (!isValid) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    
+                    form.classList.add('was-validated');
+                }, false);
+            });
+            
+            function validateField(field) {
+                const formGroup = field.closest('.form-group');
+                const successMsg = formGroup.querySelector('.text-green-600');
+                const errorMsg = formGroup.querySelector('.text-red-600');
+                
+                if (field.checkValidity()) {
+                    field.classList.remove('border-red-500');
+                    field.classList.add('border-green-500');
+                    if (successMsg) successMsg.classList.remove('hidden');
+                    if (errorMsg) errorMsg.classList.add('hidden');
+                } else {
+                    field.classList.remove('border-green-500');
+                    field.classList.add('border-red-500');
+                    if (successMsg) successMsg.classList.add('hidden');
+                    if (errorMsg) errorMsg.classList.remove('hidden');
+                }
+            }
+            
+            function showError(field) {
+                const formGroup = field.closest('.form-group');
+                const errorMsg = formGroup.querySelector('.text-red-600');
+                const successMsg = formGroup.querySelector('.text-green-600');
+                
+                field.classList.add('border-red-500');
+                field.classList.remove('border-green-500');
+                if (errorMsg) errorMsg.classList.remove('hidden');
+                if (successMsg) successMsg.classList.add('hidden');
+            }
+        })();
     </script>
-<script>
-(() => {
-  'use strict';
-  const forms = document.querySelectorAll('.needs-validation');
-  Array.from(forms).forEach(form => {
-    form.addEventListener('submit', event => {
-      if (!form.checkValidity()) {
-        event.preventDefault();   // stop submission
-        event.stopPropagation();
-      } else {
-        form.classList.add('success-animation');
-      }
-      form.classList.add('was-validated');
-    }, false);
-  });
-
-  // Add real-time validation feedback
-  const inputs = document.querySelectorAll('.form-control-enhanced');
-  inputs.forEach(input => {
-    input.addEventListener('input', function() {
-      if (this.checkValidity()) {
-        this.classList.add('is-valid');
-        this.classList.remove('is-invalid');
-      } else {
-        this.classList.add('is-invalid');
-        this.classList.remove('is-valid');
-      }
-    });
-  });
-})();
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-    
 </body>
 </html>

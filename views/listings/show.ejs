@@ -11,19 +11,8 @@
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <link rel="stylesheet" href="/css/footer.css">
-<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="/css/output.css">
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.js"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          primary: '#fe424d',
-        }
-      }
-    }
-  }
-</script>
  <script>
   const mapToken = "<%= process.env.MAP_TOKEN%>";
   const coordinates = <%-JSON.stringify(listing.geometry.coordinates)%>;
@@ -33,256 +22,7 @@
     country: "<%= listing.country %>"
   };
 </script>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  body {
-    background: #f8f9fa;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  }
-
-  .glass-effect {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-
-  .property-card {
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    transition: all 0.3s ease;
-  }
-
-  .property-card:hover {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  }
-
-  .hero-image {
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
-  }
-
-  .hero-image img {
-    transition: transform 0.4s ease;
-  }
-
-  .hero-image:hover img {
-    transform: scale(1.02);
-  }
-
-  .info-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
-    background: #f8f9fa;
-    border-radius: 12px;
-    border: 1px solid #e9ecef;
-    transition: all 0.2s ease;
-  }
-
-  .info-badge:hover {
-    background: #fff;
-    border-color: #fe424d;
-    transform: translateY(-2px);
-  }
-
-  .info-badge i {
-    color: #fe424d;
-    font-size: 1.1rem;
-  }
-
-  .booking-panel {
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e9ecef;
-    position: sticky;
-    top: 100px;
-  }
-
-  .input-modern {
-    width: 100%;
-    padding: 14px 16px;
-    border: 1.5px solid #e9ecef;
-    border-radius: 12px;
-    font-size: 15px;
-    transition: all 0.3s ease;
-    background: #f8f9fa;
-  }
-
-  .input-modern:focus {
-    outline: none;
-    border-color: #fe424d;
-    background: white;
-    box-shadow: 0 0 0 4px rgba(254, 66, 77, 0.08);
-  }
-
-  .btn-modern {
-    padding: 16px 24px;
-    border-radius: 12px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    border: none;
-    cursor: pointer;
-  }
-
-  .btn-primary-modern {
-    background: linear-gradient(135deg, #fe424d 0%, #ff5a64 100%);
-    color: white;
-    box-shadow: 0 4px 12px rgba(254, 66, 77, 0.3);
-  }
-
-  .btn-primary-modern:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(254, 66, 77, 0.4);
-  }
-
-  .btn-outline-modern {
-    background: white;
-    color: #495057;
-    border: 1.5px solid #dee2e6;
-  }
-
-  .btn-outline-modern:hover {
-    background: #f8f9fa;
-    border-color: #adb5bd;
-  }
-
-  .star-rating i {
-    cursor: pointer;
-    font-size: 1.75rem;
-    color: #dee2e6;
-    transition: all 0.2s ease;
-  }
-
-  .star-rating i:hover,
-  .star-rating i.active {
-    color: #ffc107;
-    transform: scale(1.1);
-  }
-
-  .review-card {
-    background: white;
-    border-radius: 16px;
-    padding: 24px;
-    border: 1px solid #e9ecef;
-    transition: all 0.3s ease;
-  }
-
-  .review-card:hover {
-    border-color: #fe424d;
-    box-shadow: 0 4px 16px rgba(254, 66, 77, 0.1);
-  }
-
-  .avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #fe424d 0%, #ff5a64 100%);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 1.25rem;
-  }
-
-  .section-title {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: #212529;
-    margin-bottom: 1.5rem;
-    position: relative;
-    padding-left: 16px;
-  }
-
-  .section-title::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 4px;
-    height: 28px;
-    background: linear-gradient(180deg, #fe424d 0%, #ff5a64 100%);
-    border-radius: 2px;
-  }
-
-  .price-tag {
-    background: linear-gradient(135deg, #fff5f5 0%, #ffe8ea 100%);
-    border: 2px solid #fe424d;
-    border-radius: 16px;
-    padding: 24px;
-    text-align: center;
-    margin-bottom: 24px;
-  }
-
-  .divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent 0%, #dee2e6 50%, transparent 100%);
-    margin: 48px 0;
-  }
-
-  #map {
-    height: 450px;
-    border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  }
-
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-
-  .loading .button-loader {
-    display: inline-block;
-    width: 1rem;
-    height: 1rem;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-top-color: white;
-    border-radius: 50%;
-    animation: spin 0.6s linear infinite;
-  }
-
-  .loading .button-text {
-    display: none;
-  }
-
-  .button-loader {
-    display: none;
-  }
-
-  .tag {
-    display: inline-block;
-    padding: 6px 14px;
-    background: #f8f9fa;
-    border-radius: 20px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #495057;
-    border: 1px solid #dee2e6;
-  }
-
-  .action-header {
-    background: white;
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 32px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  }
-</style>
 </head>
 
 <body>
@@ -314,6 +54,7 @@
               <i class="fa-solid fa-pen-to-square"></i> Edit
             </a>
             <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST" class="inline">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               <button type="submit" class="btn-modern bg-red-600 text-white hover:bg-red-700">
                 <i class="fa-solid fa-trash"></i> Delete
               </button>
@@ -334,28 +75,69 @@
       <!-- Main Content -->
       <div class="lg:col-span-2 space-y-8">
         
-        <!-- Host Info -->
-        <div class="property-card p-6">
-          <div class="flex items-center gap-4">
-            <div class="avatar">
-              <% if (listing.owner) { %>
-                <%= listing.owner.username.charAt(0).toUpperCase() %>
-              <% } else { %>
-                ?
-              <% } %>
-            </div>
-            <div>
-              <div class="text-sm text-gray-500 font-medium">Hosted by</div>
-              <div class="text-xl font-bold text-gray-900">
-                <% if (listing.owner) { %>
-                  <%= listing.owner.username %>
-                <% } else { %>
-                  Unknown Host
-                <% } %>
-              </div>
-            </div>
+      <!-- Host Info -->
+<div class="property-card p-6">
+  <h2 class="section-title">Your Host</h2>
+
+  <div class="flex items-start gap-5">
+
+    <!-- Host Image -->
+    <img 
+      src="<%= (listing.owner && listing.owner.profile && listing.owner.profile.photo && listing.owner.profile.photo.url) ? listing.owner.profile.photo.url : '/images/default-profile.png' %>"
+      alt="Host Image"
+      class="w-16 h-16 rounded-full object-cover shadow-md"
+    />
+
+    <div class="flex-1">
+
+      <!-- Name -->
+      <h3 class="font-bold text-gray-900 text-lg mb-1">
+        <%= listing.owner?.hostDetails?.name || listing.owner?.username || "Unknown Host" %>
+      </h3>
+
+      <!-- Joined Date -->
+      <% if (listing.owner?.hostDetails?.joinedAt) { %>
+        <p class="text-gray-500 text-sm mb-3">
+          Host since <%= new Date(listing.owner.hostDetails.joinedAt).toLocaleDateString("en-IN") %>
+        </p>
+      <% } %>
+
+      <!-- Bio -->
+      <% if (listing.owner?.hostDetails?.bio) { %>
+        <p class="text-gray-700 leading-relaxed text-[15px] mb-3">
+          <%= listing.owner.hostDetails.bio %>
+        </p>
+      <% } %>
+
+      <!-- Contact Info -->
+      <div class="flex flex-wrap gap-4 text-sm text-gray-600">
+        
+        <% if (listing.owner?.hostDetails?.phone) { %>
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-phone text-gray-500"></i>
+            <span><%= listing.owner.hostDetails.phone %></span>
           </div>
-        </div>
+        <% } %>
+
+        <% if (listing.owner?.email) { %>
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-envelope text-gray-500"></i>
+            <span><%= listing.owner.email %></span>
+          </div>
+        <% } %>
+
+        <% if (listing.owner?.hostDetails?.country) { %>
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-location-dot text-gray-500"></i>
+            <span><%= listing.owner.hostDetails.country %></span>
+          </div>
+        <% } %>
+
+      </div>
+
+    </div>
+  </div>
+</div>
 
         <!-- Description -->
         <div class="property-card p-6">
@@ -457,6 +239,7 @@
         <div class="bg-gray-50 rounded-2xl p-6 mb-8 border border-gray-200">
           <h3 class="font-bold text-lg text-gray-900 mb-4">Share Your Experience</h3>
           <form action="/listings/<%= listing._id %>/reviews" method="POST" class="needs-validation" novalidate>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <div class="mb-5">
               <label class="block text-sm font-semibold text-gray-700 mb-3">Your Rating</label>
               <div class="star-rating flex gap-2">
@@ -536,6 +319,7 @@
 
               <% if (currentUser && review.author && review.author._id.equals(currentUser._id)) { %>
                 <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                   <button type="submit" class="text-red-600 text-sm font-semibold hover:text-red-700 transition">
                     <i class="fa-solid fa-trash"></i> Delete Review
                   </button>

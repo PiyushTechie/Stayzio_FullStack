@@ -19,8 +19,18 @@ router.get(
       req.flash("error", "Account not found or has been deleted.");
       return res.redirect("/login");
     }
-    req.flash("success", `Welcome ${req.user.username || "traveler"}!`);
-    res.redirect("/listings");
+
+    // --- START: MODIFIED LOGIC ---
+    if (!req.user.profile.name || req.user.profile.name === "") {
+      // Profile is incomplete, redirect to setup
+      req.flash("success", "Welcome! Let's finish setting up your profile.");
+      res.redirect("/profile/setup");
+    } else {
+      // Profile is complete, redirect to listings
+      req.flash("success", `Welcome ${req.user.username || "traveler"}!`);
+      res.redirect("/listings");
+    }
+    // --- END: MODIFIED LOGIC ---
   }
 );
 
@@ -38,8 +48,18 @@ router.get(
       req.flash("error", "Account not found or has been deleted.");
       return res.redirect("/login");
     }
-    req.flash("success", "Welcome back via Facebook!");
-    res.redirect("/listings");
+
+    // --- START: MODIFIED LOGIC ---
+    if (!req.user.profile.name || req.user.profile.name === "") {
+      // Profile is incomplete, redirect to setup
+      req.flash("success", "Welcome! Let's finish setting up your profile.");
+      res.redirect("/profile/setup");
+    } else {
+      // Profile is complete, redirect to listings
+      req.flash("success", "Welcome back via Facebook!");
+      res.redirect("/listings");
+    }
+    // --- END: MODIFIED LOGIC ---
   }
 );
 
@@ -57,8 +77,18 @@ router.get(
       req.flash("error", "Account not found or has been deleted.");
       return res.redirect("/login");
     }
-    req.flash("success", `Welcome ${req.user.username || "traveler"} via GitHub!`);
-    res.redirect("/listings");
+
+    // --- START: MODIFIED LOGIC ---
+    if (!req.user.profile.name || req.user.profile.name === "") {
+      // Profile is incomplete, redirect to setup
+      req.flash("success", "Welcome! Let's finish setting up your profile.");
+      res.redirect("/profile/setup");
+    } else {
+      // Profile is complete, redirect to listings
+      req.flash("success", `Welcome ${req.user.username || "traveler"} via GitHub!`);
+      res.redirect("/listings");
+    }
+    // --- END: MODIFIED LOGIC ---
   }
 );
 

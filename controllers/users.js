@@ -1,22 +1,24 @@
-// controllers/users.js
 import User from "../models/user.js";
 import { sendEmailFromMJML } from "../utils/mailer.js";
 import Listing from "../models/listing.js";
 import Review from "../models/reviews.js";
+import path from "path";
 
 // ====================== SIGNUP & OTP ======================
 
-// Render signup form
 const renderSignUpForm = (req, res) => {
-  res.render("users/newsignup");
+  if (req.isAuthenticated()) {
+    return res.redirect("/listings");
+  }
+  res.render("users/newsignup", { csrfToken: req.csrfToken() });
 };
 
-// Signup a new user and send OTP
 const signup = async (req, res) => {
+  console.log("SIGNUP CONTROLLER HIT");
   try {
     const { username, email, password, dob } = req.body;
 
-    // ✅ Age Validation (Must be 18 or older)
+    // Age validation
     const birthDate = new Date(dob);
     const ageDiffMs = Date.now() - birthDate.getTime();
     const ageDate = new Date(ageDiffMs);
@@ -27,7 +29,7 @@ const signup = async (req, res) => {
       return res.redirect("/signup");
     }
 
-    // 🔍 Check if username or email already exists
+    // Check existing user
     const existingUser = await User.findOne({
       $or: [{ username }, { email }],
     });
@@ -37,17 +39,19 @@ const signup = async (req, res) => {
       return res.redirect("/signup");
     }
 
+    // Create user
     const user = new User({ username, email, dob });
+    const registeredUser = await User.register(user, password);
 
-    await User.register(user, password);
-
-    // Generate 6-digit OTP
+    // Generate OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    user.otp = otp;
-    user.otpExpiry = Date.now() + 10 * 60 * 1000; // 10 minutes
-    user.emailVerified = false;
-    await user.save();
+    registeredUser.otp = otp;
+    registeredUser.otpExpiry = Date.now() + 5 * 60 * 1000; 
+    registeredUser.emailVerified = false;
+    registeredUser.lastOtpSent = new Date();
+    await registeredUser.save();
 
+    // Send Email
     await sendEmailFromMJML({
       to: email,
       subject: "Stayzio: Verify your email",
@@ -59,70 +63,86 @@ const signup = async (req, res) => {
       },
     });
 
-    req.flash(
-      "success",
-      "Signup successful! Enter the OTP sent to your email to verify your account."
-    );
-    res.redirect("/verify-otp");
+    // Auto Login
+    req.login(registeredUser, (loginErr) => {
+      if (loginErr) {
+        console.error("Auto-login failed:", loginErr);
+        req.flash("error", "Account created, but login failed.");
+        return res.redirect("/login");
+      }
+      req.flash("success", "Signup successful! Please check your email for the OTP.");
+      res.redirect("/verify-otp");
+    });
 
   } catch (e) {
-    req.flash("error", e.message);
+    console.error("Signup Error:", e);
+    req.flash("error", e.message || "Something went wrong.");
     res.redirect("/signup");
   }
 };
 
+const verifyOtp = async (req, res, next) => {
+  try {
+    const { email, otp } = req.body;
+    const user = await User.findOne({ email });
 
-// Verify OTP route
-const verifyOtp = async (req, res) => {
-  const { email, otp } = req.body;
-  const user = await User.findOne({ email });
+    if (!user) {
+      req.flash("error", "No account found.");
+      return res.redirect("/signup");
+    }
+    if (user.emailVerified) {
+      req.flash("success", "Email already verified!");
+      return res.redirect("/login");
+    }
+    if (user.otp !== otp || user.otpExpiry < Date.now()) {
+      req.flash("error", "Invalid or expired OTP.");
+      return res.redirect("/verify-otp");
+    }
 
-  if (!user) {
-    req.flash("error", "No account found.");
-    return res.redirect("/signup");
+    user.emailVerified = true;
+    user.otp = undefined;
+    user.otpExpiry = undefined;
+    await user.save();
+
+    req.login(user, (err) => {
+      if (err) return next(err);
+      req.flash("success", "Email verified successfully!");
+      res.redirect("/listings"); 
+    });
+
+  } catch (e) {
+    req.flash("error", e.message);
+    res.redirect("/verify-otp");
   }
-  if (user.emailVerified) {
-    req.flash("success", "Email already verified!");
-    return res.redirect("/login");
-  }
-  if (user.otp !== otp || user.otpExpiry < Date.now()) {
-    req.flash("error", "Invalid or expired OTP.");
-    return res.redirect("/verify-otp");
-  }
-
-  user.emailVerified = true;
-  user.otp = undefined;
-  user.otpExpiry = undefined;
-  await user.save();
-
-  req.flash("success", "Email verified successfully!");
-  res.redirect("/login");
 };
 
-//Resend Verification Otp
 const resendOtp = async (req, res) => {
   try {
-    
-    const { email } = req.body || {};
+    const email = req.body.email || req.user?.email;
+
     if (!email) {
-      return res.status(400).json({ error: "Email is required" });
+      req.flash("error", "Email is required");
+      return res.redirect("/verify-otp");
     }
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({ error: "No account found with this email" });
+      req.flash("error", "No account found.");
+      return res.redirect("/verify-otp");
     }
 
     if (user.emailVerified) {
-      return res.status(400).json({ error: "Your email is already verified. Please log in." });
+      req.flash("error", "Email already verified");
+      return res.redirect("/login");
     }
 
     const now = Date.now();
-    const cooldownPeriod = 150000;
+    const cooldown = 150000; // 2.5 minutes
 
-    if (user.lastOtpSent && now - user.lastOtpSent.getTime() < cooldownPeriod) {
-      const waitTime = Math.ceil((cooldownPeriod - (now - user.lastOtpSent.getTime())) / 1000);
-      return res.status(429).json({ error: `Please wait ${waitTime} seconds before requesting another OTP` });
+    if (user.lastOtpSent && now - user.lastOtpSent.getTime() < cooldown) {
+      const wait = Math.ceil((cooldown - (now - user.lastOtpSent.getTime())) / 1000);
+      req.flash("error", `Please wait ${wait}s before requesting again`);
+      return res.redirect("/verify-otp");
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -131,31 +151,29 @@ const resendOtp = async (req, res) => {
     user.lastOtpSent = new Date(now);
     await user.save();
 
-    console.log("Generated OTP:", otp);
-
     await sendEmailFromMJML({
-          to: user.email,
-          subject: "Stayzio: Resend OTP Verification",
-          templateName: "signupOtp",   // matches email-templates/signupOtp.mjml
-          templateData: {
-            username: user.username,
-            otp,
-            year: new Date().getFullYear(),
-          },
-        });
+      to: email,
+      subject: "Stayzio: New OTP",
+      templateName: "signupOtp",
+      templateData: { username: user.username, otp, year: new Date().getFullYear() },
+    });
 
-    return res.status(200).json({ message: "A new OTP has been sent to your email" });
+    req.flash("success", "OTP resent successfully!");
+    res.redirect("/verify-otp");
   } catch (e) {
-    console.error("Resend OTP Error:", e); 
-    return res.status(500).json({ error: "An internal server error occurred. Please try again." });
+    console.log("Resend OTP Error:", e);
+    req.flash("error", "Failed to resend OTP");
+    res.redirect("/verify-otp");
   }
 };
-
 
 // ====================== LOGIN / LOGOUT ======================
 
 const renderLoginForm = (req, res) => {
-  res.render("users/newlogin");
+  if (req.isAuthenticated()) {
+    return res.redirect("/listings");
+  }
+  res.render("users/newlogin", { csrfToken: req.csrfToken() });
 };
 
 const login = (req, res, next) => {
@@ -176,36 +194,87 @@ const login = (req, res, next) => {
 const logout = (req, res, next) => {
   req.logout((err) => {
     if (err) return next(err);
-    req.flash("success", "Logged Out Successfully!");
-    res.redirect("/listings");
+    req.flash("success", "You have logged out successfully.");
+    res.redirect("/login");
   });
 };
 
 // ====================== USER PROFILES ======================
 
-const userProfile = async (req, res) => {
-  const user = await User.findById(req.user._id)
-    .populate("listings")
-    .populate("reviews");
-
-  const isOwner = req.user && req.user._id.equals(user._id);
-  res.render("users/profile", { user, isOwner });
-};
-
+// 1. Public Profile (View others)
+// 1. Public Profile (View others)
 const publicProfile = async (req, res) => {
   const profileUser = await User.findById(req.params.id)
     .populate("listings")
-    .populate("reviews");
+    .populate({ 
+      path: "reviews", 
+      populate: { 
+        path: "listing", 
+      } 
+    });
 
   const isOwner = req.user && req.user._id.equals(profileUser._id);
-  res.render("users/profile", { user: profileUser, isOwner });
+  res.render("users/profile", { user: profileUser, isOwner, csrfToken: req.csrfToken() });
+};
+
+// 2. User Profile (View own dashboard) --> THIS WAS MISSING
+// 2. User Profile (View own dashboard)
+const userProfile = async (req, res) => {
+  // WE MUST RE-FETCH THE USER TO POPULATE DATA
+  // req.user only contains basic session info, not the deep database links
+  
+  const populatedUser = await User.findById(req.user._id)
+    .populate("listings")
+    .populate({
+      path: "reviews",
+      populate: {
+        path: "listing", // <--- CRITICAL: This allows <%= review.listing._id %> to work
+        select: "title _id" 
+      }
+    });
+
+  res.render("users/profile", { 
+      user: populatedUser, // Pass the fully populated user, not req.user
+      isOwner: true,
+      csrfToken: req.csrfToken() 
+  });
+};
+
+const setupPage = (req, res) => {
+  res.render("users/profileSetup", {
+    user: req.user,
+    csrfToken: req.csrfToken(),
+  });
+};
+
+const updateProfile = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    user.profile = user.profile || {};
+    user.profile.name = req.body.name || "";
+    user.profile.address = req.body.address || "";
+    user.profile.country = req.body.country || "";
+    user.profile.phone = req.body.phone || "";
+    user.profile.bio = req.body.bio || "";
+
+    await user.save();
+
+    req.flash("success", "Profile updated!");
+    res.redirect("/profile");
+
+  } catch (err) {
+    console.log("ERROR IN UPDATE PROFILE:", err);
+    req.flash("error", "Something went wrong.");
+    res.redirect("/profile/setup");
+  }
 };
 
 
-// ====================== FORGOT PASSWORD WITH OTP ======================
+// ====================== FORGOT PASSWORD ======================
 
 const renderForgotPasswordForm = (req, res) => {
-  res.render("users/forgotPassword");
+  res.render("users/forgotPassword", { csrfToken: req.csrfToken() });
 };
 
 const forgotPassword = async (req, res) => {
@@ -224,17 +293,17 @@ const forgotPassword = async (req, res) => {
     await user.save();
 
     await sendEmailFromMJML({
-          to: user.email,
-          subject: "Stayzio: Password Reset OTP",
-          templateName: "passwordResetOtp",   // matches email-templates/signupOtp.mjml
-          templateData: {
-            username: user.username,
-            otp,
-            year: new Date().getFullYear(),
-          },
-        });
+      to: user.email,
+      subject: "Stayzio: Password Reset OTP",
+      templateName: "passwordResetOtp",
+      templateData: {
+        username: user.username,
+        otp,
+        year: new Date().getFullYear(),
+      },
+    });
 
-    req.flash("success", "OTP sent to your email. Enter it below to reset password.");
+    req.flash("success", "OTP sent to your email.");
     res.redirect("/reset-password-otp");
   } catch (e) {
     req.flash("error", "Something went wrong sending OTP.");
@@ -248,6 +317,7 @@ const renderResetPasswordForm = (req, res) => {
       error: req.flash("error"),
       success: req.flash("success"),
     },
+    csrfToken: req.csrfToken()
   });
 };
 
@@ -273,27 +343,21 @@ const resetPassword = async (req, res) => {
   user.otpExpiry = undefined;
   await user.save();
 
-  req.flash("success", "Password reset successfully! Please login with the new password.");
+  req.flash("success", "Password reset successfully! Please login.");
   res.redirect("/login");
 };
 
 const deleteAccount = async (req, res) => {
   try {
     const userId = req.user._id;
-
-    // Delete all listings created by the user
     await Listing.deleteMany({ author: userId });
-
-    // Delete all reviews written by the user
     await Review.deleteMany({ author: userId });
-
-    // Finally, delete the user
     await User.findByIdAndDelete(userId);
 
-    // Logout after deletion
     req.logout(() => {
       req.flash("success", "Your account has been permanently deleted.");
       res.status(200).json({ redirect: "/" });
+      // If this is called via Form Submit, use: res.redirect("/");
     });
   } catch (err) {
     console.error(err);
@@ -302,15 +366,17 @@ const deleteAccount = async (req, res) => {
 };
 
 // ====================== EXPORT ======================
-
+// Now userProfile is defined, so this export will work.
 export default {
   renderSignUpForm,
   signup,
   renderLoginForm,
   login,
   logout,
-  userProfile,
+  userProfile, // <--- Works now!
   publicProfile,
+  setupPage,
+  updateProfile,
   verifyOtp,
   renderForgotPasswordForm,
   forgotPassword,

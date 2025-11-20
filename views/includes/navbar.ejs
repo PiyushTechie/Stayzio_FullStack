@@ -4,11 +4,11 @@
       
       <!-- Brand Logo -->
       <a href="/" class="logo flex items-center gap-2 transition-transform hover:scale-105">
-  <i class="fa-solid fa-earth-asia brand-icon text-pink-500 text-3xl"></i>
-  <span class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#fe424d] to-pink-600">
-    Stayzio
-  </span>
-</a>
+        <i class="fa-solid fa-earth-asia brand-icon text-pink-500 text-3xl"></i>
+        <span class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#fe424d] to-pink-600">
+          Stayzio
+        </span>
+      </a>
 
       <!-- Desktop Navigation -->
       <div class="hidden lg:flex items-center gap-8 flex-1 justify-center">
@@ -41,34 +41,59 @@
       <!-- Right Side Actions -->
       <div class="flex items-center gap-3">
         
-        <!-- Become a Host Button -->
-        <a href="/listings/new" class="hidden md:flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-[#fe424d] to-pink-500 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-          </svg>
-          <span>Become a Host</span>
-        </a>
+        <!-- Host / Guest Button -->
+        <% if (currentUser && currentUser.role === "host") { %>
+          <a href="/listings/new"
+             class="hidden md:flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-[#fe424d] to-pink-500 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            <span>Create a Listing</span>
+          </a>
 
-        <!-- Mobile Host Button -->
-        <a href="/listings/new" class="md:hidden w-10 h-10 bg-gradient-to-r from-[#fe424d] to-pink-500 text-white rounded-full flex items-center justify-center hover:shadow-lg transition-all">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-          </svg>
-        </a>
+        <% } else if (currentUser && currentUser.role === "admin") { %>
+          <a href="/listings/new"
+             class="hidden md:flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-[#fe424d] to-pink-500 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            <span>Create a Listing</span>
+          </a>
+
+        <% } else if (currentUser) { %>
+          <a href="/setup"
+             class="hidden md:flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-[#fe424d] to-pink-500 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            <span>Become a Host</span>
+          </a>
+
+        <% } else { %>
+          <a href="/login"
+             class="hidden md:flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-[#fe424d] to-pink-500 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            <span>Become a Host</span>
+          </a>
+        <% } %>
 
         <% if (currentUser) { %>
           <!-- User Menu -->
-          <div class="relative user-menu">
+          <div class="relative">
             <button 
               type="button"
-              onclick="toggleUserMenu()"
+              id="userMenuBtn"
               class="flex items-center gap-2 px-3 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl transition-all border border-gray-200 dark:border-gray-700"
             >
-              <div class="w-8 h-8 bg-gradient-to-br from-[#fe424d] to-pink-500 rounded-full flex items-center justify-center text-white font-semibold">
-                <%= currentUser.username.charAt(0).toUpperCase() %>
-              </div>
+              <img 
+                src="<%= currentUser.profile.photo.url %>" 
+                alt="<%= currentUser.username %>'s photo" 
+                class="w-8 h-8 rounded-full object-cover"
+              >
               <span class="hidden lg:block font-medium text-gray-900 dark:text-white"><%= currentUser.username %></span>
-              <svg class="w-4 h-4 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg id="dropdownArrow" class="w-4 h-4 text-gray-600 dark:text-gray-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
               </svg>
             </button>
@@ -76,14 +101,17 @@
             <!-- Dropdown Menu -->
             <div 
               id="userDropdown"
-              class="hidden absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+              style="display: none;"
+              class="absolute right-0 top-full mt-2 w-64 z-50 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden"
             >
               <!-- User Info Header -->
               <div class="px-4 py-4 bg-gradient-to-r from-[#fe424d]/10 to-pink-500/10 border-b border-gray-200 dark:border-gray-700">
                 <div class="flex items-center gap-3">
-                  <div class="w-12 h-12 bg-gradient-to-br from-[#fe424d] to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                    <%= currentUser.username.charAt(0).toUpperCase() %>
-                  </div>
+                  <img 
+                    src="<%= currentUser.profile.photo.url %>" 
+                    alt="<%= currentUser.username %>'s photo" 
+                    class="w-12 h-12 rounded-full object-cover"
+                  >
                   <div class="flex-1 min-w-0">
                     <p class="font-semibold text-gray-900 dark:text-white truncate"><%= currentUser.username %></p>
                     <p class="text-sm text-gray-600 dark:text-gray-400 truncate"><%= currentUser.email %></p>
@@ -99,12 +127,17 @@
                   </svg>
                   <span class="font-medium">Profile</span>
                 </a>
-                <a href="/logout" class="flex items-center gap-3 px-4 py-3 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                  </svg>
-                  <span class="font-medium">Logout</span>
-                </a>
+                <form action="/logout" method="POST" class="w-full">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button 
+                    type="submit"
+                    class="flex items-center gap-3 px-4 py-3 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors w-full text-left">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                    </svg>
+                    <span class="font-medium">Logout</span>
+                  </button>
+                </form>
               </div>
             </div>
           </div>
@@ -123,40 +156,37 @@
         <!-- Mobile Menu Toggle -->
         <button 
           type="button"
-          onclick="toggleMobileMenu()"
+          id="mobileMenuBtn"
           class="lg:hidden w-10 h-10 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
         >
-          <svg id="menuIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-          </svg>
-          <svg id="closeIcon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
           </svg>
         </button>
       </div>
     </div>
 
     <!-- Mobile Menu -->
-    <div id="mobileMenu" class="hidden lg:hidden border-t border-gray-200 dark:border-gray-800 py-4">
-      <!-- Mobile Search -->
-      <% if (typeof showSearch === 'undefined' || showSearch) { %>
-      <form action="/listings" method="GET" class="mb-4">
-        <div class="relative">
-          <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-          </svg>
-          <input 
-            type="search" 
-            name="q"
-            placeholder="Search destinations..."
-            class="w-full pl-12 pr-4 py-3 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#fe424d]/50 focus:border-[#fe424d] transition-all text-gray-900 dark:text-white placeholder-gray-500"
-          >
-        </div>
-      </form>
-      <% } %>
+    <div id="mobileMenu" style="display: none;" class="lg:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 shadow-lg">
+      <div class="max-w-7xl mx-auto px-4 py-4 space-y-2">
+        <!-- Mobile Search -->
+        <% if (typeof showSearch === 'undefined' || showSearch) { %>
+        <form action="/listings" method="GET" class="mb-3">
+          <div class="relative">
+            <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <input 
+              type="search" 
+              name="q"
+              placeholder="Search destinations..."
+              class="w-full pl-12 pr-4 py-3 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#fe424d]/50 focus:border-[#fe424d] transition-all text-gray-900 dark:text-white placeholder-gray-500"
+            >
+          </div>
+        </form>
+        <% } %>
 
-      <!-- Mobile Navigation Links -->
-      <div class="space-y-2">
+        <!-- Mobile Navigation Links -->
         <a href="/listings" class="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 font-medium hover:bg-[#fe424d]/10 hover:text-[#fe424d] rounded-lg transition-colors">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -164,78 +194,132 @@
           <span>Explore</span>
         </a>
 
-        <% if (!currentUser) { %>
-        <a href="/signup" class="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 font-medium hover:bg-[#fe424d]/10 hover:text-[#fe424d] rounded-lg transition-colors">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
-          </svg>
-          <span>Sign Up</span>
-        </a>
-        <a href="/login" class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-[#fe424d] to-pink-500 text-white font-semibold rounded-lg hover:shadow-lg transition-all">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
-          </svg>
-          <span>Login</span>
-        </a>
+        <% if (currentUser && (currentUser.role === "host" || currentUser.role === "admin")) { %>
+          <a href="/listings/new" class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-[#fe424d]/10 to-pink-500/10 text-[#fe424d] font-medium rounded-lg hover:scale-[1.02] transition-all">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            <span>Create New Listing</span>
+          </a>
+        <% } else if (currentUser) { %>
+          <a href="/setup" class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-[#fe424d]/10 to-pink-500/10 text-[#fe424d] font-medium rounded-lg hover:scale-[1.02] transition-all">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            <span>Become a Host</span>
+          </a>
+        <% } else { %>
+          <a href="/login" class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-[#fe424d]/10 to-pink-500/10 text-[#fe424d] font-medium rounded-lg hover:scale-[1.02] transition-all">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            <span>Become a Host</span>
+          </a>
+        <% } %>
+
+        <% if (currentUser) { %>
+          <a href="/profile" class="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 font-medium hover:bg-[#fe424d]/10 hover:text-[#fe424d] rounded-lg transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+            </svg>
+            <span>Profile</span>
+          </a>
+          <form action="/logout" method="POST" class="w-full">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button type="submit" class="flex items-center gap-3 px-4 py-3 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors w-full text-left">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+              </svg>
+              <span>Logout</span>
+            </button>
+          </form>
+        <% } else { %>
+          <a href="/signup" class="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 font-medium hover:bg-[#fe424d]/10 hover:text-[#fe424d] rounded-lg transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+            </svg>
+            <span>Sign Up</span>
+          </a>
+          <a href="/login" class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-[#fe424d] to-pink-500 text-white font-semibold rounded-lg hover:shadow-lg transition-all">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+            </svg>
+            <span>Login</span>
+          </a>
         <% } %>
       </div>
     </div>
   </div>
 </nav>
+
 <style>
   .logo {
-            font-size: 28px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #fe424d, #ff6b73);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            
-            align-items: center;
-            gap: 0px;
-        }
+    font-size: 28px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #fe424d, #ff6b73);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    align-items: center;
+    gap: 0px;
+  }
 </style>
 
 <script>
-  // Toggle User Menu
-  function toggleUserMenu() {
-    const dropdown = document.getElementById('userDropdown');
-    dropdown.classList.toggle('hidden');
-  }
+  // User Dropdown Toggle
+  const userMenuBtn = document.getElementById('userMenuBtn');
+  const userDropdown = document.getElementById('userDropdown');
+  const dropdownArrow = document.getElementById('dropdownArrow');
 
-  // Toggle Mobile Menu
-  function toggleMobileMenu() {
-    const menu = document.getElementById('mobileMenu');
-    const menuIcon = document.getElementById('menuIcon');
-    const closeIcon = document.getElementById('closeIcon');
-    
-    menu.classList.toggle('hidden');
-    menuIcon.classList.toggle('hidden');
-    closeIcon.classList.toggle('hidden');
-  }
-
-  // Close user menu when clicking outside
-  document.addEventListener('click', function(event) {
-    const userMenu = document.querySelector('.user-menu');
-    const dropdown = document.getElementById('userDropdown');
-    
-    if (userMenu && dropdown && !userMenu.contains(event.target)) {
-      dropdown.classList.add('hidden');
-    }
-  });
-
-  // Close mobile menu when window is resized to desktop
-  window.addEventListener('resize', function() {
-    if (window.innerWidth >= 1024) {
-      const menu = document.getElementById('mobileMenu');
-      const menuIcon = document.getElementById('menuIcon');
-      const closeIcon = document.getElementById('closeIcon');
+  if (userMenuBtn && userDropdown) {
+    userMenuBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
       
-      if (menu && !menu.classList.contains('hidden')) {
-        menu.classList.add('hidden');
-        menuIcon.classList.remove('hidden');
-        closeIcon.classList.add('hidden');
+      if (userDropdown.style.display === 'none') {
+        userDropdown.style.display = 'block';
+        if (dropdownArrow) dropdownArrow.style.transform = 'rotate(180deg)';
+      } else {
+        userDropdown.style.display = 'none';
+        if (dropdownArrow) dropdownArrow.style.transform = 'rotate(0deg)';
       }
-    }
-  });
+    });
+    
+    // Close when clicking outside
+    document.addEventListener('click', function(event) {
+      if (!userMenuBtn.contains(event.target) && !userDropdown.contains(event.target)) {
+        userDropdown.style.display = 'none';
+        if (dropdownArrow) dropdownArrow.style.transform = 'rotate(0deg)';
+      }
+    });
+  }
+
+  // Mobile Menu Toggle
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  if (mobileMenuBtn && mobileMenu) {
+    mobileMenuBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      
+      if (mobileMenu.style.display === 'none') {
+        mobileMenu.style.display = 'block';
+      } else {
+        mobileMenu.style.display = 'none';
+      }
+    });
+    
+    // Close when clicking outside
+    document.addEventListener('click', function(event) {
+      if (!mobileMenu.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
+        mobileMenu.style.display = 'none';
+      }
+    });
+    
+    // Close mobile menu when window is resized to desktop
+    window.addEventListener('resize', function() {
+      if (window.innerWidth >= 1024) {
+        mobileMenu.style.display = 'none';
+      }
+    });
+  }
 </script>

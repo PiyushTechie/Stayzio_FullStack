@@ -4,25 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stayzio - Listings</title>
-<link rel="stylesheet" href="/css/output.css">
 <link rel="stylesheet" href="/css/index.css">
-<script>
-  tailwind = window.tailwind || {};
-  tailwind.config = {
-    darkMode: 'class',
-    theme: {
-      extend: {
-        colors: {
-          'brand-red': '#fe424d'
-        }
-      }
-    }
-  }
-</script>
-<script src="https://cdn.tailwindcss.com"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+<link rel="stylesheet" href="/css/output.css">
 </head>
    
 <body class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-black min-h-screen">
@@ -363,334 +348,317 @@
         </div>
     </div>
 </footer>
-
-
 <script>
-    // --- STATE MANAGEMENT ---
-    let currentPage = 1;
-    let isLoading = false;
-    let noMoreListings = false;
-    let loaderElement;
+  // --- STATE MANAGEMENT ---
+  let currentPage = 1;
+  let isLoading = false;
+  let noMoreListings = false;
+  let loaderElement;
+  let footerElement; // <-- ADDED
 
-    // --- SKELETON HELPER FUNCTIONS ---
-    function getSkeletonCardHTML() {
-      return `
-        <div class="skeleton-card">
-          <div class="skeleton-image"></div>
-          <div class="skeleton-body">
-            <div class="skeleton-text medium"></div>
-            <div class="skeleton-text short"></div>
-            <div class="skeleton-text medium"></div>
-          </div>
-        </div>`;
+  // --- OVERLAY LOADER ELEMENT ---
+  const overlay = document.getElementById("overlay");
+
+  function toggleOverlay(show) {
+    if (!overlay) return;
+    if (show) {
+      overlay.style.display = "flex";
+      document.body.style.overflow = "hidden";
+    } else {
+      overlay.style.display = "none";
+      document.body.style.overflow = "";
+    }
+  }
+
+  // --- SKELETON HELPER FUNCTIONS ---
+  function getSkeletonCardHTML() {
+    return `
+      <div class="skeleton-card">
+        <div class="skeleton-image"></div>
+        <div class="skeleton-body">
+          <div class="skeleton-text medium"></div>
+          <div class="skeleton-text short"></div>
+          <div class="skeleton-text medium"></div>
+        </div>
+      </div>`;
+  }
+
+  function showSkeletons(count = 8) {
+    const listingsGrid = document.getElementById("listingsGrid");
+    listingsGrid.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      listingsGrid.insertAdjacentHTML('beforeend', getSkeletonCardHTML());
+    }
+  }
+
+  // --- INFINITE LOADER FUNCTIONS (UPDATED) ---
+  function showInfiniteLoader() {
+    if (loaderElement) {
+      loaderElement.querySelector('.spinner').style.display = 'block';
+      loaderElement.querySelector('.loader-text').textContent = 'Loading more stays...';
+      loaderElement.style.display = 'block';
+    }
+    if (footerElement) footerElement.style.display = 'none';
+  }
+
+  function hideInfiniteLoader() {
+    if (loaderElement) {
+      loaderElement.style.display = 'none';
+    }
+    if (footerElement) footerElement.style.display = 'block';
+  }
+
+  function showNoMoreListingsMessage() {
+    if (loaderElement) {
+      loaderElement.querySelector('.spinner').style.display = 'none';
+      loaderElement.querySelector('.loader-text').textContent = 'You have reached the end!';
+      loaderElement.style.display = 'block';
+    }
+    if (footerElement) footerElement.style.display = 'block';
+  }
+
+  
+  async function fetchListings() {
+    if (isLoading || noMoreListings) return;
+    isLoading = true;
+
+    const isInitialLoad = (currentPage === 1);
+    const listingsGrid = document.getElementById("listingsGrid");
+    const urlParams = new URLSearchParams(window.location.search);
+
+    if (isInitialLoad) {
+      toggleOverlay(true); 
+      noMoreListings = false;
+    } else {
+      showInfiniteLoader(); 
     }
 
-    function showSkeletons(count = 8) {
-      const listingsGrid = document.getElementById("listingsGrid");
-      listingsGrid.innerHTML = '';
-      for (let i = 0; i < count; i++) {
-        listingsGrid.insertAdjacentHTML('beforeend', getSkeletonCardHTML());
-      }
-    }
+    try {
+      urlParams.set("page", currentPage);
+      const response = await fetch(`/listings/api/listings?${urlParams.toString()}`);
+      if (!response.ok) throw new Error('Network response was not ok');
 
-    // --- INFINITE LOADER FUNCTIONS ---
-    function showInfiniteLoader() {
-      if (loaderElement) {
-        loaderElement.querySelector('.spinner').style.display = 'block';
-        loaderElement.querySelector('.loader-text').textContent = 'Loading more stays...';
-        loaderElement.style.display = 'block';
-      }
-    }
+      const newListings = await response.json();
 
-    function hideInfiniteLoader() {
-      if (loaderElement) {
-        loaderElement.style.display = 'none';
-      }
-    }
-
-    function showNoMoreListingsMessage() {
-      if (loaderElement) {
-        loaderElement.querySelector('.spinner').style.display = 'none';
-        loaderElement.querySelector('.loader-text').textContent = '🎉 You have reached the end!';
-        loaderElement.style.display = 'block';
-      }
-    }
-
-    // --- CORE FUNCTIONS ---
-    async function fetchListings() {
-      if (isLoading || noMoreListings) return;
-      isLoading = true;
-
-      const listingsGrid = document.getElementById("listingsGrid");
-      const urlParams = new URLSearchParams(window.location.search);
-      
-      if (currentPage > 1) {
-        showInfiniteLoader();
+      if (isInitialLoad) {
+        listingsGrid.innerHTML = '';
+      } else {
+        hideInfiniteLoader(); 
       }
 
-      if (currentPage === 1) {
-        noMoreListings = false;
-        hideInfiniteLoader();
-      }
+      if (newListings.length > 0) {
+        newListings.forEach(listing => {
+          const listingCard = createListingCard(listing);
+          listingsGrid.appendChild(listingCard);
+        });
 
-      try {
-        urlParams.set("page", currentPage);
-        const response = await fetch(`/listings/api/listings?${urlParams.toString()}`);
-        if (!response.ok) throw new Error('Network response was not ok');
+        // Update count
+        const totalListings = document.querySelectorAll('.listing-card-wrapper').length;
+        document.getElementById('listingCount').textContent = `${totalListings} properties found`;
 
-        const newListings = await response.json();
-
-        if (currentPage === 1) {
-          listingsGrid.innerHTML = '';
-        } else {
-          hideInfiniteLoader();
-        }
-
-        if (newListings.length > 0) {
-          newListings.forEach(listing => {
-            const listingCard = createListingCard(listing);
-            listingsGrid.appendChild(listingCard);
+        const activeCategory = document.querySelector('.category-item.active')?.getAttribute('data-category') || 'all';
+        if (activeCategory !== 'all') {
+          const listingCards = document.querySelectorAll('.listing-card-wrapper');
+          listingCards.forEach(card => {
+            const cardCategory = card.getAttribute('data-category');
+            card.style.display = (cardCategory === activeCategory) ? '' : 'none';
           });
-
-          // Update count
-          const totalListings = document.querySelectorAll('.listing-card-wrapper').length;
-          document.getElementById('listingCount').textContent = `${totalListings} properties found`;
-
-          const activeCategory = document.querySelector('.category-item.active')?.getAttribute('data-category') || 'all';
-          if (activeCategory !== 'all') {
-            const listingCards = document.querySelectorAll('.listing-card-wrapper');
-            listingCards.forEach(card => {
-              const cardCategory = card.getAttribute('data-category');
-              card.style.display = (cardCategory === activeCategory) ? '' : 'none';
-            });
-          }
-
-          currentPage++;
-        } else {
-          noMoreListings = true;
-          if (currentPage > 1) {
-            showNoMoreListingsMessage();
-          }
         }
 
-      } catch (error) {
-        console.error("Failed to fetch listings:", error);
-        listingsGrid.innerHTML = `
-          <div class="col-span-full text-center py-12">
-            <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <p class="text-gray-600 dark:text-gray-400 text-lg">Could not load listings. Please try again later.</p>
-          </div>`;
-        hideInfiniteLoader();
-      } finally {
-        isLoading = false;
-        initializeDynamicContent();
+        currentPage++;
+      } else {
+        noMoreListings = true;
+        if (currentPage > 1) {
+          showNoMoreListingsMessage(); 
+        }
       }
+
+    } catch (error) {
+      console.error("Failed to fetch listings:", error);
+      listingsGrid.innerHTML = `
+        <div class="col-span-full text-center py-12">
+          <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <p class="text-gray-600 dark:text-gray-400 text-lg">Could not load listings. Please try again later.</p>
+        </div>`;
+      hideInfiniteLoader();
+    } finally {
+      isLoading = false;
+      if (isInitialLoad) {
+        toggleOverlay(false); 
+      }
+      initializeDynamicContent();
     }
+  }
 
-    function createListingCard(listing) {
-      const wrapper = document.createElement('div');
-      wrapper.className = 'listing-card-wrapper';
-      wrapper.setAttribute('data-category', listing.category || 'all');
-      wrapper.style.animation = 'fadeIn 0.5s ease-in-out';
-      
-      const avgRating = listing.avgRating > 0 ? listing.avgRating : '4.5';
+  function createListingCard(listing) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'listing-card-wrapper';
+    wrapper.setAttribute('data-category', listing.category || 'all');
+    wrapper.style.animation = 'fadeIn 0.5s ease-in-out';
 
-      wrapper.innerHTML = `
-        <a href="/listings/${listing._id}" class="block group">
-          <div class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 group-hover:scale-[1.02]">
-            <!-- Image -->
-            <div class="relative overflow-hidden aspect-[4/3]">
-              <img 
-                src="${listing.image.url}" 
-                alt="${listing.title}" 
-                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                loading="lazy"
-              >
-              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              
-              <!-- Location Badge -->
-              <div class="absolute top-3 left-3">
-                <div class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-2 text-sm font-medium">
-                  <svg class="w-4 h-4 text-[#fe424d]" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
-                  </svg>
-                  <span class="text-gray-900 dark:text-white">${listing.location}</span>
-                </div>
-              </div>
+    const avgRating = listing.avgRating > 0 ? listing.avgRating : '4.5';
 
-              <!-- Rating Badge -->
-              <div class="absolute top-3 right-3">
-                <div class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-1.5 text-sm font-semibold">
-                  <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                  </svg>
-                  <span class="text-gray-900 dark:text-white">${avgRating}</span>
-                </div>
+    wrapper.innerHTML = `
+      <a href="/listings/${listing._id}" class="block group">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 group-hover:scale-[1.02]">
+          <div class="relative overflow-hidden aspect-[4/3]">
+            <img src="${listing.image.url}" alt="${listing.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div class="absolute top-3 left-3">
+              <div class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-2 text-sm font-medium">
+                <svg class="w-4 h-4 text-[#fe424d]" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                </svg>
+                <span class="text-gray-900 dark:text-white">${listing.location}</span>
               </div>
             </div>
-
-            <!-- Content -->
-            <div class="p-4">
-              <!-- Title -->
-              <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-1 group-hover:text-[#fe424d] transition-colors">
-                ${listing.title}
-              </h3>
-
-              <!-- Country -->
-              <p class="text-sm text-gray-600 dark:text-gray-400 mb-3 flex items-center gap-2">
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clip-rule="evenodd"/>
+            <div class="absolute top-3 right-3">
+              <div class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-1.5 text-sm font-semibold">
+                <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                 </svg>
-                ${listing.country}
-              </p>
-
-              <!-- Description -->
-              <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
-                ${listing.description}
-              </p>
-
-              <!-- Price -->
-              <div class="flex items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700">
-                <div class="price-tag" data-price="${listing.price}">
-                  <div class="flex items-baseline gap-1">
-                    <span class="text-2xl font-bold text-[#fe424d]">₹<span class="price-value">${listing.price}</span></span>
-                    <span class="text-sm text-gray-600 dark:text-gray-400">/night</span>
-                  </div>
-                  <p class="tax-info text-xs text-gray-500 dark:text-gray-500 mt-0.5">+18% GST</p>
-                </div>
-                
-                <button class="px-4 py-2 bg-[#fe424d] text-white rounded-lg text-sm font-semibold hover:bg-[#e63946] transition-colors">
-                  View Details
-                </button>
+                <span class="text-gray-900 dark:text-white">${avgRating}</span>
               </div>
             </div>
           </div>
-        </a>`;
-      
-      return wrapper;
+          <div class="p-4">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-1 group-hover:text-[#fe424d] transition-colors">
+              ${listing.title}
+            </h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3 flex items-center gap-2">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clip-rule="evenodd"/>
+              </svg>
+              ${listing.country}
+            </p>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+              ${listing.description}
+            </p>
+            <div class="flex items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700">
+              <div class="price-tag" data-price="${listing.price}">
+                <div class="flex items-baseline gap-1">
+                  <span class="text-2xl font-bold text-[#fe424d]">₹<span class="price-value">${listing.price}</span></span>
+                  <span class="text-sm text-gray-600 dark:text-gray-400">/night</span>
+                </div>
+                <p class="tax-info text-xs text-gray-500 dark:text-gray-500 mt-0.5">+18% GST</p>
+              </div>
+              <button class="px-4 py-2 bg-[#fe424d] text-white rounded-lg text-sm font-semibold hover:bg-[#e63946] transition-colors">
+                View Details
+              </button>
+            </div>
+          </div>
+        </div>
+      </a>`;
+    return wrapper;
+  }
+
+  // --- INITIALIZATION ---
+  document.addEventListener("DOMContentLoaded", () => {
+    loaderElement = document.getElementById('infinite-scroll-loader');
+    footerElement = document.querySelector('footer'); // <-- ASSIGN FOOTER
+
+    const listingsGrid = document.getElementById("listingsGrid");
+    if (listingsGrid) {
+      currentPage = 1;
+      noMoreListings = false;
+      showSkeletons(8);
+      fetchListings();
     }
 
-    // --- INITIALIZATION ---
-    document.addEventListener("DOMContentLoaded", () => {
-      loaderElement = document.getElementById('infinite-scroll-loader');
+    initializeStaticContent();
+    initializeDynamicContent();
 
-      const listingsGrid = document.getElementById("listingsGrid");
-      if (listingsGrid) {
-        currentPage = 1;
-        noMoreListings = false;
-        showSkeletons(8);
-        fetchListings();
-      }
+    const searchForm = document.querySelector('.search-form');
+    searchForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const query = this.q.value.trim();
+      currentPage = 1;
+      noMoreListings = false;
+      showSkeletons(8);
+      const newUrl = query ? `/listings?q=${encodeURIComponent(query)}` : '/listings';
+      history.pushState(null, '', newUrl);
+      fetchListings();
+    });
+  });
 
-      initializeStaticContent();
-      initializeDynamicContent();
-
-      // Search Form Handler
-      const searchForm = document.querySelector('.search-form');
-      searchForm.addEventListener('submit', function(e) {
+  function initializeStaticContent() {
+    const categoryItems = document.querySelectorAll('.category-item');
+    categoryItems.forEach(item => {
+      item.addEventListener('click', function(e) {
         e.preventDefault();
-        const query = this.q.value.trim();
+        categoryItems.forEach(cat => cat.classList.remove('active'));
+        this.classList.add('active');
+        const selectedCategory = this.getAttribute('data-category');
+
+        const urlParams = new URLSearchParams(window.location.search);
+        if (selectedCategory === 'all') urlParams.delete('category');
+        else urlParams.set('category', selectedCategory);
+
+        const searchQuery = urlParams.get('q');
+        if (searchQuery) urlParams.set('q', searchQuery);
+        else urlParams.delete('q');
+
         currentPage = 1;
         noMoreListings = false;
         showSkeletons(8);
-        const newUrl = query ? `/listings?q=${encodeURIComponent(query)}` : '/listings';
+        const newUrl = `/listings?${urlParams.toString()}`;
         history.pushState(null, '', newUrl);
         fetchListings();
       });
     });
+  }
 
-    function initializeStaticContent() {
-      const categoryItems = document.querySelectorAll('.category-item');
-      categoryItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-          e.preventDefault();
-          categoryItems.forEach(cat => cat.classList.remove('active'));
-          this.classList.add('active');
-          const selectedCategory = this.getAttribute('data-category');
-
-          const urlParams = new URLSearchParams(window.location.search);
-          
-          if (selectedCategory === 'all') {
-            urlParams.delete('category');
-          } else {
-            urlParams.set('category', selectedCategory);
-          }
-          
-          const searchQuery = urlParams.get('q');
-          if (searchQuery) {
-            urlParams.set('q', searchQuery);
-          } else {
-            urlParams.delete('q');
-          }
-
-          currentPage = 1;
-          noMoreListings = false;
-          showSkeletons(8);
-          
-          const newUrl = `/listings?${urlParams.toString()}`;
-          history.pushState(null, '', newUrl);
-          fetchListings();
-        });
+  function initializeDynamicContent() {
+    const taxSwitch = document.getElementById('flexSwitchCheckDefault');
+    const updatePrices = () => {
+      document.querySelectorAll(".price-tag").forEach(tag => {
+        const basePrice = parseFloat(tag.getAttribute("data-price"));
+        const priceValue = tag.querySelector(".price-value");
+        const taxInfo = tag.querySelector(".tax-info");
+        if (taxSwitch.checked) {
+          priceValue.textContent = Math.round(basePrice * 1.18);
+          taxInfo.style.display = "none";
+        } else {
+          priceValue.textContent = basePrice;
+          taxInfo.style.display = "block";
+        }
       });
+    };
+    if (!taxSwitch.onchange) taxSwitch.onchange = updatePrices;
+    updatePrices();
+  }
+
+  function scrollCategories(direction) {
+    const container = document.getElementById('categoryContainer');
+    const scrollAmount = 300;
+    container.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+  }
+
+  window.addEventListener('scroll', () => {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+      fetchListings();
     }
+  });
+</script>
 
-    function initializeDynamicContent() {
-      const taxSwitch = document.getElementById('flexSwitchCheckDefault');
-      
-      const updatePrices = () => {
-        document.querySelectorAll(".price-tag").forEach(tag => {
-          const basePrice = parseFloat(tag.getAttribute("data-price"));
-          const priceValue = tag.querySelector(".price-value");
-          const taxInfo = tag.querySelector(".tax-info");
-          if (taxSwitch.checked) {
-            priceValue.textContent = Math.round(basePrice * 1.18);
-            taxInfo.style.display = "none";
-          } else {
-            priceValue.textContent = basePrice;
-            taxInfo.style.display = "block";
-          }
-        });
-      };
-      
-      if (!taxSwitch.onchange) {
-        taxSwitch.onchange = updatePrices;
-      }
-      updatePrices();
-    }
+<!-- Add Overlay Loader Div Before </body> -->
+<div id="overlay" class="fixed inset-0 bg-black/50 z-[9999] hidden items-center justify-center">
+  <div class="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+</div>
 
-    function scrollCategories(direction) {
-      const container = document.getElementById('categoryContainer');
-      const scrollAmount = 300;
-      if (direction === 'left') {
-        container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-      } else {
-        container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-      }
-    }
-
-    // Infinite Scroll Listener
-    window.addEventListener('scroll', () => {
-      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
-        fetchListings();
-      }
-    });
-  
-
-  </script>
 <!-- Load your alert utilities -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="module" src="/utils/alerts.js"></script>
 
 <script type="module">
   import { showError, showSuccess } from '/utils/alerts.js';
-
   const __serverError = <%- JSON.stringify(error && error.length > 0 ? error[0] : null) %>;
   const __serverSuccess = <%- JSON.stringify(success && success.length > 0 ? success[0] : null) %>;
-
   if (__serverError) showError('Error', __serverError);
   if (__serverSuccess) showSuccess('Success', __serverSuccess);
 </script>
+
 </body>
 </html>

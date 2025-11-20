@@ -863,6 +863,827 @@ const sampleListings = [
       coordinates: [5.3221, 60.3913],
     },
   },
+  // Category: Mountains
+  {
+    title: "AlpenGlow Chalet, Switzerland",
+    description: "Breathtaking views of the Eiger. Ski-in/ski-out access and a private hot tub.",
+    image: {
+      filename: "alpenglow_chalet",
+      url: "https://images.pexels.com/photos/756076/pexels-photo-756076.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 4500,
+    location: "Grindelwald",
+    country: "Switzerland",
+    category: "mountains",
+    geometry: {
+      type: "Point",
+      coordinates: [8.033, 46.624],
+    },
+  },
+  {
+    title: "Rocky Mountain High Cabin",
+    description: "Secluded cabin near Estes Park. Ideal for hiking, wildlife viewing, and unplugging.",
+    image: {
+      filename: "rocky_mountain_cabin",
+      url: "https://images.pexels.com/photos/103290/pexels-photo-103290.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 2800,
+    location: "Estes Park",
+    country: "United States",
+    category: "mountains",
+    geometry: {
+      type: "Point",
+      coordinates: [-105.5217, 40.3772],
+    },
+  },
+  {
+    title: "Andean Peak Sanctuary",
+    description: "Remote lodge in the Peruvian Andes. Perfect base for trekking to high-altitude lagoons.",
+    image: {
+      filename: "andean_peak_sanctuary",
+      url: "https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 2200,
+    location: "Huaraz",
+    country: "Peru",
+    category: "mountains",
+    geometry: {
+      type: "Point",
+      coordinates: [-77.5278, -9.5278],
+    },
+  },
+  {
+    title: "Dolomites Designer Retreat",
+    description: "Modern architecture meets alpine charm. Floor-to-ceiling windows with stunning views.",
+    image: {
+      filename: "dolomites_designer_retreat",
+      url: "https://images.pexels.com/photos/372098/pexels-photo-372098.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 5000,
+    location: "Cortina d'Ampezzo",
+    country: "Italy",
+    category: "mountains",
+    geometry: {
+      type: "Point",
+      coordinates: [12.1357, 46.5405],
+    },
+  },
+  {
+    title: "New Zealand Mountain View",
+    description: "Overlook Lake Wakatipu from this stunning home. Close to Queenstown's adventures.",
+    image: {
+      filename: "new_zealand_mountain_view",
+      url: "https://images.pexels.com/photos/933054/pexels-photo-933054.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 3800,
+    location: "Queenstown",
+    country: "New Zealand",
+    category: "mountains",
+    geometry: {
+      type: "Point",
+      coordinates: [168.6626, -45.0312],
+    },
+  },
+
+  // Category: Beach
+  {
+    title: "Bora Bora Overwater Bungalow",
+    description: "Iconic overwater bungalow with direct lagoon access. Crystal clear waters and total privacy.",
+    image: {
+      filename: "bora_bora_bungalow",
+      url: "https://images.pexels.com/photos/1268855/pexels-photo-1268855.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 9000,
+    location: "Bora Bora",
+    country: "French Polynesia",
+    category: "beach",
+    geometry: {
+      type: "Point",
+      coordinates: [-151.7415, -16.5004],
+    },
+  },
+  {
+    title: "Private Tulum Beach Villa",
+    description: "Eco-chic villa on the white sands of Tulum. Private plunge pool and jungle vibes.",
+    image: {
+      filename: "tulum_beach_villa",
+      url: "https://media.villagetaways.com/villas/mexico/3294/f22fb7bb41c5bdf8501a786a411bd895_full.jpg",
+    },
+    price: 3200,
+    location: "Tulum",
+    country: "Mexico",
+    category: "beach",
+    geometry: {
+      type: "Point",
+      coordinates: [-87.465, 20.211],
+    },
+  },
+  {
+    title: "Amalfi Coast Cliffside Home",
+    description: "Historic home carved into the Positano cliffs. Unforgettable views of the Mediterranean.",
+    image: {
+      filename: "amalfi_cliffside_home",
+      url: "https://images.pexels.com/photos/258196/pexels-photo-258196.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 5500,
+    location: "Positano",
+    country: "Italy",
+    category: "beach",
+    geometry: {
+      type: "Point",
+      coordinates: [14.485, 40.628],
+    },
+  },
+  {
+    title: "Byron Bay Surf Shack",
+    description: "Chic, rustic surf shack just steps from The Pass. Perfect for catching early morning waves.",
+    image: {
+      filename: "byron_bay_surf_shack",
+      url: "https://images.pexels.com/photos/1032650/pexels-photo-1032650.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 1900,
+    location: "Byron Bay",
+    country: "Australia",
+    category: "beach",
+    geometry: {
+      type: "Point",
+      coordinates: [153.618, -28.643],
+    },
+  },
+  {
+    title: "Hawaiian Oceanfront Escape",
+    description: "Family-friendly home on Maui's north shore. Watch sea turtles from your own lanai.",
+    image: {
+      filename: "hawaiian_oceanfront_escape",
+      url: "https://images.pexels.com/photos/1287460/pexels-photo-1287460.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 4000,
+    location: "Maui",
+    country: "United States",
+    category: "beach",
+    geometry: {
+      type: "Point",
+      coordinates: [-156.331, 20.798],
+    },
+  },
+
+  // Category: Cities
+  {
+    title: "Parisian Flat with Eiffel View",
+    description: "Elegant Haussmann apartment in the 7th. Sip coffee with a view of the Eiffel Tower.",
+    image: {
+      filename: "parisian_flat_eiffel_view",
+      url: "https://images.pexels.com/photos/338515/pexels-photo-338515.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 3000,
+    location: "Paris",
+    country: "France",
+    category: "cities",
+    geometry: {
+      type: "Point",
+      coordinates: [2.3522, 48.8566],
+    },
+  },
+  {
+    title: "Shinjuku Skyscraper Apartment",
+    description: "High-floor apartment with panoramic views of the Tokyo skyline. Modern and minimal.",
+    image: {
+      filename: "shinjuku_skyscraper_apartment",
+      url: "https://images.pexels.com/photos/2193300/pexels-photo-2193300.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 2500,
+    location: "Tokyo",
+    country: "Japan",
+    category: "cities",
+    geometry: {
+      type: "Point",
+      coordinates: [139.6917, 35.6895],
+    },
+  },
+  {
+    title: "London Mews House",
+    description: "Charming and quiet mews house in Notting Hill. Cobblestone streets and colorful doors.",
+    image: {
+      filename: "london_mews_house",
+      url: "https://media.houseandgarden.co.uk/photos/688b3c302686064c16535dab/4:3/w_1884,h_1413,c_limit/1782129235",
+    },
+    price: 2700,
+    location: "London",
+    country: "United Kingdom",
+    category: "cities",
+    geometry: {
+      type: "Point",
+      coordinates: [-0.1276, 51.5072],
+    },
+  },
+  {
+    title: "Greenwich Village Brownstone",
+    description: "Historic brownstone in the heart of NYC's West Village. Steps from cafes and parks.",
+    image: {
+      filename: "greenwich_village_brownstone",
+      url: "https://images.pexels.com/photos/2983141/pexels-photo-2983141.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 3500,
+    location: "New York City",
+    country: "United States",
+    category: "cities",
+    geometry: {
+      type: "Point",
+      coordinates: [-74.006, 40.7128],
+    },
+  },
+  {
+    title: "Roman Terrace Apartment",
+    description: "Stunning apartment near the Pantheon with a private rooftop terrace for alfresco dining.",
+    image: {
+      filename: "roman_terrace_apartment",
+      url: "https://images.pexels.com/photos/1797161/pexels-photo-1797161.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 2900,
+    location: "Rome",
+    country: "Italy",
+    category: "cities",
+    geometry: {
+      type: "Point",
+      coordinates: [12.4964, 41.9028],
+    },
+  },
+
+  // Category: Cabins
+  {
+    title: "Modern A-Frame in the Woods",
+    description: "Stunningly designed A-frame cabin. Perfect for a romantic getaway in the Big Sur forest.",
+    image: {
+      filename: "modern_a_frame_woods",
+      url: "https://images.pexels.com/photos/2524874/pexels-photo-2524874.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 1700,
+    location: "Big Sur",
+    country: "United States",
+    category: "cabins",
+    geometry: {
+      type: "Point",
+      coordinates: [-121.655, 36.270],
+    },
+  },
+  {
+    title: "Smoky Mountains Log Cabin",
+    description: "Classic log cabin with a wrap-around porch and mountain views. Features a game room and hot tub.",
+    image: {
+      filename: "smoky_mountains_log_cabin",
+      url: "https://images.pexels.com/photos/2088206/pexels-photo-2088206.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 1500,
+    location: "Gatlinburg",
+    country: "United States",
+    category: "cabins",
+    geometry: {
+      type: "Point",
+      coordinates: [-83.510, 35.714],
+    },
+  },
+  {
+    title: "Scandinavian Hygge Cabin",
+    description: "Minimalist Nordic-style cabin by a fjord. Cozy up by the wood-burning stove.",
+    image: {
+      filename: "scandinavian_hygge_cabin",
+      url: "https://imageio.forbes.com/specials-images/imageserve/63cfaf71a702b64d37766ec0/0x0.jpg?format=jpg&height=900&width=1600&fit=bounds",
+    },
+    price: 2000,
+    location: "Flåm",
+    country: "Norway",
+    category: "cabins",
+    geometry: {
+      type: "Point",
+      coordinates: [7.113, 60.860],
+    },
+  },
+  {
+    title: "Canadian Lakeside Retreat",
+    description: "Peaceful cabin on the shores of Lake Louise. Canoe and kayaks included.",
+    image: {
+      filename: "canadian_lakeside_retreat",
+      url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAt8i6N64HutYMYr4SZNRIJ-7DuV1A3tVIAA&s",
+    },
+    price: 2300,
+    location: "Lake Louise",
+    country: "Canada",
+    category: "cabins",
+    geometry: {
+      type: "Point",
+      coordinates: [-116.177, 51.425],
+    },
+  },
+  {
+    title: "Forestry Lookout Tower",
+    description: "Unique stay in a converted fire lookout tower. 360-degree views of the national forest.",
+    image: {
+      filename: "forestry_lookout_tower",
+      url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmg1IRWZTOsFi4u7tV4lLHyVIIctKJSReeIA&s",
+    },
+    price: 1200,
+    location: "Mount Hood",
+    country: "United States",
+    category: "cabins",
+    geometry: {
+      type: "Point",
+      coordinates: [-121.700, 45.373],
+    },
+  },
+
+  // Category: Luxury
+  {
+    title: "Emirati Palace Penthouse",
+    description: "Opulent penthouse in Dubai with private elevator, butler service, and views of the Burj Khalifa.",
+    image: {
+      filename: "emirati_palace_penthouse",
+      url: "https://cdn.myportfolio.com/ad3ad17d18625d64c978c37bb660f724/1ce636af-d81d-4ea7-8030-5017bb932755_rw_3840.jpg?h=d7b267ec48a7b31a2e57c821b86baf38",
+    },
+    price: 15000,
+    location: "Dubai",
+    country: "UAE",
+    category: "luxury",
+    geometry: {
+      type: "Point",
+      coordinates: [55.2708, 25.2048],
+    },
+  },
+  {
+    title: "St. Barts Mega-Villa",
+    description: "A sprawling 8-bedroom villa with a 100-foot infinity pool, private chef, and beach access.",
+    image: {
+      filename: "st_barts_mega_villa",
+      url: "https://images.pexels.com/photos/221540/pexels-photo-221540.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 25000,
+    location: "St. Barts",
+    country: "France",
+    category: "luxury",
+    geometry: {
+      type: "Point",
+      coordinates: [-62.832, 17.900],
+    },
+  },
+  {
+    title: "Lake Como Historic Villa",
+    description: "Live like a billionaire at this historic villa on Lake Como. Includes a private dock and speedboat.",
+    image: {
+      filename: "lake_como_historic_villa",
+      url: "https://images.pexels.com/photos/1612461/pexels-photo-1612461.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 18000,
+    location: "Lake Como",
+    country: "Italy",
+    category: "luxury",
+    geometry: {
+      type: "Point",
+      coordinates: [9.257, 45.986],
+    },
+  },
+  {
+    title: "Aspen Mountain Mansion",
+    description: "Modern mountain mansion with an indoor pool, bowling alley, and home theater.",
+    image: {
+      filename: "aspen_mountain_mansion",
+      url: "https://images.pexels.com/photos/209296/pexels-photo-209296.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 30000,
+    location: "Aspen",
+    country: "United States",
+    category: "luxury",
+    geometry: {
+      type: "Point",
+      coordinates: [-106.817, 39.191],
+    },
+  },
+  {
+    title: "Private Seychelles Island",
+    description: "Your very own private island. Fully staffed, with multiple beaches and absolute seclusion.",
+    image: {
+      filename: "private_seychelles_island",
+      url: "https://images.pexels.com/photos/1010657/pexels-photo-1010657.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 50000,
+    location: "Felicité",
+    country: "Seychelles",
+    category: "luxury",
+    geometry: {
+      type: "Point",
+      coordinates: [55.883, -4.316],
+    },
+  },
+
+  // Category: Camping
+  {
+    title: "Patagonia Geodesic Dome",
+    description: "Eco-dome in Torres del Paine. Watch the sunrise over the mountains from your bed.",
+    image: {
+      filename: "patagonia_geodesic_dome",
+      url: "https://images.pexels.com/photos/2397653/pexels-photo-2397653.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 1800,
+    location: "Torres del Paine",
+    country: "Chile",
+    category: "camping",
+    geometry: {
+      type: "Point",
+      coordinates: [-72.882, -51.255],
+    },
+  },
+  {
+    title: "Luxury Bedouin Tent, Sahara",
+    description: "Stay in a luxury tent in the Sahara Desert. Includes camel trekking and traditional meals.",
+    image: {
+      filename: "luxury_bedouin_tent_sahara",
+      url: "https://images.pexels.com/photos/2403391/pexels-photo-2403391.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 2100,
+    location: "Merzouga",
+    country: "Morocco",
+    category: "camping",
+    geometry: {
+      type: "Point",
+      coordinates: [-4.013, 31.099],
+    },
+  },
+  {
+    title: "Yellowstone Luxury Tipi",
+    description: "Spacious tipi with a king bed and wood stove, just outside Yellowstone National Park.",
+    image: {
+      filename: "yellowstone_luxury_tipi",
+      url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdL8I7tp4za8Uvf1Tn09De7Jc0qMPcN0vVhA&s",
+    },
+    price: 1300,
+    location: "West Yellowstone",
+    country: "United States",
+    category: "camping",
+    geometry: {
+      type: "Point",
+      coordinates: [-111.100, 44.662],
+    },
+  },
+  {
+    title: "Australian Outback Glamping",
+    description: "Luxury tent with views of Uluru (Ayers Rock). Experience the spiritual heart of Australia.",
+    image: {
+      filename: "australian_outback_glamping",
+      url: "https://images.pexels.com/photos/67389/pexels-photo-67389.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 3500,
+    location: "Uluru",
+    country: "Australia",
+    category: "camping",
+    geometry: {
+      type: "Point",
+      coordinates: [131.036, -25.344],
+    },
+  },
+  {
+    title: "Redwood Forest Tree-Tent",
+    description: "Sleep suspended in the air between giant redwood trees. A unique and immersive nature experience.",
+    image: {
+      filename: "redwood_forest_tree_tent",
+      url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEhddAYiayX2-W7ckGrwREvrRBmPJurVqHMg&s",
+    },
+    price: 900,
+    location: "Humboldt",
+    country: "United States",
+    category: "camping",
+    geometry: {
+      type: "Point",
+      coordinates: [-124.095, 40.742],
+    },
+  },
+
+  // Category: Pools (All New)
+  {
+    title: "Mykonos Party Villa Pool",
+    description: "The ultimate party villa in Mykonos, featuring a massive infinity pool, DJ booth, and sea views.",
+    image: {
+      filename: "mykonos_party_villa_pool",
+      url: "https://images.pexels.com/photos/1115804/pexels-photo-1115804.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 6000,
+    location: "Mykonos",
+    country: "Greece",
+    category: "pools",
+    geometry: {
+      type: "Point",
+      coordinates: [25.328, 37.446],
+    },
+  },
+  {
+    title: "Balinese Rice Paddy Pool",
+    description: "A tranquil villa in Canggu with a stunning pool that blends directly into the surrounding rice paddies.",
+    image: {
+      filename: "balinese_rice_paddy_pool",
+      url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToCMTDRgshNdGp54JcdhvT_otqOC8TLbxu0w&s",
+    },
+    price: 2400,
+    location: "Canggu",
+    country: "Indonesia",
+    category: "pools",
+    geometry: {
+      type: "Point",
+      coordinates: [115.138, -8.647],
+    },
+  },
+  {
+    title: "Marrakech Riad Courtyard Pool",
+    description: "Traditional Moroccan riad with a stunning central courtyard and tile pool. An oasis in the city.",
+    image: {
+      filename: "marrakech_riad_courtyard_pool",
+      url: "https://images.pexels.com/photos/2440471/pexels-photo-2440471.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 1900,
+    location: "Marrakech",
+    country: "Morocco",
+    category: "pools",
+    geometry: {
+      type: "Point",
+      coordinates: [-7.981, 31.629],
+    },
+  },
+  {
+    title: "Phuket Sea-View Infinity Pool",
+    description: "Private villa in Phuket with an infinity pool that seems to drop off into the Andaman Sea.",
+    image: {
+      filename: "phuket_sea_view_pool",
+      url: "https://images.pexels.com/photos/189296/pexels-photo-189296.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 3200,
+    location: "Phuket",
+    country: "Thailand",
+    category: "pools",
+    geometry: {
+      type: "Point",
+      coordinates: [98.392, 7.880],
+    },
+  },
+  {
+    title: "Hollywood Hills Hideaway Pool",
+    description: "A celebrity-style hideaway in the Hollywood Hills with a private pool and panoramic views of LA.",
+    image: {
+      filename: "hollywood_hills_pool",
+      url: "https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 4800,
+    location: "Los Angeles",
+    country: "United States",
+    category: "pools",
+    geometry: {
+      type: "Point",
+      coordinates: [-118.358, 34.092],
+    },
+  },
+
+  // Category: Farms (All New)
+  {
+    title: "Sicilian Lemon Grove Farm",
+    description: "Wake up to the smell of citrus. A beautiful guesthouse on a working lemon farm in Sicily.",
+    image: {
+      filename: "sicilian_lemon_farm",
+      url: "https://images.pexels.com/photos/130894/pexels-photo-130894.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 2000,
+    location: "Syracuse",
+    country: "Italy",
+    category: "farms",
+    geometry: {
+      type: "Point",
+      coordinates: [15.279, 37.075],
+    },
+  },
+  {
+    title: "Normandy Dairy Farm Cottage",
+    description: "Charming stone cottage on a dairy farm in Normandy. Enjoy fresh cheese, milk, and cider.",
+    image: {
+      filename: "normandy_dairy_farm",
+      url: "https://media.istockphoto.com/id/695442556/photo/norman-black-and-white-cows-grazing-on-grassy-green-field-with-trees-on-a-bright-sunny-day-in.jpg?s=612x612&w=0&k=20&c=7gMEOxhqDdvhfKkJwt5gK5I3SPhHuyZyW22OgL9-Oiw=",
+    },
+    price: 1800,
+    location: "Bayeux",
+    country: "France",
+    category: "farms",
+    geometry: {
+      type: "Point",
+      coordinates: [-0.703, 49.276],
+    },
+  },
+  {
+    title: "Vermont Farmhouse Experience",
+    description: "Quintessential New England farmhouse. Help feed the animals and collect fresh eggs.",
+    image: {
+      filename: "vermont_farmhouse_experience",
+      url: "https://onekindesign.com/wp-content/uploads/2024/04/Modern-Farmhouse-Style-Home-Vermont-ART-Architects-04-1-Kindesign.jpg",
+    },
+    price: 1600,
+    location: "Woodstock",
+    country: "United States",
+    category: "farms",
+    geometry: {
+      type: "Point",
+      coordinates: [-72.518, 43.623],
+    },
+  },
+  {
+    title: "Panamanian Geisha Coffee Farm",
+    description: "Stay on a world-renowned Geisha coffee plantation in the highlands of Panama. A coffee lover's dream.",
+    image: {
+      filename: "panama_coffee_farm",
+      url: "https://images.pexels.com/photos/434258/pexels-photo-434258.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 1300,
+    location: "Boquete",
+    country: "Panama",
+    category: "farms",
+    geometry: {
+      type: "Point",
+      coordinates: [-82.433, 8.783],
+    },
+  },
+  {
+    title: "Irish Countryside Sheep Farm",
+    description: "Cozy cottage on a working sheep farm in County Kerry. Stunning green hills and fresh air.",
+    image: {
+      filename: "irish_countryside_sheep_farm",
+      url: "https://www.shutterstock.com/image-photo/sheep-marked-colorful-dye-grazing-260nw-2427224231.jpg",
+    },
+    price: 1400,
+    location: "Kenmare",
+    country: "Ireland",
+    category: "farms",
+    geometry: {
+      type: "Point",
+      coordinates: [-9.584, 51.880],
+    },
+  },
+
+  // Category: Castles (All New)
+  {
+    title: "Scottish Highland Fortress",
+    description: "Stay in a restored 16th-century Scottish castle. Roaring fires, loch views, and rich history.",
+    image: {
+      filename: "scottish_highland_fortress",
+      url: "https://images.pexels.com/photos/1729828/pexels-photo-1729828.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 6000,
+    location: "Isle of Skye",
+    country: "United Kingdom",
+    category: "castles",
+    geometry: {
+      type: "Point",
+      coordinates: [-6.215, 57.273],
+    },
+  },
+  {
+    title: "Dordogne River Castle",
+    description: "A stunning cliffside castle overlooking the Dordogne River. Breathtaking views and historic charm.",
+    image: {
+      filename: "dordogne_river_castle",
+      url: "https://media-cdn.tripadvisor.com/media/photo-c/1280x250/0c/25/07/dd/chateau-de-beynac-forteresse.jpg",
+    },
+    price: 7500,
+    location: "Beynac-et-Cazenac",
+    country: "France",
+    category: "castles",
+    geometry: {
+      type: "Point",
+      coordinates: [1.146, 44.841],
+    },
+  },
+  {
+    title: "German Fairytale Castle",
+    description: "Live in a storybook. This castle in the German forest inspired fairytale legends.",
+    image: {
+      filename: "german_fairytale_castle",
+      url: "https://www.tripsavvy.com/thmb/JC9CVzd4r_jQMttcX8BT-IaC3WE=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/NeushwansteinCastle_BrianLawrence_GettyImages-565c8e393df78c6ddf634289.jpg",
+    },
+    price: 5200,
+    location: "Wierschem",
+    country: "Germany",
+    category: "castles",
+    geometry: {
+      type: "Point",
+      coordinates: [7.334, 50.205],
+    },
+  },
+  {
+    title: "Medieval Keep in Kilkenny",
+    description: "Stay within the ancient walls of a restored medieval keep. A truly authentic Irish history experience.",
+    image: {
+      filename: "kilkenny_keep",
+      url: "https://images.pexels.com/photos/612046/pexels-photo-612046.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 4800,
+    location: "Kilkenny",
+    country: "Ireland",
+    category: "castles",
+    geometry: {
+      type: "Point",
+      coordinates: [-7.249, 52.654],
+    },
+  },
+  {
+    title: "Tuscan Castello with Pool",
+    description: "A medieval castle in Tuscany, beautifully restored with modern luxuries and a stunning pool.",
+    image: {
+      filename: "tuscan_castello_with_pool",
+      url: "https://images.pexels.com/photos/1128302/pexels-photo-1128302.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 8000,
+    location: "Siena",
+    country: "Italy",
+    category: "castles",
+    geometry: {
+      type: "Point",
+      coordinates: [11.330, 43.318],
+    },
+  },
+
+  // Category: Boats (All New)
+  {
+    title: "Parisian Seine River Péniche",
+    description: "A beautifully converted barge (péniche) moored on the Seine. Watch Paris float by.",
+    image: {
+      filename: "seine_river_peniche",
+      url: "https://cdn.pixabay.com/photo/2018/03/17/16/51/paris-3234472_1280.jpg",
+    },
+    price: 2200,
+    location: "Paris",
+    country: "France",
+    category: "boats",
+    geometry: {
+      type: "Point",
+      coordinates: [2.352, 48.856],
+    },
+  },
+  {
+    title: "Seattle Lake Union Floating Home",
+    description: "Iconic 'Sleepless in Seattle' style floating home. Kayak from your front porch.",
+    image: {
+      filename: "seattle_lake_union_floating_home",
+      url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTys4FbvOIM2p_tTHSKEvQ_pxCScPXxqaDV1A&s",
+    },
+    price: 2600,
+    location: "Seattle",
+    country: "United States",
+    category: "boats",
+    geometry: {
+      type: "Point",
+      coordinates: [-122.329, 47.626],
+    },
+  },
+  {
+    title: "Nile River Dahabiya Cruise",
+    description: "A traditional, elegant 'Dahabiya' sailing boat for a slow, peaceful cruise between Luxor and Aswan.",
+    image: {
+      filename: "nile_dahabiya",
+      url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_f6G2oK-4mPgjLQgOc9vUz2DjvDm9GhpI5g&s",
+    },
+    price: 3800,
+    location: "Luxor",
+    country: "Egypt",
+    category: "boats",
+    geometry: {
+      type: "Point",
+      coordinates: [32.639, 25.687],
+    },
+  },
+  {
+    title: "Thai Long-tail Boat Charter",
+    description: "Charter a private long-tail boat to explore the islands and beaches of Krabi at your own pace.",
+    image: {
+      filename: "thai_longtail_boat",
+      url: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/54/07/ca/caption.jpg?w=1200&h=-1&s=1",
+    },
+    price: 3000,
+    location: "Krabi",
+    country: "Thailand",
+    category: "boats",
+    geometry: {
+      type: "Point",
+      coordinates: [98.906, 8.086],
+    },
+  },
+  {
+    title: "Sausalito Artists' Houseboat",
+    description: "Funky, creative houseboat in the famous Sausalito community. A unique and colorful stay.",
+    image: {
+      filename: "sausalito_artists_houseboat",
+      url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgmwYYxtbES_nLImrOh9iXv-BvC9ijtXVX7w&s",
+    },
+    price: 1900,
+    location: "Sausalito",
+    country: "United States",
+    category: "boats",
+    geometry: {
+      type: "Point",
+      coordinates: [-122.486, 37.859],
+    },
+  },
 ];
+
+
 
 export default sampleListings;

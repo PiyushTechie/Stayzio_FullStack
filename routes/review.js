@@ -8,32 +8,39 @@ import isReviewAuthor from "../utils/isreviewAuthor.js";
 import reviewControlller from "../controllers/reviews.js";
 import { authLimiter } from "../utils/rateLimiters.js";
 
+import csurf from "csurf";
+const csrfProtection = csurf({ cookie: true });
+
 const validateReview = (req, res, next) => {
-  let {error} = reviewSchema.validate(req.body);
-  if(error){
-    let errMsg = error.details.map((el) => el.message).join(",")
+  // { allowUnknown: true } tells Joi to ignore the _csrf token
+  const { error } = reviewSchema.validate(req.body, { allowUnknown: true });
+
+  if (error) {
+    const errMsg = error.details.map(el => el.message).join(",");
     throw new ExpressError(400, errMsg);
-  }else{
+  } else {
     next();
   }
-}
+};
 
 //REVIEWS
 router.post(
   "/", 
-  isLoggedIn, 
-  authLimiter, 
+  isLoggedIn, 
+  authLimiter, 
+  csrfProtection,
   validateReview, 
-  wrapAsync(reviewControlller.createReview)
+  wrapAsync(reviewControlller.createReview),
 );
 
 //DELETE REVIEWS
 router.delete(
-  "/:reviewId", 
-  isLoggedIn, 
-  isReviewAuthor, 
-  authLimiter, 
-  wrapAsync(reviewControlller.destroyReview)
+  "/:reviewId", 
+  isLoggedIn, 
+  isReviewAuthor, 
+  authLimiter, 
+  csrfProtection,
+  wrapAsync(reviewControlller.destroyReview)
 );
 
 export default router;

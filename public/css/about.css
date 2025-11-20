@@ -625,6 +625,12 @@
      }
  }
 
+ @media (max-width: 768px) {
+  .social-links {
+    justify-content: center; /* center on mobile */
+  }
+}
+
  @media (max-width: 480px) {
      .hero h1 {
          font-size: 2.2rem;

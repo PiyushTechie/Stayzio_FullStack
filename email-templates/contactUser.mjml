@@ -2,162 +2,92 @@
   <mj-head>
     <mj-title>Thank You for Contacting Stayzio</mj-title>
     <mj-preview>We've received your message and will respond soon!</mj-preview>
+    <mj-font name="Inter" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
     <mj-attributes>
-      <mj-all font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" />
-      <mj-text padding="0" color="#374151" line-height="1.6" />
-      <mj-button inner-padding="16px 32px" border-radius="50px" font-weight="700" />
+      <mj-text font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" line-height="1.6" />
     </mj-attributes>
-    <mj-style inline="inline">
-      .gradient-bg {
-        background: linear-gradient(135deg, #fe424d 0%, #ff6b73 50%, #ffb3b6 100%) !important;
-      }
-      .glass-container {
-        background: rgba(255, 255, 255, 0.95) !important;
-        backdrop-filter: blur(20px) !important;
-        border: 1px solid rgba(254, 66, 77, 0.1) !important;
-      }
-      .brand-text {
-        background: linear-gradient(135deg, #fe424d, #ff6b73) !important;
-        -webkit-background-clip: text !important;
-        -webkit-text-fill-color: transparent !important;
-        background-clip: text !important;
-      }
-      .highlight-box {
-        background: linear-gradient(135deg, #fef2f2, #fce7e6) !important;
-        border-left: 4px solid #fe424d !important;
-        border-radius: 8px !important;
-      }
-      .stats-box {
-        background: rgba(254, 66, 77, 0.05) !important;
-        border: 1px solid rgba(254, 66, 77, 0.1) !important;
-        border-radius: 12px !important;
-      }
-    </mj-style>
   </mj-head>
 
-  <mj-body background-color="#f8f9fa">
-    
-    <!-- Header with Gradient Background -->
-    <mj-section css-class="gradient-bg" padding="40px 20px">
+  <mj-body background-color="#f5f5f5">
+    <!-- Logo Header -->
+    <mj-section background-color="#fe424d" padding="30px 20px">
       <mj-column>
-        <!-- Logo/Brand Area -->
-        <mj-text align="center" font-size="32px" font-weight="800" color="#ffffff" padding="0 0 20px 0">
+        <mj-text align="center" font-size="32px" font-weight="900" color="#ffffff" padding="0"> 
           🌏︎Stayzio
-        </mj-text>
-        
-        <!-- Main Hero Text -->
-        <mj-text align="center" font-size="28px" font-weight="700" color="#ffffff" padding="0 0 10px 0">
-          Thank You for Reaching Out!
-        </mj-text>
-        
-        <mj-text align="center" font-size="16px" color="rgba(255,255,255,0.9)" padding="0">
-          We've received your message and our team is already on it.
         </mj-text>
       </mj-column>
     </mj-section>
 
-    <!-- Main Content -->
-    <mj-section background-color="#ffffff" padding="40px 20px">
+    <!-- Main Content Container -->
+    <mj-section background-color="#ffffff" padding="0">
       <mj-column>
-        
-        <!-- Personal Greeting -->
-        <mj-text font-size="22px" color="#2c3e50" font-weight="700" padding="0 0 20px 0">
-          Hi {{name}} 👋
+        <!-- Title -->
+        <mj-text align="center" font-size="24px" font-weight="600" color="#333333" padding="40px 40px 20px">
+          Thank you for contacting us
         </mj-text>
         
-            <!-- Message Confirmation Box -->
-            <mj-section css-class="highlight-box" padding="20px">
-              <mj-column>
-                <mj-text font-size="16px" color="#374151" padding="0">
-                  <strong>📧 Message Received</strong><br/>
-                  Subject: <span style="color: #fe424d; font-weight: 600;">{{subject}}</span><br/>
-                  <span style="color: #6b7280; font-size: 14px;">Ticket ID: #STZ-{{timestamp}}</span>
-                </mj-text>
-              </mj-column>
-            </mj-section>
-    
-          </mj-column>
-        </mj-section>
-    
-        <!-- Response Timeline -->
-        <mj-section css-class="stats-box" padding="25px">
-          <mj-column width="50%">
-            <mj-text align="center" font-size="24px" color="#fe424d" font-weight="800" padding="0 0 5px 0">
-              ~2 Hours
-            </mj-text>
-            <mj-text align="center" font-size="12px" color="#64748b" text-transform="uppercase" letter-spacing="1px" padding="0">
-              Response Time
-            </mj-text>
-          </mj-column>
-          <mj-column width="50%">
-            <mj-text align="center" font-size="24px" color="#fe424d" font-weight="800" padding="0 0 5px 0">
-              24/7
-            </mj-text>
-            <mj-text align="center" font-size="12px" color="#64748b" text-transform="uppercase" letter-spacing="1px" padding="0">
-              Support
-            </mj-text>
-          </mj-column>
-        </mj-section>
-    
-        <mj-section background-color="#ffffff" padding="0px 20px 40px 20px">
-          <mj-column>
+        <!-- Body Text -->
+        <mj-text font-size="15px" color="#333333" padding="0 40px 30px" line-height="1.6">
+          Hi {{name}},<br/><br/>
+          We've received your message and our team will review it shortly. You should expect a response within 2 hours during business hours.
+        </mj-text>
+        
+        <!-- Message Summary Box -->
+        <mj-text font-size="14px" color="#333333" padding="0 40px 30px">
+          <div style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px;">
+            <div style="margin-bottom: 12px;">
+              <span style="font-weight: 600; color: #666666;">Subject:</span><br/>
+              <span style="color: #333333;">{{subject}}</span>
+            </div>
+            <div style="font-size: 13px; color: #6b7280;">
+              Ticket ID: #STZ-{{timestamp}}
+            </div>
+          </div>
+        </mj-text>
 
-        <!-- What Happens Next -->
-        <mj-text font-size="18px" color="#2c3e50" font-weight="600" padding="0 0 15px 0">
+        <!-- What's Next -->
+        <mj-text font-size="16px" color="#333333" font-weight="600" padding="0 40px 15px">
           What happens next?
         </mj-text>
         
-        <mj-text font-size="15px" color="#374151" padding="0 0 20px 0">
-          ✅ Your message has been forwarded to our team.<br/>
-          📧 You'll receive a confirmation email shortly.<br/>
-          ⚡ We'll respond within 2 hours during business hours.<br/>
+        <mj-text font-size="15px" color="#333333" padding="0 40px 30px" line-height="1.8">
+          • Your message has been forwarded to our team<br/>
+          • We'll respond within 2 hours during business hours<br/>
+          • You can reply directly to this email if you have additional information
         </mj-text>
 
         <!-- CTA Button -->
-        <mj-button background-color="#fe424d" color="#ffffff" font-size="16px" padding="20px 0" href="https://stayzio-app.onrender.com/home">
+        <mj-button background-color="#fe424d" color="#ffffff" font-size="15px" font-weight="600" border-radius="6px" padding="0 40px 40px" href="https://stayzio-app.onrender.com/home">
           Visit Your Dashboard
         </mj-button>
-        
       </mj-column>
     </mj-section>
 
-    <!-- Need Immediate Help Section -->
-    <mj-section background-color="#f8f9fa" padding="30px 20px">
+    <!-- Need Help Section -->
+    <mj-section background-color="#f5f5f5" padding="30px 40px">
       <mj-column>
-        <mj-text align="center" font-size="18px" color="#2c3e50" font-weight="600" padding="0 0 15px 0">
-          Need Immediate Assistance?
+        <mj-text align="center" font-size="15px" color="#333333" font-weight="600" padding="0 0 10px">
+          Need immediate assistance?
         </mj-text>
         
-        
-        <mj-text align="center" font-size="14px" color="#6b7280" padding="0">
-          Call us at <strong style="color: #fe424d;">+91 9920694680</strong><br/>
-          Email us at <strong style="color: #fe424d;">piyushpraja1336@gmail.com</strong>
+        <mj-text align="center" font-size="14px" color="#666666" padding="0">
+          Call us at <span style="color: #fe424d; font-weight: 600;">+91 9920694680</span><br/>
+          Email: <a href="mailto:piyushpraja1336@gmail.com" style="color: #fe424d; text-decoration: none; font-weight: 600;">piyushpraja1336@gmail.com</a>
         </mj-text>
       </mj-column>
     </mj-section>
 
     <!-- Footer -->
-    <mj-section background-color="#2c3e50" padding="30px 20px">
+    <mj-section background-color="#f5f5f5" padding="20px 40px 30px">
       <mj-column>
-        <mj-text align="center" font-size="24px" font-weight="700" color="#ffffff" padding="0 0 10px 0">
-          🌏︎Stayzio
+        <mj-text align="center" font-size="12px" color="#999999" line-height="1.6">
+          This message was sent by Stayzio. For more information, visit our <a href="https://stayzio-app.onrender.com/privacy" style="color: #fe424d; text-decoration: none;">Privacy Policy</a> or <a href="https://stayzio-app.onrender.com/terms" style="color: #fe424d; text-decoration: none;">Terms of Service</a>.
         </mj-text>
-        
-        <mj-text align="center" font-size="14px" color="rgba(255,255,255,0.8)" padding="0 0 20px 0">
-          Making every stay extraordinary
-        </mj-text>
-        
-        <mj-divider border-color="rgba(255,255,255,0.2)" border-width="1px" padding="20px 0" />
-        
-        <mj-text align="center" font-size="12px" color="rgba(255,255,255,0.6)" padding="0">
-          © {{year}} 🌏︎Stayzio,Inc. All rights reserved.<br/>
-          Mumbai, Maharashtra, India<br/><br/>
-          
-          <a href="https://stayzio-app.onrender.com/privacy" style="color: #fe424d; text-decoration: none;">Privacy Policy</a> | 
-          <a href="https://stayzio-app.onrender.com/terms" style="color: #fe424d; text-decoration: none;">Terms of Service</a>
+        <mj-text align="center" font-size="12px" color="#999999" padding="10px 0 0">
+          © {{year}} Stayzio. All Rights Reserved.<br/>
+          Mumbai, Maharashtra, India
         </mj-text>
       </mj-column>
     </mj-section>
-
   </mj-body>
 </mjml>

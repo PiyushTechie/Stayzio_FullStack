@@ -206,9 +206,15 @@
     <% } %>
 
     <form id="verifyForm" action="/verify-otp" method="POST">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <div class="form-group">
         <label for="email">Email Address</label>
-        <input type="email" name="email" id="email" placeholder="Your registered email" required>
+        <input type="email" 
+       name="email" 
+       id="email" 
+       value="<%= user.email %>" 
+       placeholder="Your registered email" 
+       required readonly>
       </div>
       <div class="form-group">
         <label for="otp">Verification Code (OTP)</label>
@@ -222,6 +228,7 @@
     </form>
     
     <form id="resendForm" action="/resend-otp" method="POST" style="display:inline;">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <input type="hidden" name="email" id="resendEmail" value="">
       <button type="submit" id="resendLink" style="background:none;border:none;color:#fe424d;cursor:pointer;padding:0;">
       Resend OTP
@@ -266,9 +273,10 @@
       resendLink.style.opacity = "0.5";
 
       try {
+        const csrfToken = resendForm.querySelector('input[name="_csrf"]').value;
         const response = await fetch('/resend-otp', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'CSRF-Token': csrfToken },
           body: JSON.stringify({ email })
         });
 

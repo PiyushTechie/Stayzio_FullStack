@@ -328,7 +328,7 @@
 
       <div class="form-body">
         <form id="createForm" method="post" action="/listings" class="needs-validation" novalidate enctype="multipart/form-data">
-
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           <!-- Title -->
           <div class="mb-4">
             <label class="form-label">

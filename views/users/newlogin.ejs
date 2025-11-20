@@ -8,310 +8,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="/css/login.css">
 
-<style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      min-height: 100vh;
-      overflow-y: auto;
-      overflow-x: hidden;
-    }
-
-    .container {
-      display: flex;
-      min-height: 100vh;
-    }
-
-    /* Hero Section */
-    .hero-section {
-      flex: 1;
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 50%;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px;
-    }
-
-    .hero-box {
-      width: 100%;
-      height: 100%;
-      background: url('https://i.natgeofe.com/n/c15761fa-d631-4a41-bd23-8e339560709c/nationalgeographic_2670050crop.jpg') center/cover;
-      border-radius: 20px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-    }
-
-    /* Form Section */
-    .form-section {
-      flex: 1;
-      background: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 10px;
-      overflow-y: auto;
-      margin-left: 50%;
-    }
-
-    .form-box {
-      background: #fff;
-      padding: 35px 40px;
-      border-radius: 20px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-      width: 100%;
-      max-width: 480px;
-    }
-
-    .form-container {
-      width: 100%;
-    }
-
-    .brand-header {
-      text-align: center;
-      margin-bottom: 25px;
-    }
-
-    .brand-name {
-      font-size: 28px;
-      font-weight: 700;
-      color: #fe424d;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 15px;
-    }
-
-    .brand-icon {
-      font-size: 28px;
-    }
-
-    .form-container h2 {
-      text-align: center;
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: #1a1a1a;
-      margin-bottom: 6px;
-    }
-
-    .welcome-subtitle {
-      text-align: center;
-      color: #999;
-      font-size: 13px;
-      margin-bottom: 25px;
-    }
-
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    label {
-      display: block;
-      font-size: 14px;
-      font-weight: 600;
-      color: #333;
-      margin-bottom: 8px;
-    }
-
-    .input-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .input-icon {
-      position: absolute;
-      left: 14px;
-      color: #999;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    input {
-      width: 100%;
-      padding: 13px 16px 13px 44px;
-      border: 1.5px solid #e0e0e0;
-      border-radius: 8px;
-      font-size: 15px;
-      transition: all 0.3s ease;
-      background: #f8f9fa;
-    }
-
-    input:focus {
-      outline: none;
-      border-color: #fe424d;
-      background: white;
-      box-shadow: 0 0 0 3px rgba(254,66,77,0.1);
-    }
-
-    input:focus ~ .input-icon {
-      color: #fe424d;
-    }
-
-    input::placeholder {
-      color: #ccc;
-    }
-
-    .forgot-password {
-      text-align: right;
-      margin-bottom: 14px;
-    }
-
-    .forgot-password a {
-      color: #999;
-      font-size: 13px;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-
-    .forgot-password a:hover {
-      color: #fe424d;
-    }
-
-    .login-btn {
-      width: 100%;
-      padding: 12px;
-      background: #fe424d;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      margin-top: 8px;
-    }
-
-    .login-btn:hover {
-      background: #e03943;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(254,66,77,0.3);
-    }
-
-    .login-btn:active {
-      transform: translateY(0);
-    }
-
-    .divider {
-      text-align: center;
-      margin: 20px 0;
-      position: relative;
-      color: #999;
-      font-size: 13px;
-    }
-
-    .divider::before,
-    .divider::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      width: 45%;
-      height: 1px;
-      background: #e0e0e0;
-    }
-
-    .divider::before {
-      left: 0;
-    }
-
-    .divider::after {
-      right: 0;
-    }
-
-    .social-login {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-
-    .social-btn {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      border: none;
-      background: #f5f5f5;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      transition: all 0.3s ease;
-    }
-
-    .social-btn:hover {
-      background: #e0e0e0;
-      transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .register-link {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 13px;
-      color: #666;
-    }
-
-    .register-link a {
-      color: #fe424d;
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .register-link a:hover {
-      text-decoration: underline;
-    }
-
-    .spinner {
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255, 255, 255, 0.4);
-      border-top: 3px solid white;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    @media (max-width: 968px) {
-      .container {
-        flex-direction: column;
-      }
-
-      .hero-section {
-        display: none;
-      }
-
-      .form-section {
-        margin-left: 0;
-        width: 100%;
-        min-height: 100vh;
-        padding: 20px;
-      }
-
-      .form-box {
-        padding: 35px 30px;
-      }
-    }
-</style>
 </head>
 <body>
 
@@ -335,6 +31,7 @@
         </div>
 
         <form id="loginForm" action="/login" method="POST">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           <div class="form-group">
             <label for="username">Email Id</label>
             <div class="input-wrapper">
@@ -382,26 +79,26 @@
         <div class="divider">OR</div>
 
         <div class="social-login">
-          <button class="social-btn" type="button" title="Login with Google" onclick="window.location.href='/auth/google'">
-            <svg width="20" height="20" viewBox="0 0 24 24">
+          <a href="/auth/google" class="social-btn" title="Login with Google">
+          <svg width="20" height="20" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
               <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
               <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
               <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
             </svg>
-          </button>
+          </a>
 
-          <button class="social-btn" type="button" title="Login with Facebook" onclick="window.location.href='/auth/facebook'">
+          <a href="/auth/facebook" class="social-btn" title="Login with Facebook">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877F2">
               <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
             </svg>
-          </button>
+          </a>
 
-          <button class="social-btn" type="button" title="Login with GitHub" onclick="window.location.href='/auth/github'">
+          <a href="/auth/github" class="social-btn" title="Login with GitHub">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="#000">
               <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
             </svg>
-          </button>
+          </a>
         </div>
 
         <p class="register-link">Don't have account? <a href="/signup">Register Now</a></p>

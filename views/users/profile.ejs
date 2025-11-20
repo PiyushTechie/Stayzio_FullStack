@@ -4,75 +4,682 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= user.username %> - Profile</title>
-  <!-- Bootstrap & FontAwesome -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="/css/profile.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #fe424d;
+      --primary-light: #ff6b75;
+      --primary-dark: #e63946;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --text-dark: #1f2937;
+      --text-gray: #6b7280;
+      --text-light: #9ca3af;
+      --bg-light: #f9fafb;
+      --border: #e5e7eb;
+      --white: #ffffff;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #fef2f3 0%, #ffffff 50%, #f3f4f6 100%);
+      min-height: 100vh;
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      position: relative;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      padding: 80px 20px;
+      overflow: hidden;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+      animation: pulse 8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    .hero-content {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    /* Avatar */
+    .avatar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 140px;
+      height: 140px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      margin-bottom: 30px;
+      transition: transform 0.3s ease;
+      animation: fadeInDown 0.8s ease;
+    }
+
+    .avatar:hover {
+      transform: scale(1.05) rotate(5deg);
+    }
+
+    .avatar i {
+      font-size: 60px;
+      color: var(--primary);
+    }
+
+    /* Username */
+    .username {
+      font-size: 48px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 20px;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      animation: fadeInUp 0.8s ease 0.2s backwards;
+    }
+
+    /* Email Badge */
+    .email-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+      padding: 12px 24px;
+      border-radius: 50px;
+      color: white;
+      font-weight: 500;
+      margin-bottom: 40px;
+      animation: fadeInUp 0.8s ease 0.4s backwards;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 30px;
+      animation: fadeInUp 0.8s ease 0.6s backwards;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary {
+      background: white;
+      color: var(--primary);
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      color: white;
+      border: 2px solid white;
+    }
+
+    .btn-outline:hover {
+      background: white;
+      color: var(--primary);
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.9);
+      color: white;
+      border: 2px solid #dc2626;
+    }
+
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+
+    /* Stats Section */
+    .stats-section {
+      position: relative;
+      margin-top: -60px;
+      padding: 0 20px 60px;
+      z-index: 10;
+    }
+
+    .stats-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .stats-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+      animation: fadeInUp 1s ease;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+    }
+
+    .stat-item {
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .stat-item:hover {
+      transform: scale(1.05);
+    }
+
+    .stat-number {
+      font-size: 56px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .stat-item:hover .stat-number {
+      transform: scale(1.1);
+    }
+
+    .stat-label {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-gray);
+    }
+
+    /* Content Section */
+    .content-section {
+      padding: 0 20px 80px;
+    }
+
+    .content-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      animation: fadeInUp 0.6s ease;
+    }
+
+    .section-card:hover {
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .section-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, rgba(254, 66, 77, 0.1) 0%, rgba(254, 66, 77, 0.05) 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .section-icon i {
+      font-size: 24px;
+      color: var(--primary);
+    }
+
+    .section-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    /* Listings Grid */
+    .listings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .listing-card {
+      background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.3s ease;
+      opacity: 0;
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    .listing-card:nth-child(1) { animation-delay: 0.1s; }
+    .listing-card:nth-child(2) { animation-delay: 0.2s; }
+    .listing-card:nth-child(3) { animation-delay: 0.3s; }
+    .listing-card:nth-child(4) { animation-delay: 0.4s; }
+
+    .listing-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 8px 24px rgba(254, 66, 77, 0.15);
+      transform: translateY(-4px);
+    }
+
+    .listing-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .listing-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-dark);
+      transition: color 0.3s ease;
+    }
+
+    .listing-card:hover .listing-title {
+      color: var(--primary);
+    }
+
+    .listing-badge {
+      padding: 4px 12px;
+      background: #d1fae5;
+      color: #065f46;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 20px;
+    }
+
+    .listing-location {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-gray);
+      margin-bottom: 16px;
+    }
+
+    .listing-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .listing-date {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--text-light);
+    }
+
+    .listing-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+      transition: gap 0.3s ease;
+    }
+
+    .listing-link:hover {
+      gap: 12px;
+    }
+
+    /* Reviews */
+    .reviews-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .review-card {
+      background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.3s ease;
+      opacity: 0;
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    .review-card:nth-child(1) { animation-delay: 0.1s; }
+    .review-card:nth-child(2) { animation-delay: 0.2s; }
+    .review-card:nth-child(3) { animation-delay: 0.3s; }
+
+    .review-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 8px 24px rgba(254, 66, 77, 0.15);
+      transform: translateX(4px);
+    }
+
+    .review-content {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .review-body {
+      flex: 1;
+    }
+
+    .review-stars {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 16px;
+    }
+
+    .star-filled {
+      color: #fe424d; /* Yellow */
+      font-size: 18px;
+    }
+
+    .star-empty {
+      color: #d1d5db; /* Gray */
+      font-size: 18px;
+    }
+
+    .review-text {
+      color: var(--text-dark);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .review-date {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--text-light);
+    }
+
+    .review-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+      transition: gap 0.3s ease;
+      white-space: nowrap;
+      align-self: flex-start;
+    }
+
+    .review-link:hover {
+      gap: 12px;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .empty-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, rgba(254, 66, 77, 0.1) 0%, rgba(254, 66, 77, 0.05) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+
+    .empty-icon i {
+      font-size: 36px;
+      color: var(--primary);
+    }
+
+    .empty-text {
+      color: var(--text-gray);
+      font-size: 18px;
+      margin-bottom: 24px;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .username {
+        font-size: 36px;
+      }
+
+      .avatar {
+        width: 100px;
+        height: 100px;
+      }
+
+      .avatar i {
+        font-size: 40px;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+        width: 100%;
+        max-width: 400px;
+        margin: 30px auto 0;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .stats-card {
+        padding: 30px 20px;
+      }
+
+      .stat-number {
+        font-size: 42px;
+      }
+
+      .section-card {
+        padding: 30px 20px;
+      }
+
+      .listings-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .review-content {
+        flex-direction: column;
+      }
+
+      .review-link {
+        align-self: flex-start;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-section {
+        padding: 60px 15px;
+      }
+
+      .username {
+        font-size: 28px;
+      }
+
+      .section-title {
+        font-size: 22px;
+      }
+    }
+  </style>
 </head>
 <body>
   
-  <!-- Profile Hero Section -->
-  <section class="profile-hero">
-    <div class="container-fluid">
-      <div class="row justify-content-center">
-        <div class="col-lg-8 col-xl-6">
-          <div class="text-center">
-            <div class="profile-avatar">
-              <i class="fas fa-user"></i>
-            </div>
-            <h1 class="profile-title"><%= user.username %></h1>
-            
-            <% if (isOwner) { %>
-              <p class="profile-email">
-                <i class="fas fa-envelope me-2"></i><%= user.email %>
-              </p>
-              
-              <!-- Action Buttons -->
-              <div class="d-flex justify-content-center flex-wrap">
-                <a href="/listings/new" class="btn-primary-custom">
-                  <i class="fas fa-plus"></i>Add Listing
-                </a>
-                <a href="/bookings/my" class="btn-primary-custom">
-                  <i class="fas fa-calendar-check"></i>My Bookings
-                </a>
-                <a href="/host" class="btn-primary-custom">
-                  <i class="fa-solid fa-chart-line"></i>Track your Listings
-                </a>
-                <a href="/logout" class="btn-outline-custom">
-                  <i class="fas fa-sign-out-alt"></i>Logout
-                </a>
-                <button type="button" id="deleteAccountBtn" class="btn-outline-custom">
-              <i class="fa-solid fa-user-slash"></i> Delete Account
-              </button>
-              </div>
-            <% } %>
-          </div>
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <!-- Avatar -->
+       
+<div class="avatar">
+  <img 
+    id="previewImg" 
+    src="<%= user.profile.photo.url %>" 
+    alt="Profile Photo"
+    style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;"
+  >
+</div>
+
+      
+      <!-- Username -->
+      <h1 class="username"><%= user.username %></h1>
+      
+      <% if (isOwner) { %>
+        <!-- Email -->
+        <div class="email-badge">
+          <i class="fas fa-envelope"></i>
+          <span><%= user.email %></span>
         </div>
-      </div>
+        
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <% if (user.role === "admin" || user.role === "host") { %>
+            <!-- Hosts & Admins -->
+            <a href="/listings/new" class="btn btn-primary">
+              <i class="fas fa-plus"></i>
+              <span>Add Listing</span>
+            </a>
+
+            <a href="/host" class="btn btn-primary">
+              <i class="fa-solid fa-chart-line"></i>
+              <span>Track Listings</span>
+            </a>
+
+            <form action="/host/revert" method="POST" style="display: inline;">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+              <button type="submit" class="btn btn-primary">
+                <i class="fa-solid fa-user"></i>
+                <span>Revert to Guest</span>
+              </button>
+            </form>
+
+          <% } else { %>
+            <!-- Guests -->
+            <a href="/setup" class="btn btn-primary">
+              <i class="fas fa-user-tie"></i>
+              <span>Become a Host</span>
+            </a>
+          <% } %>
+
+          <!-- Always visible -->
+          <a href="/bookings/my" class="btn btn-primary">
+            <i class="fas fa-calendar-check"></i>
+            <span>My Bookings</span>
+          </a>
+
+          <a href="/profile/edit" class="btn btn-primary">
+            <i class="fas fa-user-edit"></i>
+            <span>Edit Profile</span>
+          </a>
+
+          <form action="/logout" method="POST" style="display: inline;">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button type="submit" class="btn btn-outline">
+              <i class="fas fa-sign-out-alt"></i>
+              <span>Logout</span>
+            </button>
+          </form>
+
+          <button type="button" id="deleteAccountBtn" class="btn btn-danger">
+            <i class="fa-solid fa-user-slash"></i>
+            <span>Delete Account</span>
+          </button>
+        </div>
+      <% } %>
     </div>
   </section>
 
   <!-- Stats Section -->
   <section class="stats-section">
-    <div class="container-fluid">
-      <div class="row justify-content-center">
-        <div class="col-lg-8 col-xl-6">
-          <div class="stats-card">
-            <div class="row">
-              <div class="col-6">
-                <div class="stat-item">
-                  <div class="stat-number"><%= user.listings ? user.listings.length : 0 %></div>
-                  <div class="stat-label">Listings</div>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="stat-item">
-                  <div class="stat-number"><%= user.reviews ? user.reviews.length : 0 %></div>
-                  <div class="stat-label">Reviews</div>
-                </div>
-              </div>
-            </div>
+    <div class="stats-container">
+      <div class="stats-card">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-number"><%= user.listings ? user.listings.length : 0 %></div>
+            <div class="stat-label">Listings</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number"><%= user.reviews ? user.reviews.length : 0 %></div>
+            <div class="stat-label">Reviews</div>
           </div>
         </div>
       </div>
@@ -81,183 +688,200 @@
 
   <!-- Content Section -->
   <section class="content-section">
-    <div class="container-fluid">
-      <div class="row justify-content-center">
-        <div class="col-12 col-lg-10 col-xl-8">
-          
-          <!-- Listings Section -->
-          <div class="section-card fade-in">
-            <h4 class="section-title">
-              <i class="fas fa-home"></i>
-              <%= isOwner ? "My Listings" : (user.username + "'s Listings") %>
-            </h4>
-            
-            <% if (user.listings && user.listings.length > 0) { %>
-              <div class="row g-4">
-                <% user.listings.forEach((listing) => { %>
-                  <div class="col-lg-6">
-                    <div class="listing-card p-4">
-                      <div class="d-flex justify-content-between align-items-start mb-3">
-                        <h5 class="listing-title mb-0"><%= listing.title %></h5>
-                        <span class="badge-active">Active</span>
-                      </div>
-                      <div class="listing-location mb-3">
-                        <i class="fas fa-map-marker-alt text-danger"></i>
-                        <span><%= listing.location %></span>
-                      </div>
-                      <div class="d-flex justify-content-between align-items-center mt-auto">
-                        <small class="text-muted">
-                          <i class="fas fa-calendar me-1"></i>
-                          Listed recently
-                        </small>
-                        <a href="/listings/<%= listing._id %>" class="btn-view">
-                          <i class="fas fa-eye"></i>View Details
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                <% }) %>
-              </div>
-            <% } else { %>
-              <div class="empty-state">
-                <i class="fas fa-home"></i>
-                <p><%= isOwner ? "Ready to share your space? Add your first listing!" : "No listings to show yet." %></p>
-                <% if (isOwner) { %>
-                  <a href="/listings/new" class="btn-create">
-                    </i>Create First Listing
-                  </a>
-                <% } %>
-              </div>
-            <% } %>
+    <div class="content-container">
+      
+      <!-- Listings Section -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-home"></i>
           </div>
-
-          <!-- Reviews Section -->
-          <div class="section-card fade-in">
-            <h4 class="section-title">
-              <i class="fas fa-star"></i>
-              <%= isOwner ? "My Reviews" : (user.username + "'s Reviews") %>
-            </h4>
-            
-            <% if (user.reviews && user.reviews.length > 0) { %>
-              <div class="row g-3">
-                <% user.reviews.forEach((review) => { %>
-                  <div class="col-12">
-                    <div class="review-card p-4">
-                      <div class="d-flex justify-content-between align-items-start">
-                        <div class="flex-grow-1">
-                          <div class="star-rating mb-2">
-                            <% for (let i = 1; i <= 5; i++) { %>
-                              <span class="star <%= i <= review.rating ? '' : 'empty' %>">★</span>
-                            <% } %>
-                          </div>
-                          <p class="mb-2"><%= review.comment %></p>
-                          <small class="text-muted">
-                            <i class="fas fa-clock me-1"></i>
-                            Recently reviewed
-                          </small>
-                        </div>
-                        <a href="/listings/<%= review.listing %>" class="btn-view ms-3">
-                          <i class="fas fa-external-link-alt"></i>View Listing
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                <% }) %>
-              </div>
-            <% } else { %>
-              <div class="empty-state">
-                <i class="fas fa-star"></i>
-                <p><%= isOwner ? "Share your experiences! Write your first review." : "No reviews to display yet." %></p>
-              </div>
-            <% } %>
-          </div>
-
+          <h2 class="section-title">
+            <%= isOwner ? "My Listings" : (user.username + "'s Listings") %>
+          </h2>
         </div>
+        
+        <% if (user.listings && user.listings.length > 0) { %>
+          <div class="listings-grid">
+            <% user.listings.forEach((listing) => { %>
+              <div class="listing-card">
+                <div class="listing-header">
+                  <h3 class="listing-title"><%= listing.title %></h3>
+                  <span class="listing-badge">Active</span>
+                </div>
+                <div class="listing-location">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <span><%= listing.location %></span>
+                </div>
+                <div class="listing-footer">
+                  <div class="listing-date">
+                    <i class="fas fa-calendar"></i>
+                    <span>Listed recently</span>
+                  </div>
+                  <a href="/listings/<%= listing._id %>" class="listing-link">
+                    <span>View Details</span>
+                    <i class="fas fa-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% } else { %>
+          <div class="empty-state">
+            <div class="empty-icon">
+              <i class="fas fa-home"></i>
+            </div>
+            <p class="empty-text">
+              <%= isOwner ? "Ready to share your space? Add your first listing!" : "No listings to show yet." %>
+            </p>
+            <% if (isOwner) { %>
+              <a href="/listings/new" class="btn btn-primary">
+                <i class="fas fa-plus"></i>
+                <span>Create First Listing</span>
+              </a>
+            <% } %>
+          </div>
+        <% } %>
       </div>
+
+      <!-- Reviews Section -->
+      <div class="section-card">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-star"></i>
+          </div>
+          <h2 class="section-title">
+            <%= isOwner ? "My Reviews" : (user.username + "'s Reviews") %>
+          </h2>
+        </div>
+        
+        <% if (user.reviews && user.reviews.length > 0) { %>
+          <div class="reviews-list">
+            <% user.reviews.forEach((review) => { %>
+              <div class="review-card">
+                <div class="review-content">
+                  <div class="review-body">
+                    
+                    <div class="review-stars">
+                      <% for (let i = 1; i <= 5; i++) { %>
+                        <i class="fas fa-star <%= i <= (review.rating || 0) ? 'star-filled' : 'star-empty' %>"></i>
+                      <% } %>
+                    </div>
+
+                    <p class="review-text">
+                      <%= review.comment ? review.comment : "No comment provided." %>
+                    </p>
+
+                    <div class="review-date">
+                      <i class="fas fa-clock"></i>
+                      <span>Recently reviewed</span>
+                    </div>
+                  </div>
+                  
+            <% if (review.listing) { %>
+              <a href="/listings/<%= review.listing._id ? review.listing._id : review.listing %>" class="review-link">
+                <span>View Property</span>
+                <i class="fas fa-external-link-alt"></i>
+              </a>
+            <% } else { %>
+              <div class="review-link" style="color: #9ca3af; cursor: not-allowed; display: inline-flex; align-items: center; gap: 8px;">
+                <i class="fas fa-ban"></i>
+                <span>Property Deleted</span>
+              </div>
+            <% } %>
+
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% } else { %>
+          <div class="empty-state">
+            <div class="empty-icon">
+              <i class="fas fa-star"></i>
+            </div>
+            <p class="empty-text">
+              <%= isOwner ? "Share your experiences! Write your first review." : "No reviews to display yet." %>
+            </p>
+          </div>
+        <% } %>
+      </div>
+
     </div>
   </section>
 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <script>
-    // Smooth scroll animation for cards
-    document.addEventListener('DOMContentLoaded', function() {
-      const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-      };
+    const csrfToken = "<%= csrfToken %>";
+    const deleteBtn = document.getElementById("deleteAccountBtn");
 
-      const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
-        });
-      }, observerOptions);
-
-      const fadeElements = document.querySelectorAll('.fade-in');
-      fadeElements.forEach(el => observer.observe(el));
-
-      // Listing and review card animations
-      const cards = document.querySelectorAll('.listing-card, .review-card');
-      cards.forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        
-        setTimeout(() => {
-          card.style.transition = 'all 0.6s ease';
-          card.style.opacity = '1';
-          card.style.transform = 'translateY(0)';
-        }, index * 100);
+    deleteBtn.addEventListener("click", () => {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "This will permanently delete your account, listings, and reviews!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#fe424d',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Yes, delete my account!',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          fetch('/delete', {
+            method: 'POST',
+            headers: {
+              'CSRF-Token': csrfToken 
+            }
+          })
+          .then(res => {
+            if (res.ok) {
+              Swal.fire(
+                'Deleted!',
+                'Your account has been permanently deleted.',
+                'success'
+              ).then(() => {
+                window.location.href = '/';
+              });
+            } else {
+              res.text().then(msg => {
+                Swal.fire('Error', msg || 'Something went wrong.', 'error');
+              });
+            }
+          })
+          .catch(err => Swal.fire('Error', 'Something went wrong.', 'error'));
+        }
       });
     });
-  </script>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<script>
-  const deleteBtn = document.getElementById("deleteAccountBtn");
-
-  deleteBtn.addEventListener("click", () => {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "This will permanently delete your account, listings, and reviews!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#fe424d',
-      cancelButtonColor: '#6c757d',
-      confirmButtonText: 'Yes, delete my account!',
-      cancelButtonText: 'Cancel'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // Use form-encoded POST (simpler, no JSON parsing required)
-        fetch('/delete', {
-          method: 'POST'
-        })
-        .then(res => {
-          if (res.ok) {
-            Swal.fire(
-              'Deleted!',
-              'Your account has been permanently deleted.',
-              'success'
-            ).then(() => {
-              window.location.href = '/'; // redirect to home
-            });
-          } else {
-            res.text().then(msg => {
-              Swal.fire('Error', msg || 'Something went wrong.', 'error');
-            });
+    document.querySelectorAll('a[href="/host/revert"]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        Swal.fire({
+          title: "Revert to Guest?",
+          text: "You'll lose access to host tools and listings temporarily.",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#fe424d",
+          cancelButtonColor: "#6c757d",
+          confirmButtonText: "Yes, revert me!"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = "/host/revert";
           }
-        })
-        .catch(err => Swal.fire('Error', 'Something went wrong.', 'error'));
-      }
+        });
+      });
     });
-  });
 
-const __serverError = <%- typeof error !== 'undefined' ? JSON.stringify(error && error.length > 0 ? error[0] : null) : 'null' %>;
-const __serverSuccess = <%- typeof success !== 'undefined' ? JSON.stringify(success && success.length > 0 ? success[0] : null) : 'null' %>;
+    const __serverError = <%- typeof error !== 'undefined' ? JSON.stringify(error && error.length > 0 ? error[0] : null) : 'null' %>;
+    const __serverSuccess = <%- typeof success !== 'undefined' ? JSON.stringify(success && success.length > 0 ? success[0] : null) : 'null' %>;
 
-if (__serverError) showError('Error', __serverError);
-if (__serverSuccess) showSuccess('Success', __serverSuccess);
-</script>
+    if (__serverError) {
+      Swal.fire('Error', __serverError, 'error');
+    }
+    if (__serverSuccess) {
+      Swal.fire('Success', __serverSuccess, 'success');
+    }
+  </script>
 
 </body>
 </html>

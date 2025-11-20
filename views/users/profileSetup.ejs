@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Complete Your Profile - Stayzio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: Inter, sans-serif; background: #f8fafc; padding: 40px 20px; }
+    .container { max-width: 700px; margin: 0 auto; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+    h1 { text-align: center; margin-bottom: 10px; color: #1e293b; font-size: 32px; }
+    p { text-align: center; color: #64748b; margin-bottom: 30px; }
+    label { font-weight: 600; display: block; margin: 20px 0 8px; color: #475569; }
+    input, textarea { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 15px; }
+    input:focus, textarea:focus { border-color: #fe424d; outline: none; box-shadow: 0 0 0 3px rgba(254,66,77,0.2); }
+    button { width: 100%; background: #fe424d; color: white; padding: 16px; margin-top: 30px; border: none; border-radius: 12px; font-size: 18px; font-weight: 600; cursor: pointer; }
+    button:hover { background: #e63946; }
+    .photo-preview img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 4px solid #fe424d; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome, <%= user.username %>!</h1>
+    <p>Let's complete your profile to get started</p>
+
+    <!-- CORRECT ACTION: This goes to your setup route -->
+    <form action="/profile" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+      <!-- Profile Photo -->
+      <label>Profile Photo</label>
+      <div style="text-align: center; margin: 20px 0;">
+        <img 
+          src="<%= user.profile.photo?.url || '/images/default-profile.png' %>" 
+          alt="Profile" 
+          id="previewImg" 
+          class="photo-preview"
+        >
+        <br><br>
+        <input type="file" name="photo" accept="image/*" id="photoInput">
+      </div>
+
+      <label>Full Name</label>
+      <input type="text" name="name" value="<%= user.profile.name || '' %>" placeholder="Enter your full name" required>
+
+      <label>Address</label>
+      <input type="text" name="address" value="<%= user.profile.address || '' %>" placeholder="House no, street, city" required>
+
+      <label>Country</label>
+      <input type="text" name="country" value="<%= user.profile.country || '' %>" placeholder="e.g. India, USA" required>
+
+      <label>Phone Number</label>
+      <input type="text" name="phone" value="<%= user.profile.phone || '' %>" placeholder="+91 9876543210" required>
+
+      <label>About You (Optional)</label>
+      <textarea name="bio" rows="4" placeholder="Tell us about yourself..."><%= user.profile.bio || '' %></textarea>
+
+      <button type="submit">
+        Complete Profile & Continue
+      </button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("photoInput").addEventListener("change", function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        document.getElementById("previewImg").src = URL.createObjectURL(file);
+      }
+    });
+  </script>
+</body>
+</html>

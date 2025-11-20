@@ -6,6 +6,8 @@ import User from "../models/user.js";
 import mongoose from "mongoose";
 
 const createReview = async (req, res) => {
+  console.log("REQ BODY = ", req.body);   // ✅ Correct place
+
   const { id } = req.params;
   const listing = await Listing.findById(id);
 
@@ -17,18 +19,20 @@ const createReview = async (req, res) => {
   const newReview = new Review(req.body.review);
   newReview.author = req.user._id;
   newReview.listing = listing._id;
+
   listing.reviews.push(newReview);
 
   const currentUser = await User.findById(req.user._id);
   currentUser.reviews.push(newReview._id);
   await currentUser.save();
-  
+
   await newReview.save();
   await listing.save();
-  
+
   req.flash("success", "Listing Review Created Successfully!");
   res.redirect(`/listings/${listing._id}`);
 };
+
 
 const destroyReview = async (req, res) => {
   let { id, reviewId } = req.params;
