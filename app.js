@@ -32,6 +32,7 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import csrfProtection from "./utils/csrf.js";
+import MongoStore from "connect-mongo";
 
 
 const __filename = fileURLToPath(import.meta.url);
