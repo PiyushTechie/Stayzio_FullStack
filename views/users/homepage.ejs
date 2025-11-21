@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stayzio - Your Perfect Stay Awaits</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="/images/favicon-removebg-preview.png">
     <style>
         * {
             margin: 0;
@@ -63,6 +64,8 @@
             display: flex;
             gap: 40px;
             list-style: none;
+            font-size: large;
+            letter-spacing: 1.2px;
         }
 
         .nav-links a {
@@ -744,18 +747,38 @@
                 justify-content: center; /* center on mobile */
             }
             }
+        
+            .logo-img {
+                height: 60px;
+                width: auto;
+                margin-right: 10px;
+                vertical-align: middle;
+                }
+        @media (max-width: 768px) {
+            .logo-img {
+                height: 40px !important;
+            }
+
+            .cta-button {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            }
+
     </style>
 </head>
 <body>
     <nav>
         <div class="nav-container">
-            <div class="logo"><i class="fa-solid fa-earth-asia brand-icon"></i>Stayzio</div>
+            <div class="logo">
+                <img src="/images/logo.jpg" alt="Stayzio Logo" class="logo-img">
+            </div>
             <ul class="nav-links">
-                <li><a href="/listings">Stays</a></li>
-                <li><a href="/experiences">Experiences</a></li>
-                <li><a href="/about">About</a></li>
+                <li><a href="/listings">STAYS</a></li>
+                <li><a href="/experiences">EXPERIENCES</a></li>
+                <li><a href="/about">ABOUT</a></li>
             </ul>
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <button class="mobile-menu-btn">☰</button>
             <a href="/listings" class="cta-button">Book Now</a>
         </div>
     </nav>
@@ -763,10 +786,9 @@
     <!-- Mobile Menu -->
     <div class="mobile-menu" id="mobileMenu">
         <button class="mobile-close" onclick="toggleMobileMenu()">×</button>
-        <a href="/listings" onclick="toggleMobileMenu()">Stays</a>
-        <a href="#" onclick="toggleMobileMenu()">Experiences</a>
-        <a href="/about" onclick="toggleMobileMenu()">About</a>
-        <a href="/listings" class="cta-button">Book Now</a>
+        <a href="/listings" onclick="toggleMobileMenu()">STAYS</a>
+        <a href="/experiences" onclick="toggleMobileMenu()">EXPERIENCES</a>
+        <a href="/about" onclick="toggleMobileMenu()">ABOUT</a>
     </div>
 
     <section class="hero">
@@ -913,7 +935,7 @@
         <div class="footer-content">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <div class="logo"><i class="fa-solid fa-earth-asia brand-icon"></i>Stayzio</div>
+                    <div class="logo"><img src="/images/logonobg.png" alt="Stayzio Logo" class="logo-img"></div>
                     <p>Discover extraordinary accommodations worldwide. From cozy apartments to luxury villas, we help you find the perfect stay for every journey.</p>
                     <div class="social-links">
                         <a href="#" title="Facebook">
@@ -998,10 +1020,14 @@
     <script>
         // Mobile menu functionality
         function toggleMobileMenu() {
-            const mobileMenu = document.getElementById('mobileMenu');
-            mobileMenu.classList.toggle('active');
-            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : 'auto';
-        }
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileMenu.classList.toggle('active');
+    document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : 'auto';
+}
+
+document.querySelector(".mobile-menu-btn").addEventListener("click", toggleMobileMenu);
+document.querySelector(".mobile-close").addEventListener("click", toggleMobileMenu);
+
 
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {

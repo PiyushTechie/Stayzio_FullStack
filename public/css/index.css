@@ -266,3 +266,24 @@
 #overlay[style*="display: flex"] {
   opacity: 1;
 }
+
+
+footer .logo-img {
+    height: 70px;
+    width: auto;
+}
+
+@media (max-width: 768px) {
+    footer .footer-brand .logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%; /* ensures perfect centering */
+    }
+
+    footer .logo-img {
+        height: 40px; /* keep your footer size */
+        width: auto;
+    }
+}
+

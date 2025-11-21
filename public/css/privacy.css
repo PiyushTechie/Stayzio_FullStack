@@ -601,3 +601,25 @@ html {
         }
     }
 }
+
+.logo {
+        font-size: 28px;
+        font-weight: 800;
+        background: linear-gradient(135deg, #fe424d, #ff6b73);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        align-items: center;
+        gap: 0px;
+    }
+    
+    @media (max-width: 768px) {
+    .social-links {
+        justify-content: center; /* center on mobile */
+    }
+    }
+
+    footer .logo-img {
+    height: 70px;
+    width: auto;
+}

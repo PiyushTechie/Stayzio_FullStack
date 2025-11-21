@@ -379,3 +379,24 @@ input:focus~.input-icon {
     padding: 30px 25px;
   }
 }
+
+.brand-name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;     /* spacing below the logo */
+}
+
+.brand-name .logo-img {
+    height: 55px;            /* perfect size */
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+
+/* Smaller on mobile */
+@media (max-width: 768px) {
+    .brand-name .logo-img {
+        height: 45px;
+    }
+}

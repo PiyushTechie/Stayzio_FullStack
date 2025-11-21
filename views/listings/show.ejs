@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="/css/footer.css">
 <link rel="stylesheet" href="/css/output.css">
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.js"></script>
+<link rel="icon" type="image/png" href="/images/favicon-removebg-preview.png">
  <script>
   const mapToken = "<%= process.env.MAP_TOKEN%>";
   const coordinates = <%-JSON.stringify(listing.geometry.coordinates)%>;
@@ -288,35 +289,60 @@
           <% listing.reviews.forEach(review => { %>
             <div class="review-card">
               <div class="flex items-start gap-4 mb-4">
+
                 <% if (review.author && review.author.username) { %>
-                  <div class="avatar flex-shrink-0">
-                    <%= review.author.username.charAt(0).toUpperCase() %>
+
+                  <!-- Avatar with profile photo support (NEW) -->
+                  <div class="avatar flex-shrink-0 relative overflow-hidden rounded-full">
+                    <% if (review.author.profile && review.author.profile.photo && review.author.profile.photo.url) { %>
+                      <!-- Show profile photo -->
+                      <img 
+                        src="<%= review.author.profile.photo.url %>"
+                        alt="User Photo"
+                        class="w-full h-full object-cover"
+                      />
+                    <% } else { %>
+                      <!-- Fallback username initial (YOUR ORIGINAL DESIGN) -->
+                      <span class="text-white font-bold text-lg flex items-center justify-center w-full h-full">
+                        <%= review.author.username.charAt(0).toUpperCase() %>
+                      </span>
+                    <% } %>
                   </div>
+
                   <div class="flex-1">
                     <div class="font-bold text-gray-900 text-lg"><%= review.author.username %></div>
                     <div class="flex gap-1 mt-1">
                       <% for (let i = 1; i <= 5; i++) { %>
-                        <i class="<%= i <= review.rating ? 'fa-solid fa-star' : 'fa-regular fa-star' %>" style="color: #ffc107; font-size: 0.875rem;"></i>
+                        <i class="<%= i <= review.rating ? 'fa-solid fa-star' : 'fa-regular fa-star' %>" 
+                          style="color: #ffc107; font-size: 0.875rem;"></i>
                       <% } %>
                     </div>
                   </div>
+
                 <% } else { %>
+
+                  <!-- Anonymous fallback -->
                   <div class="avatar flex-shrink-0 bg-gray-400">
                     <i class="fa-solid fa-user-secret"></i>
                   </div>
+
                   <div class="flex-1">
                     <div class="font-bold text-gray-900 text-lg italic">Anonymous</div>
                     <div class="flex gap-1 mt-1">
                       <% for (let i = 1; i <= 5; i++) { %>
-                        <i class="<%= i <= review.rating ? 'fa-solid fa-star' : 'fa-regular fa-star' %>" style="color: #ffc107; font-size: 0.875rem;"></i>
+                        <i class="<%= i <= review.rating ? 'fa-solid fa-star' : 'fa-regular fa-star' %>" 
+                          style="color: #ffc107; font-size: 0.875rem;"></i>
                       <% } %>
                     </div>
                   </div>
+
                 <% } %>
               </div>
-              
+
+              <!-- Comment -->
               <p class="text-gray-700 leading-relaxed mb-4"><%= review.comment %></p>
 
+              <!-- Delete button for author -->
               <% if (currentUser && review.author && review.author._id.equals(currentUser._id)) { %>
                 <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
                   <input type="hidden" name="_csrf" value="<%= csrfToken %>">
@@ -326,6 +352,7 @@
                 </form>
               <% } %>
             </div>
+
           <% }) %>
         </div>
       <% } %>

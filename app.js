@@ -141,8 +141,8 @@ store.on("error", () =>{
 
 // Session Config
 
-const sessionOptions = {
-   store,           
+const sessionOptions = {           
+  store,
   secret: process.env.SECRET,
   resave: false,
   saveUninitialized: false,
@@ -150,7 +150,6 @@ const sessionOptions = {
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000, // 1 week
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
-
   }
 };
 
@@ -303,7 +302,6 @@ async function startServer() {
     await mongoose.connect(dbUrl);
     console.log("✅ DB Connected Successfully");
 
-    // 2️⃣ Connect Redis
     await connectRedis();
     console.log('✅ Connected to Redis successfully!');
 
