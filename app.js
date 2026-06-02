@@ -46,7 +46,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 app.use(
   helmet({
@@ -129,9 +129,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use(mongoSanitize());
-app.use(xss());
-app.use(hpp());
 const dbUrl = process.env.ATLASDB_URL;
 const localDb = "mongodb://127.0.0.1:27017/wanderlust";
 
@@ -167,7 +164,6 @@ const sessionMiddleware = session(sessionOptions);
 app.use(sessionMiddleware);
 app.use(flash());
 
-// Authentication
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
@@ -192,7 +188,6 @@ app.use((req, res, next) => {
 });
 
 
-// Routes
 app.get("/", (req, res) => {
   res.render("users/homepage");
 });
@@ -315,7 +310,6 @@ app.use((err, req, res, next) => {
   res.status(500).render('listings/505error');
 });
 
-// ---------- create http server & socket.io ----------
 const server = http.createServer(app);
 
 const io = new IOServer(server, {
