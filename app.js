@@ -46,7 +46,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const port = process.env.PORT || 8080;
+const port = 8080;
 
 app.use(
   helmet({
@@ -119,7 +119,6 @@ app.use(
 
 
 app.use(compression());
-// App config
 app.set('trust proxy', 1);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -128,6 +127,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use(mongoSanitize());
+app.use(xss());
+app.use(hpp());
 
 const dbUrl = process.env.ATLASDB_URL;
 const localDb = "mongodb://127.0.0.1:27017/wanderlust";
@@ -143,7 +146,6 @@ store.on("error", () => {
   console.log("ERROR IN MONGO SESSION STORE", err);
 })
 
-// Session Config
 
 
 const sessionOptions = {
@@ -164,6 +166,7 @@ const sessionMiddleware = session(sessionOptions);
 app.use(sessionMiddleware);
 app.use(flash());
 
+// Authentication
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
@@ -188,6 +191,7 @@ app.use((req, res, next) => {
 });
 
 
+// Routes
 app.get("/", (req, res) => {
   res.render("users/homepage");
 });
@@ -301,7 +305,6 @@ app.get("/faq", (req, res) => {
 
 app.get('/favicon.ico', (req, res) => res.status(204).end());
 
-// 404 handler
 app.use((req, res) => {
   res.status(404).render('listings/404error');
 });
