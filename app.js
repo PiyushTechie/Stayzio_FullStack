@@ -336,7 +336,7 @@ messageSocketHandler(io);
 
 async function startServer() {
   try {
-    await mongoose.connect(localDb);
+    await mongoose.connect(dbUrl);
     console.log("DB Connected Successfully");
 
     await connectRedis();
