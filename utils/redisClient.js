@@ -1,4 +1,3 @@
-// utils/redisClient.js
 import { createClient } from 'redis';
 
 const client = createClient({
@@ -18,11 +17,9 @@ async function connectRedis() {
   if (!isConnected) {
     await client.connect();
     isConnected = true;
-    console.log('✅ Redis client connected');
   }
 }
 
-// ✅ Default export as a single object
 export default {
   client,
   connectRedis

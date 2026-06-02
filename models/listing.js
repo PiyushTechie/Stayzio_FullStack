@@ -3,7 +3,6 @@ import Review from "./reviews.js";
 
 const { Schema } = mongoose;
 
-// --- Dynamic Pricing Schema ---
 const pricingSchema = new Schema({
   basePrice: { type: Number, required: true },
   weekendMultiplier: { type: Number, default: 1.2 },
@@ -20,7 +19,6 @@ const pricingSchema = new Schema({
   }
 });
 
-// --- Listing Schema ---
 const listingSchema = new Schema({
   title: String,
   description: String,
@@ -36,8 +34,8 @@ const listingSchema = new Schema({
   category: {
     type: String,
     enum: [
-      "rooms","cities","mountains","castles","pools","camping",
-      "farms","beach","luxury","cabins","boats","all"
+      "rooms", "cities", "mountains", "castles", "pools", "camping",
+      "farms", "beach", "luxury", "cabins", "boats", "all"
     ],
     default: "all"
   },
@@ -45,11 +43,21 @@ const listingSchema = new Schema({
     type: { type: String, enum: ["Point"], required: true },
     coordinates: { type: [Number], required: true } // [lng, lat]
   },
+  amenities: [{ type: String }],
+  beds: { type: Number, default: 1 },
+  propertyType: {
+    type: String,
+    enum: ["Apartment", "House", "Cabin", "Villa", "Hotel", "Guesthouse", "Other"],
+    default: "Other"
+  },
   pricing: { type: pricingSchema }
 });
 
-// --- Pre-save hook to ensure pricing exists ---
-listingSchema.pre("save", function(next) {
+listingSchema.index({ category: 1, location: 1, price: 1 });
+listingSchema.index({ title: "text", description: "text", location: "text", country: "text" });
+listingSchema.index({ geometry: "2dsphere" });
+
+listingSchema.pre("save", function (next) {
   if (!this.pricing) {
     this.pricing = {
       basePrice: this.price || 1000,
@@ -61,7 +69,6 @@ listingSchema.pre("save", function(next) {
   next();
 });
 
-// --- Clean up reviews on listing deletion ---
 listingSchema.post("findOneAndDelete", async (listing) => {
   if (listing) {
     await Review.deleteMany({ _id: { $in: listing.reviews } });

@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="icon" type="image/png" href="/images/favicon-removebg-preview.png">
+  <title>Messages | StayZio</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+      background: #f0f2f5;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+      max-width: 1600px;
+      margin: 0 auto;
+      background: #f0f2f5;
+    }
+
+    .sidebar {
+      width: 420px;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #e5e7eb;
+    }
+
+    .header {
+      background: #fe424d;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .header-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .header-title {
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .header-icons {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .icon-btn {
+      background: none;
+      border: none;
+      color: #ffffff;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .icon-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .icon-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
+
+    /* Search */
+    .search-container {
+      background: #ffffff;
+      padding: 10px 12px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .search-wrapper {
+      background: #f3f4f6;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      gap: 10px;
+      border: 1px solid #e5e7eb;
+      transition: all 0.2s;
+    }
+
+    .search-wrapper:focus-within {
+      background: #ffffff;
+      border-color: #fe424d;
+      box-shadow: 0 0 0 3px rgba(254, 66, 77, 0.1);
+    }
+
+    .search-icon {
+      width: 20px;
+      height: 20px;
+      fill: #9ca3af;
+    }
+
+    .search-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #1f2937;
+      font-size: 14px;
+      width: 100%;
+      font-family: inherit;
+    }
+
+    .search-input::placeholder {
+      color: #9ca3af;
+    }
+
+    .conversations {
+      flex: 1;
+      overflow-y: auto;
+      background: #ffffff;
+    }
+
+    .conversations::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .conversations::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .conversations::-webkit-scrollbar-thumb {
+      background: #d1d5db;
+      border-radius: 3px;
+    }
+
+    .conversations::-webkit-scrollbar-thumb:hover {
+      background: #9ca3af;
+    }
+
+    .conversation-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      gap: 15px;
+      cursor: pointer;
+      border-bottom: 1px solid #f3f4f6;
+      transition: background 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .conversation-item:hover {
+      background: #f9fafb;
+    }
+
+    .conversation-item.active {
+      background: #fee;
+      border-left: 4px solid #fe424d;
+      padding-left: 12px;
+    }
+
+    .conversation-item.unread {
+      background: #fff5f5;
+    }
+
+    /* Avatar */
+    .avatar-wrapper {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .online-badge {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 14px;
+      height: 14px;
+      background: #4ade80;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+    }
+
+    .conversation-content {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .conversation-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 2px;
+    }
+
+    .conversation-name {
+      color: #1f2937;
+      font-size: 16px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .conversation-name.unread {
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .conversation-time {
+      color: #9ca3af;
+      font-size: 12px;
+      flex-shrink: 0;
+      margin-left: 10px;
+    }
+
+    .conversation-time.unread {
+      color: #fe424d;
+      font-weight: 600;
+    }
+
+    .conversation-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .last-message {
+      color: #6b7280;
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex: 1;
+    }
+
+    .last-message.unread {
+      color: #374151;
+      font-weight: 500;
+    }
+
+    .check-icon {
+      width: 16px;
+      height: 16px;
+      fill: #60a5fa;
+      flex-shrink: 0;
+    }
+
+    .unread-badge {
+      background: #fe424d;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 12px;
+      min-width: 20px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    /* Empty States */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: #9ca3af;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .empty-icon {
+      width: 100px;
+      height: 100px;
+      fill: #d1d5db;
+      margin-bottom: 20px;
+      opacity: 0.6;
+    }
+
+    .empty-title {
+      font-size: 24px;
+      color: #6b7280;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .empty-text {
+      font-size: 14px;
+      color: #9ca3af;
+      line-height: 1.5;
+    }
+
+    /* Chat Preview */
+    .chat-preview {
+      flex: 1;
+      background: #f9fafb;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .chat-preview::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image:
+        repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(254, 66, 77, 0.02) 35px, rgba(254, 66, 77, 0.02) 70px);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .preview-content {
+      text-align: center;
+      padding: 40px;
+      z-index: 1;
+      max-width: 560px;
+    }
+
+    .preview-icon {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 40px;
+    }
+
+    .preview-icon svg {
+      width: 100%;
+      height: 100%;
+      fill: none;
+      stroke: #d1d5db;
+      stroke-width: 1.5;
+    }
+
+    .preview-title {
+      font-size: 32px;
+      color: #1f2937;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .preview-subtitle {
+      font-size: 14px;
+      color: #6b7280;
+      line-height: 20px;
+      margin-bottom: 40px;
+    }
+
+    .preview-features {
+      display: flex;
+      justify-content: center;
+      gap: 80px;
+      margin-top: 40px;
+    }
+
+    .feature {
+      text-align: center;
+    }
+
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      fill: #fe424d;
+      margin-bottom: 12px;
+      opacity: 0.8;
+    }
+
+    .feature-text {
+      font-size: 13px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .no-conversations {
+      text-align: center;
+      padding: 80px 40px;
+      color: #9ca3af;
+    }
+
+    .no-conversations svg {
+      width: 100px;
+      height: 100px;
+      fill: #d1d5db;
+      margin-bottom: 24px;
+      opacity: 0.5;
+    }
+
+    .no-conversations h3 {
+      font-size: 20px;
+      color: #6b7280;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .no-conversations p {
+      font-size: 14px;
+      color: #9ca3af;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 1024px) {
+      .chat-preview {
+        display: none;
+      }
+
+      .sidebar {
+        width: 100%;
+        border-right: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .sidebar {
+        width: 100%;
+      }
+
+      .header-title {
+        font-size: 16px;
+      }
+
+      .conversation-name {
+        font-size: 15px;
+      }
+
+      .last-message {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="sidebar">
+
+      <div class="header">
+        <div class="header-left">
+          <img src="<%= currentUser.profile.photo.url %>" alt="<%= currentUser.username %>'s photo"
+            class="header-avatar" alt="Profile">
+          <div class="header-title">Messages</div>
+        </div>
+
+        <div class="header-icons">
+          <button class="icon-btn" title="New chat">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M19.005 3.175H4.674C3.642 3.175 3 3.789 3 4.821V21.02l3.544-3.514h12.461c1.033 0 2.064-1.06 2.064-2.093V4.821c-.001-1.032-1.032-1.646-2.064-1.646zm-4.989 9.869H7.041V11.1h6.975v1.944zm3-4H7.041V7.1h9.975v1.944z" />
+            </svg>
+          </button>
+          <button class="icon-btn" title="Menu">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 7a2 2 0 1 0-.001-4.001A2 2 0 0 0 12 7zm0 2a2 2 0 1 0-.001 3.999A2 2 0 0 0 12 9zm0 6a2 2 0 1 0-.001 3.999A2 2 0 0 0 12 15z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="search-container">
+        <div class="search-wrapper">
+          <svg class="search-icon" viewBox="0 0 24 24">
+            <path
+              d="M15.009 13.805h-.636l-.22-.219a5.184 5.184 0 0 0 1.256-3.386 5.207 5.207 0 1 0-5.207 5.208 5.183 5.183 0 0 0 3.385-1.255l.221.22v.635l4.004 3.999 1.194-1.195-3.997-4.007zm-4.808 0a3.605 3.605 0 1 1 0-7.21 3.605 3.605 0 0 1 0 7.21z" />
+          </svg>
+          <input type="text" class="search-input" placeholder="Search conversations...">
+        </div>
+      </div>
+
+      <div class="conversations">
+
+        <% if (conversations.length===0) { %>
+          <div class="no-conversations">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.546 20.2A1.01 1.01 0 0 0 3.8 21.454l3.032-.892A9.957 9.957 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.593 0-3.084-.463-4.338-1.262l-2.772.815.815-2.772A7.926 7.926 0 0 1 4 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z" />
+            </svg>
+            <h3>No conversations yet</h3>
+            <p>Start connecting with hosts and guests on Stayzio</p>
+          </div>
+          <% } %>
+
+            <% conversations.forEach(conv=> {
+              const other = conv.participants.filter(p => p._id.toString() !== userId.toString())[0];
+              const unread = conv.unreadCounts.find(u => u.user.toString() === userId.toString());
+              const unreadCount = unread ? unread.count : 0;
+              const isUnread = unreadCount > 0;
+              %>
+
+              <a href="/conversations/<%= conv._id %>" class="conversation-item <%= isUnread ? 'unread' : '' %>">
+
+                <div class="avatar-wrapper">
+                  <img src="https://api.dicebear.com/8.x/initials/svg?seed=<%= other.username %>&backgroundColor=fe424d"
+                    class="avatar" alt="<%= other.username %>">
+
+                  <% if (other.isOnline) { %>
+                    <span class="online-badge"></span>
+                    <% } %>
+                </div>
+
+                <div class="conversation-content">
+                  <div class="conversation-header">
+                    <div class="conversation-name <%= isUnread ? 'unread' : '' %>">
+                      <%= other.username %>
+                    </div>
+
+                    <% if (conv.lastMessage) { %>
+                      <div class="conversation-time <%= isUnread ? 'unread' : '' %>">
+                        <%= new Date(conv.lastMessage.createdAt) .toLocaleTimeString([],
+                          {hour:"2-digit",minute:"2-digit"}) %>
+                      </div>
+                      <% } %>
+                  </div>
+
+                  <div class="conversation-bottom">
+                    <div class="last-message <%= isUnread ? 'unread' : '' %>">
+                      <% if (conv.lastMessage) { %>
+                        <% if (conv.lastMessage.sender.toString()===userId.toString()) { %>
+                          <svg class="check-icon" viewBox="0 0 16 15">
+                            <path
+                              d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.88a.32.32 0 0 1-.484.032l-.358-.325a.319.319 0 0 0-.484.032l-.378.48a.418.418 0 0 0 .036.54l1.32 1.267a.32.32 0 0 0 .484-.034l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.88a.32.32 0 0 1-.484.032L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z" />
+                          </svg>
+                          <% } %>
+                            <%= conv.lastMessage.text %>
+                              <% } else { %>
+                                <span style="font-style: italic; color: #9ca3af;">Start chatting</span>
+                                <% } %>
+                    </div>
+
+                    <% if (isUnread) { %>
+                      <span class="unread-badge">
+                        <%= unreadCount %>
+                      </span>
+                      <% } %>
+                  </div>
+                </div>
+
+              </a>
+
+              <% }) %>
+
+      </div>
+
+    </div>
+
+    <div class="chat-preview">
+      <div class="preview-content">
+        <div class="preview-icon">
+          <svg viewBox="0 0 303 172">
+            <path
+              d="M118.9 173.5l-3.5-6.8c-1.5-2.9-5.2-3.2-7.1-.9l-14.4 17.5c-1.9 2.3-.2 5.8 2.9 5.8h57.8c3.1 0 4.9-3.5 2.9-5.8l-14.4-17.5c-1.9-2.3-5.6-2-7.1.9l-3.5 6.8c-3.9 7.5-13.8 7.5-17.6 0z" />
+            <path
+              d="M229.2 173.5l-3.5-6.8c-1.5-2.9-5.2-3.2-7.1-.9l-14.4 17.5c-1.9 2.3-.2 5.8 2.9 5.8h57.8c3.1 0 4.9-3.5 2.9-5.8l-14.4-17.5c-1.9-2.3-5.6-2-7.1.9l-3.5 6.8c-3.9 7.5-13.8 7.5-17.6 0z" />
+            <rect width="300" height="140" x="1.5" y="1.5" rx="11.5" />
+          </svg>
+        </div>
+
+        <h1 class="preview-title">StayZio Messages</h1>
+        <p class="preview-subtitle">
+          Send and receive messages to connect with hosts and guests.<br>
+          Secure, instant communication for your perfect stay.
+        </p>
+
+        <div class="preview-features">
+          <div class="feature">
+            <svg class="feature-icon" viewBox="0 0 24 24">
+              <path
+                d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
+            </svg>
+            <div class="feature-text">Secure messaging</div>
+          </div>
+
+          <div class="feature">
+            <svg class="feature-icon" viewBox="0 0 24 24">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+            </svg>
+            <div class="feature-text">Instant delivery</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const searchInput = document.querySelector('.search-input');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const conversations = document.querySelectorAll('.conversation-item');
+
+        conversations.forEach(conv => {
+          const name = conv.querySelector('.conversation-name').textContent.toLowerCase();
+          const message = conv.querySelector('.last-message').textContent.toLowerCase();
+
+          if (name.includes(searchTerm) || message.includes(searchTerm)) {
+            conv.style.display = 'flex';
+          } else {
+            conv.style.display = 'none';
+          }
+        });
+      });
+    }
+
+    const currentPath = window.location.pathname;
+    const conversations = document.querySelectorAll('.conversation-item');
+
+    conversations.forEach(conv => {
+      if (conv.getAttribute('href') === currentPath) {
+        conv.classList.add('active');
+      }
+    });
+  </script>
+
+</body>
+
+</html>

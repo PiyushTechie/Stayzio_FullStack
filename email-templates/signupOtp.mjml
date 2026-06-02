@@ -8,11 +8,16 @@
   </mj-head>
   <mj-body background-color="#f5f5f5">
     <!-- Logo Header -->
-    <mj-section background-color="#fe424d" padding="30px 20px">
+    <mj-section background-color="white" padding="30px 20px">
       <mj-column>
-        <mj-text align="center" font-size="32px" font-weight="900" color="#ffffff" padding="0"> 
-          🌏︎Stayzio
-        </mj-text>
+       <mj-image
+      src="https://res.cloudinary.com/dithpp9nq/image/upload/v1763963848/logonobg_yypfiw.png"
+      alt="Stayzio Logo"
+      width="300px"
+      height="90px"
+      padding="0"
+      align="center"
+    />
       </mj-column>
     </mj-section>
 
@@ -78,7 +83,7 @@
     <mj-section background-color="#f5f5f5" padding="0 40px 30px">
       <mj-column>
         <mj-text align="center" font-size="12px" color="#999999" padding="0">
-          © {{year}} Stayzio. All Rights Reserved.
+          © {{year}} Stayzio, Inc. All Rights Reserved.
         </mj-text>
       </mj-column>
     </mj-section>

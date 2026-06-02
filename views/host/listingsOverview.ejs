@@ -1,211 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Host Listings - Stayzio</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --brand-primary: #fe424d;
-    --brand-primary-dark: #e63946;
-    --brand-primary-light: #ff6b74;
-    --text-primary: #1a1a1a;
-    --text-secondary: #6c757d;
-    --bg-light: #f8f9fa;
-    --border-color: #e9ecef;
-  }
+<% layout('layouts/hostBoilerplate') -%>
+<script>
+  window.currentPath = '/host/listings';
+</script>
 
-  body {
-    background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  }
-
-  .container {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-  }
-
-  h1 {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-    position: relative;
-    padding-bottom: 1rem;
-  }
-
-  h1::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 80px;
-    height: 4px;
-    background: linear-gradient(90deg, var(--brand-primary), var(--brand-primary-light));
-    border-radius: 2px;
-  }
-
-  .table-container {
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(254, 66, 77, 0.08);
-    overflow: hidden;
-    margin-top: 2rem;
-    border: 1px solid var(--border-color);
-  }
-
-  .table {
-    margin-bottom: 0 !important;
-  }
-
-  .table thead {
-    background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark)) !important;
-  }
-
-  .table thead th {
-    color: white !important;
-    font-weight: 600 !important;
-    font-size: 0.875rem !important;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 1rem 1.25rem !important;
-    border: none !important;
-    white-space: nowrap;
-    background: transparent !important;
-  }
-
-  .table tbody tr {
-    transition: all 0.3s ease;
-    border-bottom: 1px solid var(--border-color);
-  }
-
-  .table tbody tr:last-child {
-    border-bottom: none;
-  }
-
-  .table tbody tr:hover {
-    background-color: #fff5f5 !important;
-    transform: translateX(4px);
-  }
-
-  .table tbody td {
-    padding: 1.25rem !important;
-    color: var(--text-primary);
-    font-size: 0.95rem;
-    vertical-align: middle;
-    border: none !important;
-  }
-
-  .table tbody td:first-child {
-    font-weight: 600;
-    color: var(--text-primary);
-  }
-
-  .table-striped tbody tr:nth-of-type(odd) {
-    background-color: rgba(254, 66, 77, 0.02) !important;
-  }
-
-  .btn-sm {
-    padding: 0.5rem 1rem !important;
-    font-size: 0.875rem !important;
-    border-radius: 8px !important;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    border: none !important;
-    text-decoration: none;
-    display: inline-block;
-    margin-right: 0.5rem;
-  }
-
-  .btn-info {
-    background: linear-gradient(135deg, #0dcaf0, #0aa2c0) !important;
-    color: white !important;
-  }
-
-  .btn-info:hover {
-    background: linear-gradient(135deg, #0aa2c0, #088a9f) !important;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(13, 202, 240, 0.3);
-  }
-
-  .btn-warning {
-    background: linear-gradient(135deg, #ffc107, #ffb300) !important;
-    color: #1a1a1a !important;
-  }
-
-  .btn-warning:hover {
-    background: linear-gradient(135deg, #ffb300, #ffa000) !important;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
-  }
-
-  @media (max-width: 768px) {
-    .container {
-      padding-top: 1rem;
-    }
-
-    h1 {
-      font-size: 1.5rem;
-    }
-
-    .table-container {
-      border-radius: 12px;
-      overflow-x: auto;
-    }
-
-    .table {
-      font-size: 0.85rem;
-    }
-
-    .table thead th,
-    .table tbody td {
-      padding: 0.75rem !important;
-    }
-
-    .table tbody tr:hover {
-      transform: none;
-    }
-
-    .btn-sm {
-      padding: 0.375rem 0.75rem !important;
-      font-size: 0.8rem !important;
-      margin-bottom: 0.25rem;
-    }
-  }
-</style>
-</head>
-<body>
-<div class="container mt-5">
-  <h1>My Listings</h1>
-  <div class="table-container">
-    <table class="table table-striped mt-4">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Location</th>
-          <th>Price/Night</th>
-          <th>Bookings</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% listings.forEach(listing => { %>
-          <tr>
-            <td><%= listing.title %></td>
-            <td><%= listing.location %></td>
-            <td>₹<%= listing.price %></td>
-            <td><%= listing.bookingCount %></td>
-            <td>
-              <a href="/host/listings/<%= listing._id %>" class="btn btn-sm btn-info">View</a>
-              <a href="/listings/<%= listing._id %>/edit" class="btn btn-sm btn-warning">Edit</a>
-            </td>
-          </tr>
-        <% }) %>
-      </tbody>
-    </table>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
+  <div>
+    <h1 class="text-3xl font-bold text-gray-900 tracking-tight mb-2">My Listings</h1>
+    <p class="text-gray-500">Manage your properties and check their performance.</p>
   </div>
+  <a href="/listings/new" class="inline-flex items-center justify-center gap-2 bg-[#fe424d] hover:bg-[#e63946] text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-sm w-full sm:w-auto">
+    <i class="fa-solid fa-plus"></i>
+    <span>Create Listing</span>
+  </a>
 </div>
-</body>
-</html>
+
+<div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+  <% if (listings.length === 0) { %>
+    <div class="p-12 text-center flex flex-col items-center">
+      <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center text-gray-300 text-3xl mb-4">
+        <i class="fa-solid fa-house-crack"></i>
+      </div>
+      <h3 class="text-xl font-bold text-gray-900 mb-2">No listings yet</h3>
+      <p class="text-gray-500 mb-6 max-w-sm mx-auto">You haven't added any properties to host. Create your first listing to start earning!</p>
+      <a href="/listings/new" class="bg-gray-900 text-white px-6 py-2.5 rounded-xl font-medium hover:bg-gray-800 transition-colors shadow-sm">
+        Add a Property
+      </a>
+    </div>
+  <% } else { %>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left whitespace-nowrap">
+        <thead>
+          <tr class="bg-gray-50 border-b border-gray-100 text-gray-500 text-xs uppercase tracking-wider font-semibold">
+            <th class="px-6 py-4 rounded-tl-2xl">Property</th>
+            <th class="px-6 py-4">Location</th>
+            <th class="px-6 py-4">Price / Night</th>
+            <th class="px-6 py-4">Bookings</th>
+            <th class="px-6 py-4 text-right rounded-tr-2xl">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <% listings.forEach(listing => { %>
+            <tr class="hover:bg-gray-50/50 transition-colors group">
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-4">
+                  <div class="w-12 h-12 rounded-lg bg-gray-100 overflow-hidden shrink-0">
+                    <img src="<%= listing.image.url %>" alt="<%= listing.title %>" class="w-full h-full object-cover">
+                  </div>
+                  <div>
+                    <p class="font-bold text-gray-900 truncate max-w-[200px] lg:max-w-[300px]"><%= listing.title %></p>
+                    <p class="text-xs text-gray-500 truncate max-w-[200px]"><%= listing.category %></p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-600">
+                <div class="flex items-center gap-1.5">
+                  <i class="fa-solid fa-location-dot text-gray-400"></i>
+                  <%= listing.location %>
+                </div>
+              </td>
+              <td class="px-6 py-4">
+                <span class="font-medium text-gray-900">₹<%= listing.price.toLocaleString("en-IN") %></span>
+              </td>
+              <td class="px-6 py-4">
+                <div class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
+                  <%= listing.bookingCount %> bookings
+                </div>
+              </td>
+              <td class="px-6 py-4 text-right">
+                <div class="flex items-center justify-end gap-2">
+                  <a href="/host/listings/<%= listing._id %>" class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="View Details">
+                    <i class="fa-solid fa-eye"></i>
+                  </a>
+                  <a href="/listings/<%= listing._id %>/edit" class="p-2 text-gray-400 hover:text-orange-500 hover:bg-orange-50 rounded-lg transition-colors" title="Edit Listing">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </a>
+                  <a href="/host/listings/<%= listing._id %>/pricing" class="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors" title="Dynamic Pricing">
+                    <i class="fa-solid fa-tags"></i>
+                  </a>
+                </div>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>

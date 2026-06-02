@@ -1,132 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Host Dashboard - Stayzio</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    /* === Your original full CSS exactly as provided === */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #fef5f6 0%, #fff8f9 50%, #ffffff 100%);
-      min-height: 100vh;
-      padding: 2rem 0 3rem;
-    }
-    .container { max-width: 1200px; }
-    h1 { color: #1a1a1a; font-weight: 800; font-size: 3rem; margin-bottom: 3rem !important; position: relative; display: inline-block; letter-spacing: -0.5px; }
-    h1::after {
-      content: ''; position: absolute; bottom: -12px; left: 0; width: 100px; height: 6px;
-      background: linear-gradient(90deg, #fe424d, #ff6b75, #ffa07a);
-      border-radius: 3px; animation: shimmer 3s ease-in-out infinite;
-    }
-    @keyframes shimmer { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
-    .card {
-      border: none; border-radius: 20px; background: white;
-      box-shadow: 0 4px 20px rgba(254, 66, 77, 0.08);
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      overflow: hidden; position: relative; padding: 2rem 1.5rem !important;
-    }
-    .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, #fe424d, #ff6b75); opacity: 0; transition: opacity 0.3s ease; }
-    .card:hover { transform: translateY(-8px); box-shadow: 0 12px 35px rgba(254, 66, 77, 0.15); }
-    .card:hover::before { opacity: 1; }
-    .card h5 { color: #666; font-weight: 600; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; }
-    .card .display-6 {
-      color: #fe424d; font-weight: 800; font-size: 3rem; margin: 0;
-      background: linear-gradient(135deg, #fe424d, #ff6b75);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .card-icon {
-      position: absolute; top: 1.5rem; right: 1.5rem; width: 50px; height: 50px;
-      background: linear-gradient(135deg, #fe424d15, #ff6b7515);
-      border-radius: 12px; display: flex; align-items: center; justify-content: center;
-      font-size: 1.5rem; opacity: 0.6; transition: all 0.3s ease;
-    }
-    .card:hover .card-icon { opacity: 1; transform: scale(1.1) rotate(5deg); }
-    .btn {
-      padding: 0.9rem 2rem; border-radius: 12px; font-weight: 600; font-size: 1rem;
-      transition: all 0.3s ease; border: none; margin-right: 1rem; margin-bottom: 1rem;
-      display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;
-      position: relative; overflow: hidden;
-    }
-    .btn::before { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; border-radius: 50%; background: rgba(255, 255, 255, 0.3); transform: translate(-50%, -50%); transition: width 0.5s, height 0.5s; }
-    .btn:hover::before { width: 300px; height: 300px; }
-    .btn-primary {
-      background: linear-gradient(135deg, #fe424d 0%, #ff6b75 100%);
-      color: white; box-shadow: 0 4px 15px rgba(254, 66, 77, 0.3);
-    }
-    .btn-primary:hover {
-      background: linear-gradient(135deg, #e63b46 0%, #fe424d 100%);
-      transform: translateY(-3px); box-shadow: 0 6px 20px rgba(254, 66, 77, 0.4);
-      color: white;
-    }
-    .btn-success { background: linear-gradient(135deg, #10b981 0%, #34d399 100%); color: white; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
-    .btn-success:hover { background: linear-gradient(135deg, #059669 0%, #10b981 100%); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4); color: white; }
-    .btn-warning { background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%); color: white; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); }
-    .btn-warning:hover { background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4); color: white; }
-    .btn:active { transform: translateY(-1px); }
-    .action-buttons { margin-top: 3rem !important; padding: 2rem; background: white; border-radius: 20px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
-    .row.g-4 { margin-bottom: 0; }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-    .card { animation: fadeInUp 0.6s ease-out forwards; }
-    .col-md-4:nth-child(1) .card { animation-delay: 0.1s; }
-    .col-md-4:nth-child(2) .card { animation-delay: 0.2s; }
-    .col-md-4:nth-child(3) .card { animation-delay: 0.3s; }
-    .action-buttons { animation: fadeInUp 0.6s ease-out 0.4s forwards; opacity: 0; animation-fill-mode: forwards; }
-  </style>
-</head>
-<body>
+<% layout('layouts/hostBoilerplate') -%>
+<script>
+  // Setup the currentPath variable for the sidebar active state
+  window.currentPath = '/host';
+</script>
 
-<div class="container mt-5">
-  <h1 class="mb-4">Host Dashboard</h1>
-  <p class="text-muted mb-5 fs-5">
-    Welcome back, <strong><%= user.username %></strong> 👋 Here’s a quick look at your hosting performance.
-  </p>
+<div class="mb-8">
+  <h1 class="text-3xl font-bold text-gray-900 tracking-tight mb-2">Host Dashboard</h1>
+  <p class="text-gray-500">Welcome back, <strong class="text-gray-800"><%= currentUser.username %></strong>. Here’s a quick look at your hosting performance.</p>
+</div>
 
-  <div class="row g-4">
-    <div class="col-md-4">
-      <div class="card text-center shadow-sm p-3">
-        <div class="card-icon">🏠</div>
-        <h5>Total Listings</h5>
-        <p class="display-6"><%= listings.length %></p>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  
+  <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+    <div class="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
+    <div class="relative z-10 flex items-start justify-between">
+      <div>
+        <p class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-1">Total Listings</p>
+        <h3 class="text-4xl font-bold text-gray-900"><%= listings.length %></h3>
       </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card text-center shadow-sm p-3">
-        <div class="card-icon">📅</div>
-        <h5>Total Bookings</h5>
-        <p class="display-6"><%= totalBookings %></p>
+      <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl shadow-inner">
+        <i class="fa-solid fa-house-chimney"></i>
       </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card text-center shadow-sm p-3">
-        <div class="card-icon">💰</div>
-        <h5>Total Earnings</h5>
-        <p class="display-6">₹<%= earnings.toFixed(2) %></p>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <a href="/listings/new" class="card text-center shadow-sm p-3 text-decoration-none">
-        <div class="card-icon">➕</div>
-        <h5>Create New Listing</h5>
-        <p class="display-6" style="color:#fe424d;">Add</p>
-      </a>
     </div>
   </div>
 
-  <div class="mt-5 action-buttons">
-    <a href="/host/listings" class="btn btn-primary">
-      <span>📋</span> View My Listings
+  <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+    <div class="absolute top-0 right-0 w-24 h-24 bg-green-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
+    <div class="relative z-10 flex items-start justify-between">
+      <div>
+        <p class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-1">Total Bookings</p>
+        <h3 class="text-4xl font-bold text-gray-900"><%= totalBookings %></h3>
+      </div>
+      <div class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-xl shadow-inner">
+        <i class="fa-solid fa-calendar-check"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+    <div class="absolute top-0 right-0 w-24 h-24 bg-purple-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
+    <div class="relative z-10 flex items-start justify-between">
+      <div>
+        <p class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-1">Total Earnings</p>
+        <h3 class="text-3xl font-bold text-gray-900 mt-1">₹<%= earnings.toLocaleString("en-IN") %></h3>
+      </div>
+      <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-xl shadow-inner">
+        <i class="fa-solid fa-wallet"></i>
+      </div>
+    </div>
+  </div>
+
+  <a href="/listings/new" class="bg-gradient-to-br from-[#fe424d] to-pink-500 rounded-2xl p-6 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all relative overflow-hidden group flex flex-col justify-center text-white no-underline">
+    <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+    <div class="relative z-10 flex items-center justify-between">
+      <div>
+        <h3 class="text-xl font-bold mb-1">Create Listing</h3>
+        <p class="text-white/80 text-sm font-medium">Add a new property</p>
+      </div>
+      <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-xl backdrop-blur-sm shadow-inner group-hover:scale-110 transition-transform">
+        <i class="fa-solid fa-plus"></i>
+      </div>
+    </div>
+  </a>
+</div>
+
+<div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-8">
+  <h2 class="text-lg font-bold text-gray-900 mb-4">Quick Actions</h2>
+  <div class="flex flex-wrap gap-4">
+    <a href="/host/listings" class="flex items-center gap-2 bg-gray-50 hover:bg-gray-100 text-gray-700 px-5 py-3 rounded-xl font-medium transition-colors border border-gray-200 shadow-sm">
+      <i class="fa-solid fa-list-check text-[#fe424d]"></i>
+      Manage Listings
     </a>
-    <a href="/host/bookings" class="btn btn-success">
-      <span>📖</span> View Bookings
+    <a href="/host/bookings" class="flex items-center gap-2 bg-gray-50 hover:bg-gray-100 text-gray-700 px-5 py-3 rounded-xl font-medium transition-colors border border-gray-200 shadow-sm">
+      <i class="fa-solid fa-book-open text-blue-500"></i>
+      Manage Bookings
     </a>
-    <a href="/host/analytics" class="btn btn-warning">
-      <span>📊</span> View Analytics
+    <a href="/host/analytics" class="flex items-center gap-2 bg-gray-50 hover:bg-gray-100 text-gray-700 px-5 py-3 rounded-xl font-medium transition-colors border border-gray-200 shadow-sm">
+      <i class="fa-solid fa-chart-pie text-green-500"></i>
+      View Performance
     </a>
   </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+</div>

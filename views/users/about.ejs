@@ -1,283 +1,417 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - Stayzio</title>
-    <link rel="stylesheet" href="/css/about.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="icon" type="image/png" href="/images/favicon-removebg-preview.png">
-</head>
-<body>
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <span class="hero-badge">🏠 Your Home Away From Home</span>
-                <h1>Revolutionizing Travel Stays</h1>
-                <p class="hero-subtitle">At Stayzio, we believe every journey deserves an extraordinary place to rest. We're transforming how travelers discover, book, and experience accommodations worldwide.</p>
-                <div class="hero-cta">
-                    <a href="#mission" class="btn-primary">Our Mission</a>
-                    <a href="#team" class="btn-outline">Meet the Team</a>
+<% layout('layouts/infoBoilerplate') -%>
+
+    <style>
+        :root {
+            --brand-red: #fe424d;
+            --brand-dark: #111827;
+        }
+
+        body {
+            background-color: #f8fafc;
+        }
+
+        .clip-reveal {
+            clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+            animation: revealUp 1.2s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+        }
+
+        @keyframes revealUp {
+            0% {
+                clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+                transform: translateY(50px);
+            }
+
+            100% {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+                transform: translateY(0);
+            }
+        }
+
+        .blob-shape {
+            position: absolute;
+            filter: blur(80px);
+            z-index: 0;
+            opacity: 0.6;
+            animation: floatShape 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatShape {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+
+            100% {
+                transform: translate(-20px, 30px) scale(0.9);
+            }
+        }
+
+        .glass-card-3d {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .glass-card-3d:hover {
+            transform: translateY(-10px) rotateX(5deg) rotateY(-5deg);
+            box-shadow: 0 35px 60px -15px rgba(254, 66, 77, 0.15);
+            border-color: rgba(254, 66, 77, 0.3);
+        }
+
+        .glass-card-3d .icon-wrapper {
+            transition: transform 0.5s ease;
+        }
+
+        .glass-card-3d:hover .icon-wrapper {
+            transform: translateZ(30px) scale(1.1);
+            color: var(--brand-red);
+        }
+
+        .parallax-mask {
+            clip-path: inset(0 0 0 0 round 2rem);
+            transition: clip-path 0.5s ease;
+        }
+
+        .parallax-mask:hover {
+            clip-path: inset(2% 2% 2% 2% round 1rem);
+        }
+
+        .text-gradient-animate {
+            background: linear-gradient(to right, var(--brand-dark), var(--brand-red), var(--brand-dark));
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shineText 4s linear infinite;
+        }
+
+        @keyframes shineText {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        .team-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 2rem;
+            background: #fff;
+        }
+
+        .team-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8) 100%);
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .team-card:hover::before {
+            opacity: 1;
+        }
+
+        .team-info {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            z-index: 2;
+            color: white;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .team-card:hover .team-info {
+            transform: translateY(-50px);
+        }
+
+        .team-img {
+            transition: transform 0.7s ease;
+        }
+
+        .team-card:hover .team-img {
+            transform: scale(1.1);
+        }
+    </style>
+
+    <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
+        <div class="blob-shape bg-red-200 w-[600px] h-[600px] rounded-full top-0 left-[-200px]"></div>
+        <div class="blob-shape bg-blue-100 w-[500px] h-[500px] rounded-full bottom-[-100px] right-[-100px]"
+            style="animation-delay: -5s;"></div>
+
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 w-full text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 backdrop-blur-md border border-gray-200 text-sm font-semibold text-gray-700 mb-8 shadow-sm clip-reveal"
+                style="animation-delay: 0.2s;">
+                <span class="w-2 h-2 rounded-full bg-[#fe424d] animate-pulse"></span>
+                Redefining Hospitality
+            </div>
+
+            <h1 class="text-6xl md:text-8xl font-black text-gray-900 tracking-tighter leading-tight mb-6 clip-reveal"
+                style="animation-delay: 0.4s;">
+                The future of <br>
+                <span class="text-gradient-animate">travel is here.</span>
+            </h1>
+
+            <p class="text-xl md:text-2xl text-gray-500 max-w-3xl mx-auto font-light leading-relaxed mb-12 clip-reveal"
+                style="animation-delay: 0.6s;">
+                We don't just find you a place to sleep. We connect you with spaces that inspire, communities that
+                welcome, and experiences that transform.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-6 clip-reveal"
+                style="animation-delay: 0.8s;">
+                <a href="/listings"
+                    class="px-8 py-4 rounded-full bg-gray-900 text-white font-bold text-lg hover:bg-[#fe424d] transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_10px_30px_rgba(254,66,77,0.3)] transform hover:-translate-y-1">
+                    Explore Stays
+                </a>
+                <a href="#story"
+                    class="px-8 py-4 rounded-full bg-white text-gray-900 border border-gray-200 font-bold text-lg hover:border-gray-900 transition-all duration-300">
+                    Our Story <i class="fas fa-arrow-down ml-2 animate-bounce"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-white relative z-20 border-y border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+                <div class="text-center" data-aos="fade-up" data-aos-delay="0">
+                    <div class="text-5xl font-black text-gray-900 mb-2"><span class="counter"
+                            data-target="10">10</span>M+</div>
+                    <div class="text-sm font-semibold text-gray-500 uppercase tracking-widest">Nights Booked</div>
+                </div>
+                <div class="text-center" data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-5xl font-black text-gray-900 mb-2"><span class="counter"
+                            data-target="200">200</span>+</div>
+                    <div class="text-sm font-semibold text-gray-500 uppercase tracking-widest">Countries</div>
+                </div>
+                <div class="text-center" data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-5xl font-black text-[#fe424d] mb-2"><span class="counter"
+                            data-target="5">5</span>M+</div>
+                    <div class="text-sm font-semibold text-gray-500 uppercase tracking-widest">Active Hosts</div>
+                </div>
+                <div class="text-center" data-aos="fade-up" data-aos-delay="300">
+                    <div class="text-5xl font-black text-gray-900 mb-2"><span class="counter"
+                            data-target="4.9">4.9</span></div>
+                    <div class="text-sm font-semibold text-gray-500 uppercase tracking-widest">Avg Rating</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Mission Section -->
-    <section class="mission-section" id="mission">
-        <div class="container">
-            <div class="section-header animate-on-scroll">
-                <span class="section-badge">Our Mission</span>
-                <h2 class="section-title">Building the Future of Travel</h2>
-                <p class="section-subtitle">We're on a mission to make every stay memorable, comfortable, and authentic for travelers around the globe.</p>
-            </div>
-
-            <div class="mission-grid">
-                <div class="mission-content animate-on-scroll">
-                    <h3>Connecting People Through Travel</h3>
-                    <p>Founded in 2025, Stayzio emerged from a simple yet powerful vision: to bridge the gap between travelers seeking authentic experiences and hosts wanting to share their unique spaces. What started as an idea to solve our own travel frustrations has grown into a platform trusted by thousands.</p>
-                    
-                    <p>We understand that where you stay can make or break your trip. That's why we've built a platform that doesn't just facilitate bookings – it creates connections, ensures quality, and delivers experiences that exceed expectations.</p>
-
-                    <div class="mission-stats">
-                        <div class="stat-item">
-                            <span class="stat-number">10K+</span>
-                            <span class="stat-label">Happy Travelers</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number">200+</span>
-                            <span class="stat-label">Unique Properties</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number">200+</span>
-                            <span class="stat-label">Cities Worldwide</span>
+    <section id="story" class="py-32 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                <div data-aos="fade-right" data-aos-duration="1000">
+                    <h3 class="text-[#fe424d] font-bold tracking-widest uppercase mb-4 text-sm">Our Genesis</h3>
+                    <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-8 leading-tight">Born from a desire to
+                        belong anywhere.</h2>
+                    <div class="space-y-6 text-lg text-gray-600 font-light leading-relaxed">
+                        <p>Founded in 2025, Stayzio emerged from a simple yet powerful vision: to bridge the gap between
+                            travelers seeking authentic experiences and hosts wanting to share their unique spaces. What
+                            started as an idea to solve our own travel frustrations has grown into a platform trusted by
+                            millions.</p>
+                        <p>We understand that where you stay can make or break your trip. That's why we've built a
+                            platform that doesn't just facilitate bookings – it creates connections, ensures quality,
+                            and delivers experiences that exceed expectations.</p>
+                    </div>
+                </div>
+                <div class="relative h-[600px] w-full" data-aos="zoom-in-left" data-aos-duration="1200">
+                    <div class="absolute inset-0 bg-gray-200 parallax-mask overflow-hidden shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=2000&auto=format&fit=crop"
+                            alt="Stayzio Story"
+                            class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-1000">
+                    </div>
+                    <div class="absolute -bottom-10 -left-10 bg-white p-6 rounded-3xl shadow-xl z-20 animate-bounce"
+                        style="animation-duration: 4s;">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-[#fe424d] text-xl">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold text-gray-900">Loved by Travelers</div>
+                                <div class="text-sm text-gray-500">100% Genuine Reviews</div>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
 
-                <div class="mission-visual animate-on-scroll">
-                    <div class="floating-elements">
-                        <div class="floating-element">Discover</div>
-                        <div class="floating-element">Connect</div>
-                        <div class="floating-element">Experience</div>
+    <section class="py-32 bg-gray-900 relative overflow-hidden">
+        <div
+            class="absolute top-0 right-0 w-[800px] h-[800px] bg-[#fe424d] rounded-full filter blur-[150px] opacity-20">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-20" data-aos="fade-up">
+                <h2 class="text-4xl md:text-6xl font-black text-white mb-6">Our Core Values</h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto font-light">The foundational principles that guide
+                    every feature we build and every connection we foster.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="glass-card-3d p-10 rounded-[2rem]" data-aos="fade-up" data-aos-delay="0">
+                    <div class="icon-wrapper text-gray-400 text-4xl mb-6">
+                        <i class="fas fa-shield-alt"></i>
                     </div>
-                    <div class="mission-icon">🌍</div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Trust & Safety</h3>
+                    <p class="text-gray-600 leading-relaxed">We prioritize the safety of our community through rigorous
+                        verification, secure payments, and 24/7 global support.</p>
+                </div>
+
+                <div class="glass-card-3d p-10 rounded-[2rem]" data-aos="fade-up" data-aos-delay="100">
+                    <div class="icon-wrapper text-gray-400 text-4xl mb-6">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Quality Excellence</h3>
+                    <p class="text-gray-600 leading-relaxed">Every property meets high standards for cleanliness and
+                        amenities, ensuring consistently exceptional stays.</p>
+                </div>
+
+                <div class="glass-card-3d p-10 rounded-[2rem]" data-aos="fade-up" data-aos-delay="200">
+                    <div class="icon-wrapper text-gray-400 text-4xl mb-6">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Community First</h3>
+                    <p class="text-gray-600 leading-relaxed">We foster genuine human connections, creating a global
+                        network where everyone feels welcomed.</p>
+                </div>
+
+                <div class="glass-card-3d p-10 rounded-[2rem]" data-aos="fade-up" data-aos-delay="300">
+                    <div class="icon-wrapper text-gray-400 text-4xl mb-6">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Innovation</h3>
+                    <p class="text-gray-600 leading-relaxed">We continuously evolve with cutting-edge tech and AI to
+                        stay ahead of modern travel trends.</p>
+                </div>
+
+                <div class="glass-card-3d p-10 rounded-[2rem]" data-aos="fade-up" data-aos-delay="400">
+                    <div class="icon-wrapper text-gray-400 text-4xl mb-6">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Sustainability</h3>
+                    <p class="text-gray-600 leading-relaxed">Promoting responsible travel practices and eco-friendly
+                        stays to preserve our beautiful planet.</p>
+                </div>
+
+                <div class="glass-card-3d p-10 rounded-[2rem]" data-aos="fade-up" data-aos-delay="500">
+                    <div class="icon-wrapper text-gray-400 text-4xl mb-6">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Transparency</h3>
+                    <p class="text-gray-600 leading-relaxed">Clear pricing, honest reviews, and open communication build
+                        the foundation of our trust.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Values Section -->
-    <section class="values-section">
-        <div class="container">
-            <div class="section-header animate-on-scroll">
-                <span class="section-badge">Our Values</span>
-                <h2 class="section-title">What Drives Us Forward</h2>
-                <p class="section-subtitle">These core values guide every decision we make and every feature we build.</p>
+    <section class="py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-20" data-aos="fade-up">
+                <h3 class="text-[#fe424d] font-bold tracking-widest uppercase mb-4 text-sm">Leadership</h3>
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6">Meet the Visionaries</h2>
             </div>
 
-            <div class="values-grid">
-                <div class="value-card animate-on-scroll">
-                    <div class="value-icon">🎯</div>
-                    <h3 class="value-title">Trust & Safety</h3>
-                    <p class="value-description">We prioritize the safety and security of our community through rigorous verification processes, secure payments, and 24/7 support for both hosts and guests.</p>
-                </div>
-
-                <div class="value-card animate-on-scroll">
-                    <div class="value-icon">✨</div>
-                    <h3 class="value-title">Quality Excellence</h3>
-                    <p class="value-description">Every property on our platform meets our high standards for cleanliness, amenities, and host responsiveness, ensuring consistently exceptional experiences.</p>
-                </div>
-
-                <div class="value-card animate-on-scroll">
-                    <div class="value-icon">🤝</div>
-                    <h3 class="value-title">Community First</h3>
-                    <p class="value-description">We foster genuine connections between travelers and hosts, creating a global community where everyone feels welcomed and valued.</p>
-                </div>
-
-                <div class="value-card animate-on-scroll">
-                    <div class="value-icon">🚀</div>
-                    <h3 class="value-title">Innovation</h3>
-                    <p class="value-description">We continuously evolve our platform with cutting-edge technology, AI-powered recommendations, and intuitive design to stay ahead of travel trends.</p>
-                </div>
-
-                <div class="value-card animate-on-scroll">
-                    <div class="value-icon">🌿</div>
-                    <h3 class="value-title">Sustainability</h3>
-                    <p class="value-description">We promote responsible travel practices and support eco-friendly accommodations to minimize our environmental impact and preserve destinations for future generations.</p>
-                </div>
-
-                <div class="value-card animate-on-scroll">
-                    <div class="value-icon">💎</div>
-                    <h3 class="value-title">Transparency</h3>
-                    <p class="value-description">Clear pricing, honest reviews, and open communication are fundamental to building trust and ensuring every booking meets expectations.</p>
+            <div class="flex justify-center">
+                <div class="team-card w-full max-w-sm bg-gray-100 flex items-center justify-center min-h-[500px]"
+                    data-aos="zoom-in" data-aos-duration="1000">
+                    <img src="" alt="Piyush Prajapati" class="team-img w-full h-[500px] object-cover hidden">
+                    <div class="text-gray-400 font-semibold absolute inset-0 flex items-center justify-center z-0">
+                        [Your Image Here]
+                    </div>
+                    <div class="team-info">
+                        <div class="text-[#fe424d] font-bold text-sm mb-1 uppercase tracking-wider">Founder & CEO</div>
+                        <h3 class="text-3xl font-bold mb-2 text-gray-900">Piyush Prajapati</h3>
+                        <p
+                            class="text-gray-600 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            Visionary entrepreneur revolutionizing how people experience accommodations worldwide.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Team Section -->
-    <section class="team-section" id="team">
-        <div class="container">
-            <div class="section-header animate-on-scroll">
-                <span class="section-badge">Our Team</span>
-                <h2 class="section-title">Meet the Visionaries</h2>
-                <p class="section-subtitle">The passionate minds behind Stayzio's mission to transform travel experiences.</p>
-            </div>
+    <section class="py-32 bg-[#fe424d] relative overflow-hidden">
+        <div
+            class="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-1/2 w-[800px] h-[800px] border border-white/20 rounded-full">
+        </div>
+        <div
+            class="absolute top-1/2 right-0 transform -translate-y-1/2 translate-x-1/2 w-[600px] h-[600px] border border-white/20 rounded-full">
+        </div>
 
-            <div class="team-grid">
-                <div class="team-card animate-on-scroll">
-                    <div class="founder-badge">Founder & CEO, CTO, Head of Operations</div>
-                    <div class="team-avatar">👨‍💼</div>
-                    <h3 class="team-name">Piyush Prajapati</h3>
-                    <p class="team-role">Founder & Chief Executive Officer</p>
-                    <p class="team-bio">Visionary entrepreneur with a passion for travel technology and creating meaningful connections. Piyush founded Stayzio with the mission to revolutionize how people experience accommodations worldwide, combining his expertise in business strategy with a deep understanding of traveler needs.</p>
-                </div>
-            </div>
+        <div class="max-w-4xl mx-auto px-6 lg:px-8 relative z-10 text-center" data-aos="fade-up">
+            <h2 class="text-5xl md:text-7xl font-black text-white mb-8 tracking-tight">Ready to transform your travel?
+            </h2>
+            <a href="/listings"
+                class="inline-block px-10 py-5 bg-white text-gray-900 font-bold text-xl rounded-full hover:scale-105 hover:shadow-2xl transition-all duration-300">
+                Start Your Journey
+            </a>
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content animate-on-scroll">
-                <h2 class="cta-title">Ready to Transform Your Travel?</h2>
-                <p class="cta-description">Join thousands of travelers who've discovered extraordinary stays through Stayzio. Your perfect accommodation is just one click away.</p>
-                <div class="cta-buttons">
-                    <a href="/listings" class="btn-cta">Start Your Journey</a>
-                </div>
-            </div>
-        </div>
-    </section>
-    <%- include("../includes/footer.ejs") %>
-
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Intersection Observer for animations
-        const observerOptions = {
-            threshold: 0.15,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animated');
-                }
+        document.addEventListener("DOMContentLoaded", () => {
+            AOS.init({
+                once: true,
+                offset: 50,
+                duration: 800,
+                easing: 'ease-out-cubic',
             });
-        }, observerOptions);
 
-        // Observe all animation elements
-        document.querySelectorAll('.animate-on-scroll').forEach(el => {
-            observer.observe(el);
-        });
+            const counters = document.querySelectorAll('.counter');
+            const speed = 100;
 
-        // Smooth scrolling for navigation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
+            const animateCounters = () => {
+                counters.forEach(counter => {
+                    const targetText = counter.getAttribute('data-target');
+                    const target = parseFloat(targetText);
+                    const isFloat = targetText.includes('.');
+                    let count = 0;
+                    const inc = target / speed;
+
+                    const updateCount = () => {
+                        count += inc;
+                        if (count < target) {
+                            counter.innerText = isFloat ? count.toFixed(1) : Math.ceil(count);
+                            setTimeout(updateCount, 15);
+                        } else {
+                            counter.innerText = target;
+                        }
+                    };
+                    updateCount();
+                });
+            };
+
+            const statsSection = document.querySelector('.counter').closest('section');
+            if (statsSection) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            counters.forEach(c => c.innerText = '0');
+                            animateCounters();
+                            observer.unobserve(entry.target);
+                        }
                     });
-                }
-            });
-        });
-
-        // Counter animation for stats
-        function animateCounters() {
-            const counters = document.querySelectorAll('.stat-number');
-            const speed = 200;
-
-            counters.forEach(counter => {
-                const target = parseInt(counter.textContent.replace(/[^\d]/g, ''));
-                const suffix = counter.textContent.replace(/[\d,+]/g, '');
-                let count = 0;
-                const increment = target / speed;
-
-                const updateCount = () => {
-                    if (count < target) {
-                        count += increment;
-                        counter.textContent = Math.floor(count).toLocaleString() + suffix;
-                        requestAnimationFrame(updateCount);
-                    } else {
-                        counter.textContent = target.toLocaleString() + suffix;
-                    }
-                };
-
-                updateCount();
-            });
-        }
-
-        // Trigger counter animation when mission section is visible
-        const missionObserver = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    animateCounters();
-                    missionObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        const missionSection = document.querySelector('.mission-stats');
-        if (missionSection) {
-            missionObserver.observe(missionSection);
-        }
-
-        // Enhanced hover effects for cards
-        document.querySelectorAll('.value-card, .team-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-8px) scale(1.02)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0) scale(1)';
-            });
-        });
-
-        // Parallax effect for hero section
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const hero = document.querySelector('.hero');
-            
-            if (hero && scrolled < window.innerHeight) {
-                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+                }, { threshold: 0.1 });
+                observer.observe(statsSection);
             }
         });
-
-        // Dynamic color animations
-        const valueCards = document.querySelectorAll('.value-card');
-        valueCards.forEach((card, index) => {
-            card.addEventListener('mouseenter', function() {
-                this.style.animationDelay = `${index * 0.1}s`;
-            });
-        });
-
-        // Add loading animation
-        window.addEventListener('load', function() {
-            document.body.style.opacity = '1';
-        });
-
-        // Mobile menu functionality (if needed)
-        const mobileBreakpoint = 768;
-        
-        function handleResize() {
-            if (window.innerWidth <= mobileBreakpoint) {
-                // Mobile optimizations
-                document.querySelectorAll('.floating-element').forEach(el => {
-                    el.style.display = 'none';
-                });
-            } else {
-                document.querySelectorAll('.floating-element').forEach(el => {
-                    el.style.display = 'block';
-                });
-            }
-        }
-
-        window.addEventListener('resize', handleResize);
-        handleResize(); // Initial check
     </script>
-</body>
-</html>

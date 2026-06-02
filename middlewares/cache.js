@@ -1,11 +1,10 @@
-// middlewares/cache.js
 import redisModule from "../utils/redisClient.js";
 const { client } = redisModule;
 
 const DEFAULT_TTL = 3600;
 
 export async function cacheMiddleware(req, res, next) {
-  
+
   const key = `listings:${req.originalUrl}`;
 
   try {
@@ -26,6 +25,6 @@ export async function cacheMiddleware(req, res, next) {
     next();
   } catch (err) {
     console.error('Redis error:', err);
-    next(); 
+    next();
   }
 }

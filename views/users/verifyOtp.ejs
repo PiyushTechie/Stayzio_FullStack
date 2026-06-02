@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Verify OTP | Stayzio</title>
-  <!-- Google Fonts for a modern look -->
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="/images/favicon-removebg-preview.png">
   <style>
-    /* --- General Body Styles --- */
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: #fff5f5; /* Light background from your theme */
+      background-color: #fff5f5;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -23,7 +23,6 @@
       box-sizing: border-box;
     }
 
-    /* --- Main Container Card --- */
     .verify-card {
       max-width: 420px;
       width: 100%;
@@ -37,7 +36,7 @@
 
     .icon-container {
       margin-bottom: 20px;
-      color: #fe424d; /* Your theme color */
+      color: #fe424d;
     }
 
     .verify-card h1 {
@@ -54,8 +53,7 @@
       margin-bottom: 30px;
       line-height: 1.5;
     }
-    
-    /* --- Form Styling --- */
+
     .form-group {
       margin-bottom: 20px;
       text-align: left;
@@ -82,11 +80,10 @@
 
     .form-group input:focus {
       outline: none;
-      border-color: #fe424d; /* Your theme color */
+      border-color: #fe424d;
       box-shadow: 0 0 0 4px rgba(254, 66, 77, 0.2);
     }
-    
-    /* --- Button & Loader --- */
+
     .btn-submit {
       position: relative;
       width: 100%;
@@ -95,7 +92,7 @@
       align-items: center;
       min-height: 50px;
       padding: 12px;
-      background: #fe424d; /* Your theme color */
+      background: #fe424d;
       color: #fff;
       border: none;
       border-radius: 10px;
@@ -109,10 +106,10 @@
 
     .btn-submit:hover {
       transform: translateY(-2px);
-      background: #e63946; /* A slightly darker red for hover */
+      background: #e63946;
       box-shadow: 0 6px 20px rgba(254, 66, 77, 0.4);
     }
-    
+
     .button-loader {
       display: none;
       position: absolute;
@@ -127,8 +124,13 @@
     }
 
     @keyframes spin {
-      from { transform: translate(-50%, -50%) rotate(0deg); }
-      to   { transform: translate(-50%, -50%) rotate(360deg); }
+      from {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+
+      to {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
     }
 
     .btn-submit.loading .button-text {
@@ -144,8 +146,7 @@
       cursor: not-allowed;
       opacity: 0.8;
     }
-    
-    /* --- Alert Messages --- */
+
     .alert {
       padding: 15px;
       margin-bottom: 20px;
@@ -166,102 +167,103 @@
       color: #14532d;
       border-color: #bbf7d0;
     }
-    
-    /* --- Footer Link --- */
+
+
     .footer-link {
       margin-top: 25px;
       font-size: 14px;
     }
+
     .footer-link a {
-      color: #fe424d; /* Your theme color */
+      color: #fe424d;
       text-decoration: none;
       font-weight: 500;
     }
+
     .footer-link a:hover {
       text-decoration: underline;
     }
   </style>
 </head>
 </head>
+
 <body></body>
 
-  <div class="verify-card">
-    <div class="icon-container">
-      <!-- A verification shield icon using SVG -->
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-      </svg>
-    </div>
-
-    <h1>Account Verification</h1>
-    <p class="subtitle">Please enter the OTP sent to your email to complete verification.</p>
-
-    <p class="subtitle"><strong>Note:</strong> Please check your Spam folder if you don’t see the OTP confirmation in your inbox.</p>
-    <!-- EJS Flash Messages (Assuming a standard setup) -->
-    <% if (typeof messages !== 'undefined' && messages.error) { %>
-      <div class="alert alert-danger"><%= messages.error %></div>
-    <% } %>
-    <% if (typeof messages !== 'undefined' && messages.success) { %>
-      <div class="alert alert-success"><%= messages.success %></div>
-    <% } %>
-
-    <form id="verifyForm" action="/verify-otp" method="POST">
-      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-      <div class="form-group">
-        <label for="email">Email Address</label>
-        <input type="email" 
-       name="email" 
-       id="email" 
-       value="<%= user.email %>" 
-       placeholder="Your registered email" 
-       required readonly>
-      </div>
-      <div class="form-group">
-        <label for="otp">Verification Code (OTP)</label>
-        <input type="text" name="otp" id="otp" placeholder="Enter OTP" required>
-      </div>
-      
-      <button type="submit" class="btn-submit">
-        <span class="button-text">Verify Account</span>
-        <span class="button-loader"></span>
-      </button>
-    </form>
-    
-    <form id="resendForm" action="/resend-otp" method="POST" style="display:inline;">
-      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-      <input type="hidden" name="email" id="resendEmail" value="">
-      <button type="submit" id="resendLink" style="background:none;border:none;color:#fe424d;cursor:pointer;padding:0;">
-      Resend OTP
-    </button>
-    </form>
-    <span id="countdown" style="margin-left:8px; font-weight:500; color:#666;"></span>
+<div class="verify-card">
+  <div class="icon-container">
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+    </svg>
   </div>
+
+  <h1>Account Verification</h1>
+  <p class="subtitle">Please enter the OTP sent to your email to complete verification.</p>
+
+  <p class="subtitle"><strong>Note:</strong> Please check your Spam folder if you don’t see the OTP confirmation in your
+    inbox.</p>
+  <% if (typeof messages !=='undefined' && messages.error) { %>
+    <div class="alert alert-danger">
+      <%= messages.error %>
+    </div>
+    <% } %>
+      <% if (typeof messages !=='undefined' && messages.success) { %>
+        <div class="alert alert-success">
+          <%= messages.success %>
+        </div>
+        <% } %>
+
+          <form id="verifyForm" action="/verify-otp" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" name="email" id="email" value="<%= user.email %>" placeholder="Your registered email"
+                required readonly>
+            </div>
+            <div class="form-group">
+              <label for="otp">Verification Code (OTP)</label>
+              <input type="text" name="otp" id="otp" placeholder="Enter OTP" required>
+            </div>
+
+            <button type="submit" class="btn-submit">
+              <span class="button-text">Verify Account</span>
+              <span class="button-loader"></span>
+            </button>
+          </form>
+
+          <form id="resendForm" action="/resend-otp" method="POST" style="display:inline;">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" name="email" id="resendEmail" value="">
+            <button type="submit" id="resendLink"
+              style="background:none;border:none;color:#fe424d;cursor:pointer;padding:0;">
+              Resend OTP
+            </button>
+          </form>
+          <span id="countdown" style="margin-left:8px; font-weight:500; color:#666;"></span>
+</div>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const verifyForm = document.getElementById('verifyForm');
     const submitButton = verifyForm.querySelector('.btn-submit');
     const resendForm = document.getElementById("resendForm");
-    const emailInput = document.getElementById("email");       // visible email field
-    const resendEmailInput = document.getElementById("resendEmail"); // hidden field
+    const emailInput = document.getElementById("email");
+    const resendEmailInput = document.getElementById("resendEmail");
     const resendLink = document.getElementById("resendLink");
     const countdownEl = document.getElementById("countdown");
     const bodyEl = document.body;
 
-    // Keep hidden resendEmail synced with main email field
     emailInput.addEventListener("input", () => {
       resendEmailInput.value = emailInput.value.trim();
     });
 
-    // ===== 1. Loader on the main verify form =====
     verifyForm.addEventListener('submit', function () {
       submitButton.disabled = true;
       submitButton.classList.add('loading');
     });
 
-    // ===== 2. Improved Resend OTP logic using fetch =====
     resendForm.addEventListener("submit", async (e) => {
-      e.preventDefault(); // Prevent the full-page reload
+      e.preventDefault();
 
       const email = resendEmailInput.value;
       if (!email) {
@@ -284,7 +286,7 @@
 
         if (response.ok) {
           alert(result.message || "A new OTP has been sent!");
-          startCooldown(150); // start cooldown
+          startCooldown(150);
         } else {
           alert(result.error || "Failed to resend OTP.");
           resendLink.disabled = false;
@@ -298,7 +300,6 @@
       }
     });
 
-    // ===== 3. Cooldown Function =====
     function startCooldown(seconds) {
       let cooldown = seconds;
       resendLink.disabled = true;
@@ -317,7 +318,6 @@
       }, 1000);
     }
 
-    // ===== 4. Check for existing cooldown on page load =====
     const initialCooldown = parseInt(bodyEl.dataset.cooldownSeconds, 10);
     if (initialCooldown > 0) {
       startCooldown(initialCooldown);
@@ -327,4 +327,5 @@
 
 
 </body>
+
 </html>

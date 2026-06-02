@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%- typeof title !=='undefined' ? title + ' - Stayzio' : 'Stayzio' %></title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/output.css">
+    <link rel="icon" type="image/png" href="/images/favicon-removebg-preview.png">
+
+    <style>
+        body {
+            font-family: 'Roboto Slab', serif;
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-link {
+            color: #374151;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #fe424d;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #fe424d;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e63946;
+        }
+
+        .prose-content h2 {
+            font-size: 1.875rem;
+            font-weight: 800;
+            color: #111827;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .prose-content h2 i {
+            color: #fe424d;
+        }
+
+        .prose-content h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #374151;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .prose-content p {
+            color: #4b5563;
+            line-height: 1.75;
+            margin-bottom: 1.25rem;
+        }
+
+        .prose-content ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #4b5563;
+        }
+
+        .prose-content ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .prose-content ol {
+            list-style-type: decimal;
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #4b5563;
+        }
+
+        .prose-content ol li {
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-box {
+            background-color: #fff1f2;
+            border-left: 4px solid #fe424d;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .highlight-box h4 {
+            color: #9f1239;
+            font-weight: 700;
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .highlight-box p {
+            color: #be123c;
+            margin-bottom: 0;
+        }
+
+        .highlight-box ul {
+            color: #be123c;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col pt-20">
+
+    <%- include('../includes/navbar.ejs') %>
+
+        <main class="flex-grow">
+            <%- body %>
+        </main>
+
+        <%- include('../includes/footer.ejs') %>
+
+            <%- include('../includes/flash.ejs') %>
+
+                <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+                <script>
+                    AOS.init({
+                        once: true,
+                        offset: 50,
+                        duration: 800,
+                        easing: 'ease-out-cubic',
+                    });
+
+                    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                        anchor.addEventListener('click', function (e) {
+                            e.preventDefault();
+                            const targetId = this.getAttribute('href');
+                            if (targetId === '#') return;
+                            const targetElement = document.querySelector(targetId);
+                            if (targetElement) {
+                                const headerOffset = 100;
+                                const elementPosition = targetElement.getBoundingClientRect().top;
+                                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                                window.scrollTo({
+                                    top: offsetPosition,
+                                    behavior: "smooth"
+                                });
+                            }
+                        });
+                    });
+
+                    const sections = document.querySelectorAll('.prose-content [id]');
+                    const navLinks = document.querySelectorAll('.sticky-nav a');
+
+                    if (sections.length > 0 && navLinks.length > 0) {
+                        window.addEventListener('scroll', () => {
+                            let current = '';
+                            sections.forEach(section => {
+                                const sectionTop = section.offsetTop;
+                                if (scrollY >= sectionTop - 150) {
+                                    current = section.getAttribute('id');
+                                }
+                            });
+
+                            navLinks.forEach(link => {
+                                link.classList.remove('text-[#fe424d]', 'font-bold', 'border-l-[#fe424d]', 'bg-red-50');
+                                link.classList.add('text-gray-500', 'border-l-transparent');
+                                if (link.getAttribute('href') === `#${current}`) {
+                                    link.classList.remove('text-gray-500', 'border-l-transparent');
+                                    link.classList.add('text-[#fe424d]', 'font-bold', 'border-l-[#fe424d]', 'bg-red-50');
+                                }
+                            });
+                        });
+                    }
+                </script>
+</body>
+
+</html>

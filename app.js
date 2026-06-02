@@ -10,17 +10,19 @@ import flash from "connect-flash";
 import passport from "passport";
 import LocalStrategy from "passport-local";
 import User from "./models/user.js";
+import Listing from "./models/listing.js";
 import listingRouter from "./routes/listing.js";
 import reviewRouter from "./routes/review.js";
 import userRouter from "./routes/user.js";
 import bookingRoutes from "./routes/booking.js"
-import { sendEmailFromMJML }   from "./utils/mailer.js";
-import "./utils/passport.js";            
+import { sendEmailFromMJML } from "./utils/mailer.js";
+import "./utils/passport.js";
 import authRoutes from "./routes/authRoutes.js";
 import hostRoutes from "./routes/hostRoutes.js";
+import paymentRoutes from "./routes/payment.js";
 import { globalLimiter } from "./utils/rateLimiters.js";
-import redisModule from './utils/redisClient.js'; 
-const { client, connectRedis } = redisModule;     
+import redisModule from './utils/redisClient.js';
+const { client, connectRedis } = redisModule;
 import helmet from "helmet";
 import compression from "compression";
 import mongoSanitize from "express-mongo-sanitize";
@@ -33,6 +35,11 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import csrfProtection from "./utils/csrf.js";
 import MongoStore from "connect-mongo";
+import http from "http";
+import { Server as IOServer } from "socket.io";
+import messageSocketHandler from "./sockets/messageHandler.js";
+import messageRouter from "./routes/messageRouter.js";
+import conversationRouter from "./routes/conversations.js";
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -90,7 +97,7 @@ app.use(
           "https://images.unsplash.com",
           "https://api.mapbox.com",
           "https://*.tiles.mapbox.com",
-           "https://static-assets.render.com",
+          "https://static-assets.render.com",
         ],
 
         connectSrc: [
@@ -120,28 +127,29 @@ app.engine("ejs", ejsMate);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
-app.use(express.static(path.join(__dirname, "public"))); 
+app.use(express.static(path.join(__dirname, "public")));
 
-// app.use(mongoSanitize());
-
-// DB connection
+app.use(mongoSanitize());
+app.use(xss());
+app.use(hpp());
 const dbUrl = process.env.ATLASDB_URL;
 const localDb = "mongodb://127.0.0.1:27017/wanderlust";
 
 const store = MongoStore.create({
-  mongoUrl:dbUrl,
+  mongoUrl: dbUrl,
   crypto: {
     secret: process.env.SECRET
   },
   touchAfter: 24 * 3600,
 });
-store.on("error", () =>{
+store.on("error", () => {
   console.log("ERROR IN MONGO SESSION STORE", err);
 })
 
 // Session Config
 
-const sessionOptions = {           
+
+const sessionOptions = {
   store,
   secret: process.env.SECRET,
   resave: false,
@@ -155,7 +163,8 @@ const sessionOptions = {
 
 app.use(cookieParser(process.env.SECRET));
 app.use(globalLimiter);
-app.use(session(sessionOptions));
+const sessionMiddleware = session(sessionOptions);
+app.use(sessionMiddleware);
 app.use(flash());
 
 // Authentication
@@ -168,7 +177,7 @@ passport.deserializeUser(User.deserializeUser());
 
 
 app.use((req, res, next) => {
-  res.locals.currentUser = req.user; 
+  res.locals.currentUser = req.user;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   next();
@@ -191,16 +200,20 @@ app.get("/", (req, res) => {
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
-app.use("/auth", authRoutes);   
+app.use("/auth", authRoutes);
 app.use('/bookings', bookingRoutes);
 app.use("/host", hostRoutes);
+app.use("/message", messageRouter);
+app.use("/conversations", conversationRouter);
+app.use("/payments", paymentRoutes);
+
 
 app.get("/privacy", (req, res) => {
-    res.render("listings/privacy");
+  res.render("listings/privacy");
 });
 
 app.get("/terms", (req, res) => {
-    res.render("listings/terms");
+  res.render("listings/terms");
 });
 
 app.get("/contact", csrfProtection, (req, res) => {
@@ -223,34 +236,34 @@ app.get("/cancelPolicy", (req, res) => {
   res.render("users/cancellationpolicy");
 });
 
-app.post("/contact", csrfProtection ,async (req, res) => {
-    const { name, email, subject, message } = req.body;
-    const timestamp = Date.now();
-    if (!name || !email || !subject || !message) {
-        return res.status(400).send("All fields are required");
-    }
+app.post("/contact", csrfProtection, async (req, res) => {
+  const { name, email, subject, message } = req.body;
+  const timestamp = Date.now();
+  if (!name || !email || !subject || !message) {
+    return res.status(400).send("All fields are required");
+  }
 
-    try {
-        await sendEmailFromMJML({
-              to: "piyushpraja1336@gmail.com",
-              subject: `New Contact Form Submission: ${subject}`,
-              templateName: "contactAdmin",
-              templateData: { name, email, subject, message, year: new Date().getFullYear() }
-            });
+  try {
+    await sendEmailFromMJML({
+      to: "piyushpraja1336@gmail.com",
+      subject: `New Contact Form Submission: ${subject}`,
+      templateName: "contactAdmin",
+      templateData: { name, email, subject, message, year: new Date().getFullYear() }
+    });
 
-        await sendEmailFromMJML({
-            to: email,
-            subject: "We received your message – Stayzio",
-            templateName: "contactUser",
-            templateData: { name, subject, year: new Date().getFullYear(), timestamp }
-        });
+    await sendEmailFromMJML({
+      to: email,
+      subject: "We received your message – Stayzio",
+      templateName: "contactUser",
+      templateData: { name, subject, year: new Date().getFullYear(), timestamp }
+    });
 
-        res.redirect("/thank-you");
+    res.redirect("/thank-you");
 
-    } catch (err) {
-        console.error("Contact form error:", err);
-        res.status(500).send("Something went wrong, please try again later.");
-    }
+  } catch (err) {
+    console.error("Contact form error:", err);
+    res.status(500).send("Something went wrong, please try again later.");
+  }
 });
 
 app.get("/insurance", (req, res) => {
@@ -258,12 +271,18 @@ app.get("/insurance", (req, res) => {
 })
 
 app.get("/thank-you", (req, res) => {
-    res.render("users/thankyou");
+  res.render("users/thankyou");
 });
 
-app.get("/experiences", (req, res) => {
-  res.render("listings/experiences");
-})
+app.get("/experiences", async (req, res) => {
+  try {
+    const experiences = await Listing.find({}).populate("reviews").populate("owner").limit(12);
+    res.render("listings/experiences", { experiences });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Something went wrong");
+  }
+});
 
 app.get("/host-resources", (req, res) => {
   res.render("users/hostresources");
@@ -289,28 +308,51 @@ app.get('/favicon.ico', (req, res) => res.status(204).end());
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).render('listings/404error'); 
+  res.status(404).render('listings/404error');
 });
 
 app.use((err, req, res, next) => {
-  res.status(500).render('listings/505error'); 
+  res.status(500).render('listings/505error');
 });
+
+// ---------- create http server & socket.io ----------
+const server = http.createServer(app);
+
+const io = new IOServer(server, {
+  cors: {
+    origin: process.env.CLIENT_ORIGIN || "http://localhost:8080",
+    credentials: true,
+  },
+  pingTimeout: 60000
+});
+
+io.use((socket, next) => {
+  sessionMiddleware(socket.request, {}, next);
+});
+
+
+io.use((socket, next) => {
+  passport.initialize()(socket.request, {}, () => {
+    passport.session()(socket.request, {}, next);
+  });
+});
+
+messageSocketHandler(io);
+
 
 async function startServer() {
   try {
-    // 1️⃣ Connect MongoDB
-    await mongoose.connect(dbUrl);
-    console.log("✅ DB Connected Successfully");
+    await mongoose.connect(localDb);
+    console.log("DB Connected Successfully");
 
     await connectRedis();
-    console.log('✅ Connected to Redis successfully!');
+    console.log('Connected to Redis successfully!');
 
-    // 3️⃣ Start server
-    app.listen(port, () => {
-      console.log(`🚀 App listening on port ${port}`);
+    server.listen(port, () => {
+      console.log(`App listening on port ${port}`);
     });
   } catch (err) {
-    console.error('❌ Failed to connect to DB or Redis:', err);
+    console.error('Failed to connect to DB or Redis:', err);
     process.exit(1);
   }
 }

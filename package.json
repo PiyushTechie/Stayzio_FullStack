@@ -60,6 +60,7 @@
     "redis": "^5.8.3",
     "redis-cli": "^2.1.2",
     "resend": "^6.4.2",
+    "socket.io": "^4.8.1",
     "sweetalert2": "^11.26.2",
     "xss-clean": "^0.1.4"
   },

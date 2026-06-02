@@ -1,309 +1,586 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create Your Account - Adventure Awaits</title>
-  <link rel="stylesheet" href="/css/signup.css">
-  <link rel="icon" type="image/png" href="/images/favicon-removebg-preview.png">
+    <link rel="icon" type="image/png" href="/images/favicon-removebg-preview.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Stayzio</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="/css/output.css">
+
+    <style>
+        body {
+            font-family: 'Roboto Slab', serif;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container {
+            position: relative;
+            overflow: hidden;
+            min-height: 500px;
+        }
+
+        .form-step {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: translateX(50px);
+            pointer-events: none;
+        }
+
+        .form-step.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+            position: relative;
+        }
+
+        .form-step.exit {
+            opacity: 0;
+            transform: translateX(-50px);
+            position: absolute;
+        }
+
+        .input-group input {
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            box-shadow: 0 0 0 4px rgba(254, 66, 77, 0.15);
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .overflow-y-auto::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .overflow-y-auto::-webkit-scrollbar-track {
+            background: #f8fafc;
+            border-radius: 4px;
+        }
+
+        .overflow-y-auto::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
 </head>
-<body>
 
-<div class="container">
-  <!-- Left Hero Section -->
-  <div class="hero-section">
-    <div class="hero-box">
-      <div class="hero-content">
-        <h1>Your Next Adventure Begins with the Right Stay.</h1>
-        <p class="subtitle">From cozy cottages to luxury escapes — Stayzio has you covered.</p>
-      </div>
-      <div class="feature-box">
-        <h2>Discover the Art of Traveling Smart.</h2>
-        <p>Experience trusted listings, smooth booking, and real-time availability — all in one place.</p>
-      </div>
-    </div>
-  </div>
+<body class="bg-gray-50 antialiased overflow-x-hidden min-h-screen flex items-center justify-center">
 
-  <!-- Right Form Section -->
-  <div class="form-section">
-    <div class="form-box">
-      <div class="form-container">
-        <div class="brand-name">
-            <img src="/images/logonobg.png" alt="Stayzio Logo" class="logo-img">
-          </div>
-        <h2>Create Your Stayzio Account</h2>      
+    <a href="/"
+        class="absolute top-6 left-6 z-50 text-gray-900 bg-white/80 backdrop-blur px-4 py-2 rounded-full font-bold shadow-md hover:bg-white transition-all flex items-center gap-2 hover:-translate-y-1">
+        <i class="fa-solid fa-arrow-left"></i> Home
+    </a>
 
-        <!-- Signup Form -->
-        <form id="register-form" action="/signup" method="POST">
-          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-          <!-- Username -->
-          <div class="form-group">
-            <label for="username">Username</label>
-            <div class="input-wrapper">
-              <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </svg>
-              <input type="text" id="username" name="username" required placeholder="Enter your username">
+    <div
+        class="w-full h-screen lg:h-[90vh] lg:max-w-6xl lg:rounded-3xl overflow-hidden flex shadow-2xl relative bg-white">
+
+        <div class="hidden lg:block lg:w-1/2 relative bg-black">
+            <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=2070&auto=format&fit=crop"
+                alt="Stayzio Signup" class="absolute inset-0 w-full h-full object-cover opacity-60">
+
+            <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/40 to-transparent"></div>
+
+            <div class="absolute bottom-12 left-12 right-12 text-white">
+                <img src="/images/logonobg.png" alt="Stayzio" class="h-16 w-auto mb-6">
+                <h2 class="text-4xl font-black mb-4 leading-tight">Join the community of travelers.</h2>
+                <p class="text-lg text-gray-300 font-medium">Create an account to unlock exclusive stays, personalized
+                    experiences, and become a host.</p>
             </div>
-          </div>
-
-          <!-- Email -->
-          <div class="form-group">
-            <label for="email">Email</label>
-            <div class="input-wrapper">
-              <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-                <path d="m2 7 10 6 10-6"></path>
-              </svg>
-              <input type="email" id="email" name="email" required placeholder="Email">
-            </div>
-          </div>
-
-          <!-- Password -->
-          <div class="form-group">
-            <label for="password">Password</label>
-            <div class="input-wrapper">
-              <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-              </svg>
-              <input type="password" id="password" name="password" required minlength="6" placeholder="Create your password">
-              <button type="button" class="password-toggle" id="togglePassword">
-                <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                <svg class="eye-off-icon hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-              </button>
-            </div>
-            <div id="strength-bar"><span></span></div>
-            <p id="strength-message"></p>
-          </div>
-
-          <!-- Confirm Password -->
-          <div class="form-group">
-            <label for="confirmPassword">Confirm Password</label>
-            <div class="input-wrapper">
-              <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-              </svg>
-              <input type="password" id="confirmPassword" name="confirmPassword" required minlength="6" placeholder="Confirm your password">
-              <button type="button" class="password-toggle" id="toggleConfirmPassword">
-                <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                <svg class="eye-off-icon hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- Date of Birth -->
-          <div class="form-group">
-            <label for="dob">Date of Birth</label>
-            <div class="input-wrapper">
-              <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 4h18M3 10h18M3 16h18M8 2v4M16 2v4M21 8v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8"></path>
-                <rect x="5" y="12" width="4" height="4"></rect>
-              </svg>
-              <input type="date" id="dob" name="dob" required>
-            </div>
-          </div>
-
-
-          <!-- Terms -->
-          <div class="checkbox-group">
-            <input type="checkbox" id="terms" required>
-            <label for="terms">I agree to the <a href="/terms">Terms and Conditions</a> and <a href="/privacy">Privacy Policy</a></label>
-          </div>
-
-          <!-- Submit -->
-          <button type="submit" class="submit-btn" id="signupBtn">
-            <span class="btn-text">Create Your Account</span>
-            <div class="spinner hidden"></div>
-          </button>
-        </form>
-
-        <div class="divider">OR</div>
-
-        <div class="social-login">
-          <a href="/auth/google" class="social-btn" title="Login with Google">
-            <svg width="20" height="20" viewBox="0 0 24 24">
-              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-            </svg>
-          </a>
-
-          <a href="/auth/facebook" class="social-btn" title="Login with Facebook">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877F2">
-              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-            </svg>
-          </a>
-
-          <a href="/auth/github" class="social-btn" title="Login with GitHub">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#000">
-              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-            </svg>
-          </a>
         </div>
 
-        <p class="login-link">Already Have An Account? <a href="/login">Log In</a></p>
-        <p class="note-text"><strong>Note:</strong> Please check your Spam folder if you don't see the OTP confirmation in your inbox.</p>
-      </div>
+        <div
+            class="w-full lg:w-1/2 h-full flex flex-col justify-start sm:justify-center items-center p-8 sm:p-12 lg:p-16 bg-white relative overflow-y-auto">
+            <div class="w-full max-w-md form-container my-auto py-8 lg:py-12">
+
+                <div id="step-signup" class="form-step active">
+                    <div class="text-center mb-8">
+                        <img src="/images/logonobg.png" alt="Stayzio" class="h-12 w-auto mx-auto mb-4 lg:hidden">
+                        <h1 class="text-3xl font-black text-gray-900 mb-2">Create Account</h1>
+                        <p class="text-gray-500 font-medium">Enter your details to get started</p>
+                    </div>
+
+                    <form id="signupForm" class="space-y-5">
+                        <input type="hidden" name="_csrf" id="csrfToken" value="<%= csrfToken %>">
+
+                        <div class="input-group">
+                            <label class="block text-sm font-bold text-gray-700 mb-1">Username</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i class="fa-solid fa-user text-gray-400"></i>
+                                </div>
+                                <input type="text" name="username" id="username" required placeholder="johndoe"
+                                    class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#fe424d] focus:bg-white font-medium">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="block text-sm font-bold text-gray-700 mb-1">Email Address</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i class="fa-solid fa-envelope text-gray-400"></i>
+                                </div>
+                                <input type="email" name="email" id="email" required placeholder="john@example.com"
+                                    class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#fe424d] focus:bg-white font-medium">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="block text-sm font-bold text-gray-700 mb-1">Password</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i class="fa-solid fa-lock text-gray-400"></i>
+                                </div>
+                                <input type="password" name="password" id="password" required placeholder="••••••••"
+                                    class="w-full pl-11 pr-12 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#fe424d] focus:bg-white font-medium">
+                                <button type="button"
+                                    class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 toggle-password">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="mt-2">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-xs font-bold text-gray-500" id="strengthText">Password
+                                        Strength</span>
+                                </div>
+                                <div class="flex gap-1 h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                                    <div class="h-full transition-all duration-300 w-0" id="strengthBar1"></div>
+                                    <div class="h-full transition-all duration-300 w-0" id="strengthBar2"></div>
+                                    <div class="h-full transition-all duration-300 w-0" id="strengthBar3"></div>
+                                    <div class="h-full transition-all duration-300 w-0" id="strengthBar4"></div>
+                                </div>
+                                <ul class="text-[11px] text-gray-500 mt-2 space-y-1 font-medium hidden"
+                                    id="strengthReqs">
+                                    <li id="reqLength"><i class="fa-solid fa-circle-xmark text-red-400 mr-1"></i> At
+                                        least 8 characters</li>
+                                    <li id="reqUpper"><i class="fa-solid fa-circle-xmark text-red-400 mr-1"></i> At
+                                        least 1 uppercase letter</li>
+                                    <li id="reqNumber"><i class="fa-solid fa-circle-xmark text-red-400 mr-1"></i> At
+                                        least 1 number</li>
+                                    <li id="reqSpecial"><i class="fa-solid fa-circle-xmark text-red-400 mr-1"></i> At
+                                        least 1 special character</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="block text-sm font-bold text-gray-700 mb-1">Confirm Password</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i class="fa-solid fa-lock text-gray-400"></i>
+                                </div>
+                                <input type="password" name="confirmPassword" id="confirmPassword" required
+                                    placeholder="••••••••"
+                                    class="w-full pl-11 pr-12 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#fe424d] focus:bg-white font-medium">
+                                <button type="button"
+                                    class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 toggle-password">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-2 mt-4">
+                            <input type="checkbox" id="termsCheckbox" required
+                                class="mt-1 w-4 h-4 text-[#fe424d] border-gray-300 rounded focus:ring-[#fe424d]">
+                            <label for="termsCheckbox" class="text-sm font-medium text-gray-600">
+                                I confirm that I am 18+ and I agree to Stayzio's
+                                <a href="/terms" class="text-[#fe424d] hover:underline">Terms of Service</a>,
+                                <a href="/privacy" class="text-[#fe424d] hover:underline">Privacy Policy</a>, and
+                                <a href="/cookie" class="text-[#fe424d] hover:underline">Cookie Policy</a>.
+                            </label>
+                        </div>
+
+                        <button type="submit" id="signupSubmitBtn"
+                            class="w-full py-3.5 px-4 bg-[#fe424d] hover:bg-[#e63946] text-white font-black rounded-xl shadow-lg shadow-red-500/30 transition-all flex items-center justify-center gap-2">
+                            <span>Sign Up</span>
+                            <div class="loading-spinner" id="signupSpinner"></div>
+                        </button>
+                    </form>
+
+                    <p class="text-center text-sm text-gray-600 mt-8 font-medium">
+                        Already have an account?
+                        <a href="/login" class="text-[#fe424d] font-bold hover:underline">Log in</a>
+                    </p>
+                </div>
+
+                <div id="step-otp" class="form-step">
+                    <div class="text-center mb-8">
+                        <div
+                            class="w-16 h-16 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                            <i class="fa-solid fa-envelope-open-text"></i>
+                        </div>
+                        <h1 class="text-3xl font-black text-gray-900 mb-2">Verify Email</h1>
+                        <p class="text-gray-500 font-medium">We sent a 6-digit code to <br><span id="displayEmail"
+                                class="text-gray-900 font-bold">your email</span></p>
+                    </div>
+
+                    <form id="otpForm" class="space-y-6">
+                        <input type="hidden" name="email" id="otpEmailInput">
+
+                        <div class="flex justify-center gap-3" id="otpInputs">
+                            <input type="text" maxlength="1"
+                                class="w-12 h-14 text-center text-2xl font-black bg-gray-50 border border-gray-200 rounded-xl focus:border-[#fe424d] focus:bg-white focus:outline-none transition-colors"
+                                required>
+                            <input type="text" maxlength="1"
+                                class="w-12 h-14 text-center text-2xl font-black bg-gray-50 border border-gray-200 rounded-xl focus:border-[#fe424d] focus:bg-white focus:outline-none transition-colors"
+                                required>
+                            <input type="text" maxlength="1"
+                                class="w-12 h-14 text-center text-2xl font-black bg-gray-50 border border-gray-200 rounded-xl focus:border-[#fe424d] focus:bg-white focus:outline-none transition-colors"
+                                required>
+                            <input type="text" maxlength="1"
+                                class="w-12 h-14 text-center text-2xl font-black bg-gray-50 border border-gray-200 rounded-xl focus:border-[#fe424d] focus:bg-white focus:outline-none transition-colors"
+                                required>
+                            <input type="text" maxlength="1"
+                                class="w-12 h-14 text-center text-2xl font-black bg-gray-50 border border-gray-200 rounded-xl focus:border-[#fe424d] focus:bg-white focus:outline-none transition-colors"
+                                required>
+                            <input type="text" maxlength="1"
+                                class="w-12 h-14 text-center text-2xl font-black bg-gray-50 border border-gray-200 rounded-xl focus:border-[#fe424d] focus:bg-white focus:outline-none transition-colors"
+                                required>
+                        </div>
+
+                        <input type="hidden" name="otp" id="fullOtpInput">
+
+                        <button type="submit" id="otpSubmitBtn"
+                            class="w-full py-3.5 px-4 bg-gray-900 hover:bg-black text-white font-black rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+                            <span>Verify Code</span>
+                            <div class="loading-spinner" id="otpSpinner"></div>
+                        </button>
+                    </form>
+
+                    <div class="text-center mt-6">
+                        <button id="resendOtpBtn"
+                            class="text-sm text-gray-500 font-bold hover:text-[#fe424d] transition-colors">
+                            Didn't receive it? Resend Code
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const signupForm = document.getElementById('signupForm');
+        const otpForm = document.getElementById('otpForm');
+        const stepSignup = document.getElementById('step-signup');
+        const stepOtp = document.getElementById('step-otp');
+        const csrfToken = document.getElementById('csrfToken').value;
 
-<script type="module">
-  import { showError, showSuccess } from '/utils/alerts.js';
+        document.querySelectorAll('.toggle-password').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const input = e.currentTarget.previousElementSibling;
+                const icon = e.currentTarget.querySelector('i');
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.replace('fa-eye', 'fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.replace('fa-eye-slash', 'fa-eye');
+                }
+            });
+        });
 
-  const registerForm = document.getElementById('register-form');
-  const signupBtn = document.getElementById("signupBtn");
-  const btnText = signupBtn.querySelector(".btn-text");
-  const spinner = signupBtn.querySelector(".spinner");
+        const passwordInput = document.getElementById('password');
+        const strengthBars = [
+            document.getElementById('strengthBar1'),
+            document.getElementById('strengthBar2'),
+            document.getElementById('strengthBar3'),
+            document.getElementById('strengthBar4')
+        ];
+        const strengthText = document.getElementById('strengthText');
+        const strengthReqs = document.getElementById('strengthReqs');
 
-  const passwordInput = document.getElementById("password");
-  const confirmPasswordInput = document.getElementById("confirmPassword");
-  const strengthBar = document.querySelector("#strength-bar span");
-  const strengthMessage = document.getElementById("strength-message");
-  const dobInput = document.getElementById("dob"); // Get the DOB input
+        const reqs = {
+            length: document.getElementById('reqLength'),
+            upper: document.getElementById('reqUpper'),
+            number: document.getElementById('reqNumber'),
+            special: document.getElementById('reqSpecial')
+        };
 
-  const togglePassword = document.getElementById("togglePassword");
-  const eyeIcon = togglePassword.querySelector('.eye-icon');
-  const eyeOffIcon = togglePassword.querySelector('.eye-off-icon');
+        let isPasswordStrong = false;
 
-  const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
-  const eyeIconConfirm = toggleConfirmPassword.querySelector('.eye-icon');
-  const eyeOffIconConfirm = toggleConfirmPassword.querySelector('.eye-off-icon');
+        passwordInput.addEventListener('input', (e) => {
+            const val = e.target.value;
+            strengthReqs.classList.remove('hidden');
 
-  let currentStrength = 0;
+            const hasLength = val.length >= 8;
+            const hasUpper = /[A-Z]/.test(val);
+            const hasNumber = /[0-9]/.test(val);
+            const hasSpecial = /[^A-Za-z0-9]/.test(val);
 
-  // ================= PASSWORD TOGGLE =================
-  togglePassword.addEventListener('click', function() {
-    if (passwordInput.type === 'password') {
-      passwordInput.type = 'text';
-      eyeIcon.classList.add('hidden');
-      eyeOffIcon.classList.remove('hidden');
-    } else {
-      passwordInput.type = 'password';
-      eyeIcon.classList.remove('hidden');
-      eyeOffIcon.classList.add('hidden');
-    }
-  });
+            updateReqUI(reqs.length, hasLength);
+            updateReqUI(reqs.upper, hasUpper);
+            updateReqUI(reqs.number, hasNumber);
+            updateReqUI(reqs.special, hasSpecial);
 
-  toggleConfirmPassword.addEventListener('click', function() {
-    if (confirmPasswordInput.type === 'password') {
-      confirmPasswordInput.type = 'text';
-      eyeIconConfirm.classList.add('hidden');
-      eyeOffIconConfirm.classList.remove('hidden');
-    } else {
-      confirmPasswordInput.type = 'password';
-      eyeIconConfirm.classList.remove('hidden');
-      eyeOffIconConfirm.classList.add('hidden');
-    }
-  });
+            let score = 0;
+            if (hasLength) score++;
+            if (hasUpper) score++;
+            if (hasNumber) score++;
+            if (hasSpecial) score++;
 
-  // ================= PASSWORD STRENGTH =================
-  passwordInput.addEventListener("keyup", function() {
-    const password = passwordInput.value;
-    let strength = 0;
+            isPasswordStrong = score >= 3 && hasLength;
 
-    if (password.length >= 6) strength++;
-    if (/[A-Z]/.test(password)) strength++;
-    if (/[0-9]/.test(password)) strength++;
-    if (/[@$!%*?&]/.test(password)) strength++;
-    if (password.length >= 10) strength++;
+            strengthBars.forEach(bar => { bar.style.width = '0'; bar.className = 'h-full transition-all duration-300 w-0'; });
 
-    currentStrength = strength;
+            if (val.length === 0) {
+                strengthText.innerText = "Password Strength";
+                strengthText.className = "text-xs font-bold text-gray-500";
+                strengthReqs.classList.add('hidden');
+            } else if (score === 1) {
+                strengthBars[0].style.width = '100%';
+                strengthBars[0].classList.add('bg-red-500');
+                strengthText.innerText = "Weak";
+                strengthText.className = "text-xs font-bold text-red-500";
+            } else if (score === 2) {
+                strengthBars[0].style.width = '100%'; strengthBars[1].style.width = '100%';
+                strengthBars[0].classList.add('bg-yellow-400'); strengthBars[1].classList.add('bg-yellow-400');
+                strengthText.innerText = "Fair";
+                strengthText.className = "text-xs font-bold text-yellow-500";
+            } else if (score === 3) {
+                strengthBars[0].style.width = '100%'; strengthBars[1].style.width = '100%'; strengthBars[2].style.width = '100%';
+                strengthBars[0].classList.add('bg-blue-400'); strengthBars[1].classList.add('bg-blue-400'); strengthBars[2].classList.add('bg-blue-400');
+                strengthText.innerText = "Good";
+                strengthText.className = "text-xs font-bold text-blue-500";
+            } else if (score === 4) {
+                strengthBars.forEach(bar => { bar.style.width = '100%'; bar.classList.add('bg-green-500'); });
+                strengthText.innerText = "Strong";
+                strengthText.className = "text-xs font-bold text-green-500";
+            }
+        });
 
-    // ... (your switch statement for strength is fine) ...
-    switch (strength) {
-      case 0:
-        strengthBar.style.width = "0%";
-        strengthMessage.textContent = "";
-        break;
-      case 1:
-        strengthBar.style.width = "20%";
-        strengthBar.style.background = "red";
-        strengthMessage.textContent = "Very Weak";
-        strengthMessage.style.color = "red";
-        break;
-      case 2:
-        strengthBar.style.width = "40%";
-        strengthBar.style.background = "orange";
-        strengthMessage.textContent = "Weak";
-        strengthMessage.style.color = "orange";
-        break;
-      case 3:
-        strengthBar.style.width = "60%";
-        strengthBar.style.background = "#ffcc00";
-        strengthMessage.textContent = "Moderate";
-        strengthMessage.style.color = "#ffcc00";
-        break;
-      case 4:
-        strengthBar.style.width = "80%";
-        strengthBar.style.background = "#66cc66";
-        strengthMessage.textContent = "Strong";
-        strengthMessage.style.color = "#66cc66";
-        break;
-      case 5:
-        strengthBar.style.width = "100%";
-        strengthBar.style.background = "green";
-        strengthMessage.textContent = "Very Strong";
-        strengthMessage.style.color = "green";
-        break;
-    }
-  });
+        function updateReqUI(el, isMet) {
+            const icon = el.querySelector('i');
+            if (isMet) {
+                icon.classList.replace('fa-circle-xmark', 'fa-circle-check');
+                icon.classList.replace('text-red-400', 'text-green-500');
+                el.classList.add('text-green-600');
+            } else {
+                icon.classList.replace('fa-circle-check', 'fa-circle-xmark');
+                icon.classList.replace('text-green-500', 'text-red-400');
+                el.classList.remove('text-green-600');
+            }
+        }
 
-  // ================= SINGLE FORM SUBMIT LISTENER =================
-  registerForm.addEventListener("submit", function(e) {
-    
-    // --- 1. AGE VALIDATION ---
-    const birthDate = new Date(dobInput.value);
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-    if (age < 18) {
-      e.preventDefault(); // STOP submission
-      showError('Invalid Age', 'You must be at least 18 years old to register.');
-      return;
-    }
+            const pass = document.getElementById('password').value;
+            const confPass = document.getElementById('confirmPassword').value;
+            if (pass !== confPass) {
+                document.getElementById('confirmPassword').focus();
+                return showFlash("Passwords do not match.", "error");
+            }
 
-    // --- 2. STRENGTH VALIDATION ---
-    if (currentStrength < 3) {
-      e.preventDefault(); // STOP submission
-      showError('Weak Password', 'Password is too weak. Please choose a stronger password.');
-      return;
-    }
+            const terms = document.getElementById('termsCheckbox').checked;
+            if (!terms) {
+                return showFlash("You must be 18+ and agree to the terms to continue.", "error");
+            }
 
-    // --- 3. MATCH VALIDATION ---
-    if (passwordInput.value !== confirmPasswordInput.value) {
-      e.preventDefault(); // STOP submission
-      showError('Password Mismatch', 'Passwords do not match!');
-      return;
-    }
+            if (!isPasswordStrong) {
+                passwordInput.focus();
+                return showFlash("Please choose a stronger password before submitting.", "error");
+            }
 
-    // --- 4. ALL CHECKS PASSED ---
-    // If we get here, all checks passed. We do NOT call e.preventDefault().
-    // We just show the spinner, and the form will submit normally.
-    btnText.style.display = "none";
-    spinner.classList.remove("hidden");
-    signupBtn.disabled = true;
+            const btn = document.getElementById('signupSubmitBtn');
+            const spinner = document.getElementById('signupSpinner');
+            btn.disabled = true;
+            spinner.style.display = 'block';
 
-    // DO NOT call registerForm.submit() here.
-  });
+            const formData = new URLSearchParams(new FormData(signupForm));
 
-  // ================= SERVER MESSAGES =================
-  const __serverError = <%- typeof error !== 'undefined' ? JSON.stringify(error && error.length > 0 ? error[0] : null) : 'null' %>;
-  const __serverSuccess = <%- typeof success !== 'undefined' ? JSON.stringify(success && success.length > 0 ? success[0] : null) : 'null' %>;
+            try {
+                const response = await fetch('/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
 
-  if (__serverError) showError('Error', __serverError);
-  if (__serverSuccess) showSuccess('Success', __serverSuccess);
-</script>
+                const data = await response.json();
 
+                if (data.success) {
+                    document.getElementById('displayEmail').innerText = document.getElementById('email').value;
+                    document.getElementById('otpEmailInput').value = document.getElementById('email').value;
+
+                    stepSignup.classList.remove('active');
+                    stepSignup.classList.add('exit');
+
+                    setTimeout(() => {
+                        stepOtp.classList.add('active');
+                        document.querySelector('#otpInputs input').focus();
+                    }, 100);
+
+                    showFlash(data.message, 'success');
+                } else {
+                    showFlash(data.message, 'error');
+                }
+            } catch (err) {
+                showFlash('Network error occurred. Please try again.', 'error');
+            } finally {
+                btn.disabled = false;
+                spinner.style.display = 'none';
+            }
+        });
+
+        const otpInputs = document.querySelectorAll('#otpInputs input');
+        otpInputs.forEach((input, index) => {
+            input.addEventListener('keyup', (e) => {
+                if (e.key >= 0 && e.key <= 9) {
+                    if (index < otpInputs.length - 1) otpInputs[index + 1].focus();
+                } else if (e.key === 'Backspace') {
+                    if (index > 0) otpInputs[index - 1].focus();
+                }
+            });
+            input.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pastedData = e.clipboardData.getData('text').slice(0, 6).replace(/[^0-9]/g, '');
+                for (let i = 0; i < pastedData.length; i++) {
+                    otpInputs[i].value = pastedData[i];
+                    if (i < otpInputs.length - 1) otpInputs[i + 1].focus();
+                }
+            });
+        });
+
+        otpForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            let otpStr = '';
+            otpInputs.forEach(i => otpStr += i.value);
+            document.getElementById('fullOtpInput').value = otpStr;
+
+            const btn = document.getElementById('otpSubmitBtn');
+            const spinner = document.getElementById('otpSpinner');
+            btn.disabled = true;
+            spinner.style.display = 'block';
+
+            const formData = new URLSearchParams(new FormData(otpForm));
+            formData.append('_csrf', csrfToken);
+
+            try {
+                const response = await fetch('/verify-otp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    window.location.href = data.redirect || '/listings';
+                } else {
+                    showFlash(data.message, 'error');
+                    otpInputs.forEach(i => i.value = '');
+                    otpInputs[0].focus();
+                }
+            } catch (err) {
+                showFlash('Network error occurred. Please try again.', 'error');
+            } finally {
+                btn.disabled = false;
+                spinner.style.display = 'none';
+            }
+        });
+
+        document.getElementById('resendOtpBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('otpEmailInput').value;
+            const btn = e.currentTarget;
+            if (btn.disabled) return;
+
+            btn.disabled = true;
+            btn.innerText = 'Sending...';
+
+            let startCooldown = false;
+
+            try {
+                const response = await fetch('/resend-otp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Accept': 'application/json'
+                    },
+                    body: `email=${encodeURIComponent(email)}&_csrf=${encodeURIComponent(csrfToken)}`
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    window.showFlash(data.message || 'A new code was sent.', 'success');
+                    startCooldown = true;
+                } else {
+                    window.showFlash(data.message || 'Failed to resend code.', 'error');
+                    if (response.status === 429) {
+                        startCooldown = true;
+                    } else {
+                        btn.disabled = false;
+                        btn.innerText = "Didn't receive it? Resend Code";
+                    }
+                }
+            } catch (err) {
+                window.showFlash('Network error occurred.', 'error');
+                btn.innerText = "Didn't receive it? Resend Code";
+                btn.disabled = false;
+            }
+
+            if (startCooldown) {
+                let timeLeft = 120; // 2 minutes
+                btn.innerText = `Resend in ${timeLeft}s`;
+
+                const timer = setInterval(() => {
+                    timeLeft--;
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        btn.innerText = "Didn't receive it? Resend Code";
+                        btn.disabled = false;
+                    } else {
+                        btn.innerText = `Resend in ${timeLeft}s`;
+                    }
+                }, 1000);
+            }
+        });
+    </script>
+    <%- include('../includes/flash.ejs') %>
 </body>
+
 </html>

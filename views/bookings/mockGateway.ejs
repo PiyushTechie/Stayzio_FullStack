@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="icon" type="image/png" href="/images/favicon-removebg-preview.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stayzio Secure Checkout</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Roboto Slab', serif;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .rzp-modal {
+      animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .card-input {
+      letter-spacing: 1px;
+    }
+
+    #processing-overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.9);
+      z-index: 50;
+      backdrop-filter: blur(2px);
+    }
+
+    .loader {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #3399cc;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .sidebar-gradient {
+      background: linear-gradient(135deg, #02042b 0%, #1a1b41 100%);
+    }
+
+    #cancel-overlay {
+      position: absolute;
+      inset: 0;
+      background: white;
+      z-index: 40;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      text-align: center;
+      transform: translateX(100%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      visibility: hidden;
+    }
+
+    #cancel-overlay.active {
+      transform: translateX(0);
+      visibility: visible;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+  <div
+    class="rzp-modal w-full max-w-[850px] bg-white rounded-xl shadow-2xl flex flex-col md:flex-row overflow-hidden relative border border-gray-100">
+
+    <div id="processing-overlay" class="flex-col items-center justify-center text-center rounded-xl">
+      <div class="loader mb-4 mt-24"></div>
+      <h3 class="text-lg font-medium text-gray-800">Processing Payment</h3>
+      <p class="text-gray-500 text-sm mt-1">Please do not refresh the page or press back.</p>
+      <div class="mt-4 flex items-center justify-center gap-2 text-xs text-green-600 font-medium">
+        <i class="fa-solid fa-shield-check"></i> Secure connection established
+      </div>
+    </div>
+
+    <div class="w-full md:w-[35%] sidebar-gradient p-6 text-white flex flex-col relative overflow-hidden">
+      <div class="absolute -right-10 -top-10 w-32 h-32 bg-blue-500 rounded-full opacity-20 blur-xl"></div>
+      <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-purple-500 rounded-full opacity-20 blur-xl"></div>
+
+      <div class="relative z-10 flex-grow">
+        <div class="flex items-center gap-3 mb-6">
+          <img src="/images/logonobg.png" alt="Stayzio Logo" class="h-10 object-contain bg-white/20 p-1 rounded-md">
+          <span class="font-semibold tracking-wide text-lg hidden sm:inline">Stayzio</span>
+        </div>
+
+        <div class="mb-6">
+          <p class="text-sm text-gray-400 font-medium tracking-wide uppercase mb-1">Amount to Pay</p>
+          <div class="flex items-start">
+            <span class="text-xl font-medium mt-1 mr-1">₹</span>
+            <span class="text-4xl font-semibold tracking-tight">
+              <%= booking.finalTotal.toLocaleString("en-IN") %>
+            </span>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div class="bg-white/5 border border-white/10 rounded-lg p-3 backdrop-blur-sm">
+            <p class="text-xs text-gray-400 mb-1">Payment For</p>
+            <p class="font-medium text-sm leading-tight text-white/90 line-clamp-2">
+              <%= booking.listing.title %>
+            </p>
+          </div>
+          <div class="bg-white/5 border border-white/10 rounded-lg p-3 backdrop-blur-sm">
+            <p class="text-xs text-gray-400 mb-1">Contact Details</p>
+            <p class="text-sm font-medium">
+              <%= booking.user.email %>
+            </p>
+            <p class="text-sm text-gray-300 mt-1">
+              <%= booking.contactNumber %>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-full md:w-[65%] bg-white flex flex-col relative min-h-[500px]">
+
+      <button id="cancel-btn" type="button"
+        class="border-b border-gray-100 px-6 py-4 flex justify-between items-center bg-gray-50/50 w-full hover:bg-gray-100 transition focus:outline-none">
+        <div class="flex items-center gap-2 text-gray-500 text-sm hover:text-gray-800 transition">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Cancel & Return</span>
+        </div>
+        <div class="text-sm font-medium text-gray-600">
+          <i class="fa-brands fa-cc-visa text-blue-700 text-xl mx-1"></i>
+          <i class="fa-brands fa-cc-mastercard text-red-500 text-xl mx-1"></i>
+          <i class="fa-brands fa-cc-amex text-blue-500 text-xl mx-1"></i>
+        </div>
+      </button>
+
+      <div id="cancel-overlay">
+        <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center text-red-500 text-2xl mb-4">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-800 mb-2">Cancel Payment?</h3>
+        <p class="text-gray-500 text-sm mb-8 px-4">Are you sure you want to cancel? Your booking will remain unpaid and
+          unconfirmed.</p>
+        <div class="flex gap-3 w-full max-w-[300px]">
+          <button id="confirm-cancel-btn" type="button"
+            class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2.5 rounded transition shadow-sm text-sm flex items-center justify-center gap-2">Yes,
+            Cancel</button>
+          <button id="resume-payment-btn" type="button"
+            class="flex-1 bg-[#3399cc] hover:bg-[#2b85b3] text-white font-medium py-2.5 rounded transition shadow-sm text-sm flex items-center justify-center">No,
+            Resume</button>
+        </div>
+      </div>
+
+      <div class="p-6 md:px-8 flex-grow">
+        <h2 class="text-xl font-semibold text-gray-800 mb-5 flex items-center gap-2">
+          Add New Card
+        </h2>
+
+        <form id="payment-form" action="/payments/process" method="POST">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <input type="hidden" name="bookingId" value="<%= booking._id %>">
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-[11px] font-semibold tracking-wide text-gray-500 uppercase mb-1.5">Card
+                Number</label>
+              <div class="relative">
+                <input type="text" id="card-number"
+                  class="card-input w-full pl-4 pr-12 py-2.5 rounded border border-gray-300 text-gray-800 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors shadow-sm text-sm"
+                  placeholder="4111 1111 1111 1111" maxlength="19" required>
+                <i class="fa-regular fa-credit-card absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+              </div>
+            </div>
+
+            <div class="flex gap-4">
+              <div class="flex-1">
+                <label
+                  class="block text-[11px] font-semibold tracking-wide text-gray-500 uppercase mb-1.5">Expiry</label>
+                <input type="text" id="card-expiry"
+                  class="card-input w-full px-4 py-2.5 rounded border border-gray-300 text-gray-800 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors shadow-sm text-sm"
+                  placeholder="MM/YY" maxlength="5" required>
+                <p id="expiry-error" class="text-red-500 text-xs mt-1 hidden">Expiry must be in the future.</p>
+              </div>
+              <div class="flex-1">
+                <label class="block text-[11px] font-semibold tracking-wide text-gray-500 uppercase mb-1.5">CVV</label>
+                <div class="relative">
+                  <input type="password" id="card-cvv"
+                    class="card-input w-full pl-4 pr-10 py-2.5 rounded border border-gray-300 text-gray-800 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors shadow-sm text-sm"
+                    placeholder="123" maxlength="4" required>
+                  <i
+                    class="fa-regular fa-circle-question absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer hover:text-gray-600 transition"></i>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-semibold tracking-wide text-gray-500 uppercase mb-1.5">Cardholder's
+                Name</label>
+              <input type="text"
+                class="w-full px-4 py-2.5 rounded border border-gray-300 text-gray-800 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors shadow-sm text-sm uppercase"
+                placeholder="Name on card" required>
+            </div>
+
+            <div class="flex items-center gap-3 pt-1">
+              <input type="checkbox" id="save-card"
+                class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer" checked>
+              <label for="save-card" class="text-xs text-gray-600 cursor-pointer select-none">Save card securely for
+                future payments</label>
+            </div>
+          </div>
+
+          <div class="mt-6">
+            <button type="submit"
+              class="w-full bg-[#3399cc] hover:bg-[#2b85b3] text-white font-medium py-3 px-4 rounded transition-colors flex items-center justify-center gap-2 shadow-sm text-sm">
+              Pay ₹<%= booking.finalTotal.toLocaleString("en-IN") %>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="px-6 py-3 bg-gray-50 border-t border-gray-100 flex justify-between items-center mt-auto">
+        <div class="flex items-center gap-1.5 text-xs font-medium text-gray-400">
+          <i class="fa-solid fa-lock text-[10px]"></i> Secured by <strong
+            class="text-gray-500 tracking-wide ml-0.5">STAYZIO SECURE</strong>
+        </div>
+        <div class="flex gap-3 text-gray-300">
+          <i class="fa-brands fa-cc-visa text-lg hover:text-gray-400 transition cursor-pointer"></i>
+          <i class="fa-brands fa-cc-mastercard text-lg hover:text-gray-400 transition cursor-pointer"></i>
+          <i class="fa-solid fa-shield-halved text-lg hover:text-gray-400 transition cursor-pointer"></i>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    document.getElementById('card-number').addEventListener('input', function (e) {
+      e.target.value = e.target.value.replace(/[^\d]/g, '').replace(/(.{4})/g, '$1 ').trim();
+    });
+
+    const expiryInput = document.getElementById('card-expiry');
+    expiryInput.addEventListener('input', function (e) {
+      e.target.value = e.target.value.replace(/[^\d]/g, '').replace(/(.{2})/, '$1/').trim().substring(0, 5);
+      document.getElementById('expiry-error').classList.add('hidden');
+    });
+
+    document.getElementById('payment-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const expiry = expiryInput.value;
+      if (expiry.length === 5) {
+        const [month, year] = expiry.split('/');
+        const now = new Date();
+        const currentYear = parseInt(now.getFullYear().toString().slice(2));
+        const currentMonth = now.getMonth() + 1;
+
+        const expMonth = parseInt(month);
+        const expYear = parseInt(year);
+
+        if (expMonth < 1 || expMonth > 12 || expYear < currentYear || (expYear === currentYear && expMonth < currentMonth)) {
+          document.getElementById('expiry-error').classList.remove('hidden');
+          return; // Stop submission
+        }
+      } else {
+        document.getElementById('expiry-error').classList.remove('hidden');
+        return;
+      }
+
+      const overlay = document.getElementById('processing-overlay');
+      overlay.style.display = 'flex';
+
+      setTimeout(() => {
+        this.submit();
+      }, 2500);
+    });
+
+    const cancelOverlay = document.getElementById('cancel-overlay');
+
+    document.getElementById('cancel-btn').addEventListener('click', function () {
+      cancelOverlay.classList.add('active');
+    });
+
+    document.getElementById('resume-payment-btn').addEventListener('click', function () {
+      cancelOverlay.classList.remove('active');
+    });
+
+    document.getElementById('confirm-cancel-btn').addEventListener('click', function () {
+      this.innerHTML = '<div class="loader" style="width:16px;height:16px;border-width:2px;border-top-color:#4b5563;"></div> <span class="opacity-70">Canceling...</span>';
+      this.disabled = true;
+      window.location.href = '/listings/<%= booking.listing._id %>';
+    });
+  </script>
+</body>
+
+</html>

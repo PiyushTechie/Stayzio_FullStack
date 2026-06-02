@@ -1,372 +1,479 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Bookings - Stayzio</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
-  <link rel="icon" type="image/png" href="/images/favicon-removebg-preview.png">
+<% layout('layouts/boilerplate') -%>
+
   <style>
-    :root {
-      --primary-color: #fe424d;
-      --primary-dark: #e23940;
-      --primary-light: #ff6b73;
-      --gradient-primary: linear-gradient(135deg, #fe424d, #ff6b73);
-      --shadow-soft: 0 10px 30px rgba(254, 66, 77, 0.1);
-      --shadow-card: 0 8px 25px rgba(0, 0, 0, 0.08);
-      --border-radius: 16px;
-    }
-
-    body {
-      background: linear-gradient(135deg, #f8f9ff 0%, #fff5f5 100%);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      min-height: 100vh;
-      padding: 2rem 0;
-    }
-
-    .main-container {
-      background: white;
-      border-radius: var(--border-radius);
-      box-shadow: var(--shadow-card);
-      margin: 0 auto;
-      overflow: hidden;
-      max-width: 1200px;
-      position: relative;
-    }
-
-    .header-section {
-      background: var(--gradient-primary);
-      color: white;
-      padding: 2.5rem 2rem;
-      text-align: center;
-    }
-
-    .filter-tabs {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      background: #fff;
-      border-bottom: 2px solid #f1f3f5;
-      padding: 1rem 0;
-      flex-wrap: wrap;
-    }
-
-    .tab-btn {
-      background: #f8f9fa;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      font-weight: 600;
-      border-radius: 25px;
-      color: #495057;
-      transition: all 0.3s ease;
-    }
-
     .tab-btn.active {
-      background: var(--primary-color);
-      color: #fff;
-      box-shadow: 0 4px 10px rgba(254, 66, 77, 0.2);
+      color: #111827;
+      /* gray-900 */
+      border-bottom: 2px solid #111827;
     }
 
-    .booking-card {
-      background: white;
-      border: 2px solid #f0f0f0;
-      border-radius: var(--border-radius);
-      margin-bottom: 1.5rem;
+    body.modal-open {
       overflow: hidden;
-      transition: all 0.3s ease;
-      position: relative;
-    }
-
-    .booking-header {
-      padding: 1.5rem;
-      border-bottom: 1px solid #e9ecef;
-      background: linear-gradient(135deg, #f8f9ff, #fff);
-    }
-
-    .listing-title {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--primary-color);
-      text-decoration: none;
-    }
-
-    .booking-body {
-      padding: 1.5rem;
-    }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1rem;
-      border-radius: 25px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      text-transform: capitalize;
-    }
-
-    .status-confirmed { background: linear-gradient(135deg, #28a745, #34d058); color: white; }
-    .status-pending { background: linear-gradient(135deg, #ffc107, #ffed4e); color: #8b5a00; }
-    .status-cancelled { background: linear-gradient(135deg, #dc3545, #fd7e7e); color: white; }
-
-    .btn-download, .btn-view, .btn-cancel {
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
-
-    .btn-download {
-      background: linear-gradient(135deg, #28a745, #34d058);
-      color: white;
-    }
-
-    .btn-view {
-      background: linear-gradient(135deg, #007bff, #00a2ff);
-      color: white;
-    }
-
-    .btn-cancel {
-      background: linear-gradient(135deg, #dc3545, #fd7e7e);
-      color: white;
-    }
-
-    .booking-actions {
-      display: flex;
-      justify-content: flex-end;
-      padding-top: 1rem;
-      border-top: 1px solid #e9ecef;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
-
-    .guest-item {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .guest-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--gradient-primary);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    @media (max-width: 768px) {
-      .booking-actions { flex-direction: column; align-items: stretch; }
     }
   </style>
-</head>
 
-<body>
-  <div class="main-container">
-    <div class="header-section">
-      <h1><i class="fas fa-calendar-check"></i> My Bookings</h1>
-      <p class="mb-0">Track and manage all your reservations</p>
-    </div>
+  <div class="min-h-screen bg-gray-50 pb-20 font-sans">
 
-    <!-- Filter Tabs -->
-    <div class="filter-tabs">
-      <button class="tab-btn active" data-filter="upcoming"><i class="fas fa-plane-departure"></i> Upcoming</button>
-      <button class="tab-btn" data-filter="completed"><i class="fas fa-check-circle"></i> Completed</button>
-      <button class="tab-btn" data-filter="pending"><i class="fas fa-clock"></i> Pending</button>
-      <button class="tab-btn" data-filter="cancelled"><i class="fas fa-ban"></i> Cancelled</button>
-    </div>
-
-    <div class="content-section p-4">
-      <% const now = new Date(); %>
-      <% if (!bookings || bookings.length === 0) { %>
-        <div class="text-center text-muted py-5">
-          <i class="fas fa-calendar-times fa-3x text-danger opacity-75 mb-3"></i>
-          <h3>No Bookings Yet</h3>
-          <p>Start exploring amazing places and make your first reservation!</p>
-        </div>
-      <% } else { %>
-        <% bookings.forEach(b => { %>
-          <% 
-            const isUpcoming = b.checkIn > now && b.status === "confirmed";
-            const isCompleted = b.checkOut < now && b.status === "confirmed";
-            const isCancelled = b.status === "cancelled";
-            const isPending = b.status === "pending";
-            const status = isUpcoming ? 'upcoming' : isCompleted ? 'completed' : isCancelled ? 'cancelled' : isPending ? 'pending' : '';
-            const displayStyle = isUpcoming ? 'block' : 'none';
-          %>
-
-            <div class="booking-card" data-status="<%= status %>" style="display: <%= displayStyle %>;">
-            <div class="booking-header d-flex justify-content-between align-items-center">
-              <a href="/listings/<%= b.listing._id %>" class="listing-title"><i class="fas fa-home"></i> <%= b.listing.title %></a>
-              <span class="status-badge status-<%= b.status %>">
-                <i class="fas <%= b.status === 'confirmed' ? 'fa-check-circle' : b.status === 'pending' ? 'fa-clock' : 'fa-times-circle' %>"></i> <%= b.status %>
-              </span>
-            </div>
-
-            <div class="booking-body">
-              <div><strong>Check-in:</strong> <%= b.checkIn.toDateString() %></div>
-              <div><strong>Check-out:</strong> <%= b.checkOut.toDateString() %></div>
-
-              <div class="booking-actions">
-                <button class="btn-view" data-bs-toggle="modal" data-bs-target="#detailsModal<%= b._id %>">
-                  <i class="fas fa-eye"></i> View Details
-                </button>
-
-                <% if (b.status === "confirmed") { %>
-                  <a href="/bookings/<%= b._id %>/download" target="_blank" class="btn-download">
-                    <i class="fas fa-file-invoice"></i> Invoice
-                  </a>
-                <% } %>
-
-                <% if (b.status !== "cancelled" && b.checkIn > now) { %>
-                  <form action="/bookings/<%= b._id %>/cancel" method="POST" class="cancel-form" style="display:inline;">
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <button type="button" class="btn-cancel" data-bs-toggle="modal" data-bs-target="#cancelModal">
-                      <i class="fas fa-times"></i> Cancel
-                    </button>
-                  </form>
-                <% } %>
-                
-                    <% if (b.status === "cancelled") { %>
-                    <form action="/bookings/<%= b._id %>/delete" 
-                          method="POST" 
-                          class="delete-form" 
-                          style="display:inline;">
-                          
-                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-
-                      <button type="button"
-                              class="btn-cancel"
-                              data-bs-toggle="modal"
-                              data-bs-target="#deleteModal">
-                        <i class="fas fa-trash-alt"></i> Remove
-                      </button>
-                    </form>
-                <% } %>
-              </div>
-            </div>
+    <div class="bg-white border-b border-gray-200 pt-28">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-700">
+            <i class="fa-solid fa-suitcase-rolling text-xl"></i>
           </div>
-
-          <!-- Booking Details Modal -->
-          <div class="modal fade" id="detailsModal<%= b._id %>" tabindex="-1">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header bg-light">
-                  <h5 class="modal-title"><i class="fas fa-info-circle text-primary me-2"></i> Booking Details</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                  <p><strong>Property:</strong> <%= b.listing.title %></p>
-                  <p><strong>Host:</strong> <%= b.listing.owner?.username || "Stayio Host" %></p>
-                  <p><strong>Booking ID:</strong> <code><%= b._id %></code></p>
-                  <hr>
-
-                  <h6 class="text-danger"><i class="fas fa-users me-1"></i> Guests</h6>
-                  <% if (b.guests && b.guests.length > 0) { %>
-                    <% b.guests.forEach(g => { %>
-                      <div class="guest-item">
-                        <div class="guest-icon"><i class="fas <%= g.type === 'Adult' ? 'fa-user-tie' : 'fa-child' %>"></i></div>
-                        <div>
-                          <strong><%= g.name %></strong><br>
-                          <small><%= g.type %>, Age <%= g.age %>, <%= g.gender %></small>
-                        </div>
-                      </div>
-                    <% }) %>
-                  <% } else { %>
-                    <p class="text-muted">No guest details provided.</p>
-                  <% } %>
-
-                  <hr>
-                  <p><strong>Contact:</strong> <%= b.contactNumber || "N/A" %></p>
-
-                  <% if (b.finalTotal) { 
-                    const subtotal = b.finalTotal / 1.23; 
-                    const gst = subtotal * 0.18; 
-                    const fee = subtotal * 0.05;
-                  %>
-                    <hr>
-                    <h6 class="text-success"><i class="fas fa-receipt me-1"></i> Price Breakdown</h6>
-                    <div class="d-flex justify-content-between"><span>Subtotal</span><span>₹<%= subtotal.toFixed(2) %></span></div>
-                    <div class="d-flex justify-content-between"><span>GST (18%)</span><span>₹<%= gst.toFixed(2) %></span></div>
-                    <div class="d-flex justify-content-between"><span>Convenience Fee (5%)</span><span>₹<%= fee.toFixed(2) %></span></div>
-                    <div class="d-flex justify-content-between fw-bold border-top mt-2 pt-2"><span>Total</span><span>₹<%= b.finalTotal.toFixed(2) %></span></div>
-                  <% } %>
-                </div>
-              </div>
-            </div>
+          <div>
+            <h1 class="text-4xl font-black text-gray-900">My Trips</h1>
+            <p class="text-base font-medium text-gray-500 mt-2">Track and manage all your reservations</p>
           </div>
-        <% }) %>
-      <% } %>
-    </div>
-  </div>
-
-  <!-- Cancel Confirmation Modal -->
-  <div class="modal fade" id="cancelModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5><i class="fas fa-exclamation-triangle text-danger me-2"></i> Confirm Cancellation</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-        <div class="modal-body">Are you sure you want to cancel this booking?</div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keep</button>
-          <button type="button" class="btn btn-danger" id="confirmCancelBtn">Cancel Booking</button>
+
+        <div class="mt-8 flex gap-8 border-b border-gray-200" id="tabs-container">
+          <button
+            class="tab-btn active pb-3 text-base md:text-lg font-bold text-gray-500 hover:text-gray-900 transition-colors"
+            data-filter="upcoming">
+            Upcoming
+          </button>
+          <button
+            class="tab-btn pb-3 text-base md:text-lg font-bold text-gray-500 hover:text-gray-900 transition-colors"
+            data-filter="completed">
+            Completed
+          </button>
+          <button
+            class="tab-btn pb-3 text-base md:text-lg font-bold text-gray-500 hover:text-gray-900 transition-colors"
+            data-filter="pending">
+            Pending
+          </button>
+          <button
+            class="tab-btn pb-3 text-base md:text-lg font-bold text-gray-500 hover:text-gray-900 transition-colors"
+            data-filter="cancelled">
+            Cancelled
+          </button>
         </div>
       </div>
     </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+      <% const now=new Date(); %>
+        <% if (!bookings || bookings.length===0) { %>
+          <div class="bg-white rounded-xl border border-gray-200 p-12 text-center">
+            <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-400">
+              <i class="fa-solid fa-calendar-xmark text-3xl"></i>
+            </div>
+            <h3 class="text-2xl font-black text-gray-900 mb-3">No Bookings Yet</h3>
+            <p class="text-lg text-gray-500 mb-8">Start exploring amazing places and make your first reservation!</p>
+            <a href="/listings"
+              class="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white font-bold text-lg rounded-lg hover:bg-black transition-colors shadow-md no-underline hover:no-underline">
+              Explore Stays
+            </a>
+          </div>
+          <% } else { %>
+            <div class="grid grid-cols-1 gap-6" id="bookings-grid">
+
+              <div id="tab-empty-state" class="bg-white rounded-xl border border-gray-200 p-12 text-center"
+                style="display: none;">
+                <div
+                  class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-400">
+                  <i class="fa-solid fa-folder-open text-3xl"></i>
+                </div>
+                <h3 class="text-2xl font-black text-gray-900 mb-3">No Bookings Found</h3>
+                <p class="text-lg text-gray-500 mb-0">You don't have any bookings in this category.</p>
+              </div>
+
+              <% bookings.forEach(b=> { %>
+                <% const isUpcoming=b.checkIn> now && b.status === "confirmed";
+                  const isCompleted = b.checkOut < now && b.status==="confirmed" ; const
+                    isCancelled=b.status==="cancelled" ; const isPending=b.status==="pending" ||
+                    b.status==="payment_pending" ; const status=isUpcoming ? 'upcoming' : isCompleted ? 'completed' :
+                    isCancelled ? 'cancelled' : isPending ? 'pending' : 'other' ; const displayStyle=isUpcoming
+                    ? 'block' : 'none' ; %>
+
+                    <div
+                      class="booking-card bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                      data-status="<%= status %>" style="display: <%= displayStyle %>;">
+
+                      <div class="p-6 sm:p-8">
+                        <div class="flex flex-col xl:flex-row justify-between gap-6">
+
+                          <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-3">
+                              <% if (b.status==="confirmed" ) { %>
+                                <span
+                                  class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-green-50 text-green-700 border border-green-200">
+                                  <i class="fa-solid fa-circle-check"></i> Confirmed
+                                </span>
+                                <% } else if (isPending) { %>
+                                  <span
+                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-yellow-50 text-yellow-700 border border-yellow-200">
+                                    <i class="fa-solid fa-clock"></i> Pending Payment
+                                  </span>
+                                  <% } else { %>
+                                    <span
+                                      class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-red-50 text-red-700 border border-red-200">
+                                      <i class="fa-solid fa-circle-xmark"></i> Cancelled
+                                    </span>
+                                    <% } %>
+                                      <span class="text-xs text-gray-400 font-medium font-mono">ID: <%= b._id %></span>
+                            </div>
+
+                            <a href="/listings/<%= b.listing._id %>"
+                              class="group block mb-1 no-underline hover:no-underline">
+                              <h3 class="text-xl font-bold text-gray-900 group-hover:text-gray-600 transition-colors">
+                                <%= b.listing.title %>
+                              </h3>
+                            </a>
+                            <p class="text-gray-500 text-sm mb-4"><i
+                                class="fa-solid fa-location-dot mr-1 text-gray-400"></i>
+                              <%= b.listing.location %>, <%= b.listing.country %>
+                            </p>
+
+                            <div
+                              class="flex flex-wrap items-center gap-6 text-sm text-gray-700 bg-gray-50 p-4 rounded-lg border border-gray-100">
+                              <div>
+                                <div class="text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">Check-in
+                                </div>
+                                <div class="font-bold">
+                                  <%= b.checkIn.toDateString() %>
+                                </div>
+                              </div>
+                              <div class="w-px h-8 bg-gray-300 hidden sm:block"></div>
+                              <div>
+                                <div class="text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">Check-out
+                                </div>
+                                <div class="font-bold">
+                                  <%= b.checkOut.toDateString() %>
+                                </div>
+                              </div>
+                              <div class="w-px h-8 bg-gray-300 hidden sm:block"></div>
+                              <div>
+                                <div class="text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">Total
+                                </div>
+                                <div class="font-bold">₹<%= (b.finalTotal || 0).toLocaleString('en-IN') %>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div
+                            class="flex flex-col sm:flex-row xl:flex-col justify-end xl:justify-start gap-3 border-t xl:border-t-0 xl:border-l border-gray-100 pt-4 xl:pt-0 xl:pl-6 shrink-0 w-full xl:w-48">
+
+                            <button type="button"
+                              class="view-details-btn inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-900 hover:bg-black text-white text-sm font-bold rounded-lg transition-colors w-full"
+                              data-modal-target="detailsModal<%= b._id %>">
+                              <i class="fa-solid fa-file-lines"></i> Details
+                            </button>
+
+                            <% if (b.status==="confirmed" ) { %>
+                              <a href="/bookings/<%= b._id %>/download" target="_blank"
+                                class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-sm font-bold rounded-lg transition-colors w-full">
+                                <i class="fa-solid fa-download"></i> Invoice
+                              </a>
+                              <% } %>
+
+                                <% if (b.status !=="cancelled" && b.checkIn> now) { %>
+                                  <button type="button"
+                                    class="cancel-booking-btn inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-gray-300 hover:border-red-300 hover:bg-red-50 hover:text-red-600 text-gray-700 text-sm font-bold rounded-lg transition-colors w-full"
+                                    data-booking-id="<%= b._id %>">
+                                    <i class="fa-solid fa-xmark"></i> Cancel
+                                  </button>
+                                  <% } %>
+
+                                    <% if (b.status==="cancelled" ) { %>
+                                      <button type="button"
+                                        class="delete-booking-btn inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-red-50 border border-red-200 hover:bg-red-100 text-red-700 text-sm font-bold rounded-lg transition-colors w-full"
+                                        data-booking-id="<%= b._id %>">
+                                        <i class="fa-solid fa-trash-can"></i> Remove
+                                      </button>
+                                      <% } %>
+
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div id="detailsModal<%= b._id %>"
+                      class="modal-backdrop fixed inset-0 z-[100] items-center justify-center bg-gray-900/40 backdrop-blur-sm p-4 hidden opacity-0 transition-opacity duration-300">
+                      <div
+                        class="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300 border border-gray-200">
+
+                        <div
+                          class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between z-10">
+                          <h5 class="text-lg font-bold text-gray-900"><i
+                              class="fa-solid fa-file-invoice text-gray-400 mr-2"></i> Booking Summary</h5>
+                          <button type="button"
+                            class="close-modal-btn text-gray-400 hover:text-gray-600 p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                            <i class="fa-solid fa-xmark text-xl pointer-events-none"></i>
+                          </button>
+                        </div>
+
+                        <div class="p-6 sm:p-8 space-y-8">
+                          <div>
+                            <h6 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Property
+                              Information</h6>
+                            <div class="bg-gray-50 rounded-lg p-5 border border-gray-200">
+                              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                  <span class="block text-xs font-semibold text-gray-500">Stay</span>
+                                  <span class="block text-gray-900 font-bold mt-1">
+                                    <%= b.listing.title %>
+                                  </span>
+                                </div>
+                                <div>
+                                  <span class="block text-xs font-semibold text-gray-500">Host</span>
+                                  <span class="block text-gray-900 font-bold mt-1">
+                                    <%= b.listing.owner?.username || "Stayzio Host" %>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div>
+                            <h6 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Guests (<%=
+                                b.guests ? b.guests.length : 0 %>)</h6>
+                            <% if (b.guests && b.guests.length> 0) { %>
+                              <div class="space-y-3">
+                                <% b.guests.forEach(g=> { %>
+                                  <div class="flex items-center gap-4 bg-white border border-gray-200 p-3 rounded-lg">
+                                    <div
+                                      class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-500 shrink-0 border border-gray-200">
+                                      <i class="fa-solid <%= g.type === 'Adult' ? 'fa-user' : 'fa-child' %>"></i>
+                                    </div>
+                                    <div>
+                                      <div class="font-bold text-gray-900">
+                                        <%= g.name %>
+                                      </div>
+                                      <div class="text-xs text-gray-500">
+                                        <%= g.type %> &bull; Age <%= g.age %> &bull; <%= g.gender %>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <% }) %>
+                              </div>
+                              <% } else { %>
+                                <p class="text-sm text-gray-500 italic">No guest details provided.</p>
+                                <% } %>
+                          </div>
+
+                          <div>
+                            <h6 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Contact
+                              Information</h6>
+                            <div
+                              class="text-sm text-gray-900 font-medium bg-white border border-gray-200 p-4 rounded-lg">
+                              <i class="fa-solid fa-phone text-gray-400 mr-2"></i>
+                              <%= b.contactNumber || "N/A" %>
+                            </div>
+                          </div>
+
+                          <% if (b.finalTotal) { const subtotal=b.finalTotal / 1.23; const gst=subtotal * 0.18; const
+                            fee=subtotal * 0.05; %>
+                            <div>
+                              <h6 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Payment
+                                Breakdown</h6>
+                              <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+                                <div class="p-5 space-y-3 text-sm text-gray-600">
+                                  <div class="flex justify-between">
+                                    <span>Subtotal</span>
+                                    <span class="font-medium text-gray-900 font-mono">₹<%= subtotal.toFixed(2) %></span>
+                                  </div>
+                                  <div class="flex justify-between">
+                                    <span>Taxes (18%)</span>
+                                    <span class="font-medium text-gray-900 font-mono">₹<%= gst.toFixed(2) %></span>
+                                  </div>
+                                  <div class="flex justify-between">
+                                    <span>Service Fee (5%)</span>
+                                    <span class="font-medium text-gray-900 font-mono">₹<%= fee.toFixed(2) %></span>
+                                  </div>
+                                  <div class="flex justify-between items-center border-t border-gray-200 pt-3 mt-3">
+                                    <span class="font-bold text-gray-900">Total Paid</span>
+                                    <span class="text-lg font-black text-gray-900 font-mono">₹<%=
+                                        b.finalTotal.toFixed(2) %></span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <% } %>
+                        </div>
+                      </div>
+                    </div>
+                    <% }) %>
+            </div>
+            <% } %>
+
+    </div>
   </div>
-  <div class="modal fade" id="deleteModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5><i class="fas fa-exclamation-triangle text-danger me-2"></i> Confirm Deletion</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <p>Are you sure you want to permanently remove this booking?</p>
-          <p class="fw-bold text-danger">This action cannot be undone.</p>
+
+  <div id="cancelModal"
+    class="modal-backdrop fixed inset-0 z-[100] items-center justify-center bg-gray-900/40 backdrop-blur-sm p-4 hidden opacity-0 transition-opacity duration-300">
+    <div
+      class="bg-white rounded-xl shadow-2xl border border-gray-200 w-full max-w-md transform scale-95 transition-transform duration-300 overflow-hidden">
+      <div class="p-6 sm:p-8">
+        <div
+          class="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center mb-4 mx-auto border border-red-100">
+          <i class="fa-solid fa-triangle-exclamation text-xl text-red-600"></i>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keep</button>
-          <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Yes, Remove</button>
-        </div>
-      </div>
-    </div>
-  </div>
+        <h3 class="text-xl font-bold text-gray-900 text-center mb-2">Cancel Booking</h3>
+        <p class="text-gray-500 text-center text-sm mb-8">Are you sure you want to cancel this booking? This action
+          cannot be undone and standard cancellation policies apply.</p>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <form id="cancelForm" method="POST" action="">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <div class="flex flex-col-reverse sm:flex-row gap-3 justify-center">
+            <button type="button"
+              class="close-modal-btn w-full sm:w-auto px-5 py-2.5 bg-white border border-gray-300 text-gray-700 font-bold rounded-lg hover:bg-gray-50 transition-colors">Keep
+              Booking</button>
+            <button type="submit"
+              class="w-full sm:w-auto px-5 py-2.5 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 shadow-sm transition-colors">Yes,
+              Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="deleteModal"
+    class="modal-backdrop fixed inset-0 z-[100] items-center justify-center bg-gray-900/40 backdrop-blur-sm p-4 hidden opacity-0 transition-opacity duration-300">
+    <div
+      class="bg-white rounded-xl shadow-2xl border border-gray-200 w-full max-w-md transform scale-95 transition-transform duration-300 overflow-hidden">
+      <div class="p-6 sm:p-8">
+        <div
+          class="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center mb-4 mx-auto border border-red-100">
+          <i class="fa-solid fa-trash-can text-xl text-red-600"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 text-center mb-2">Remove Record</h3>
+        <p class="text-gray-500 text-center text-sm mb-8">Permanently remove this cancelled booking from your history?
+          This cannot be undone.</p>
+
+        <form id="deleteForm" method="POST" action="">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <div class="flex flex-col-reverse sm:flex-row gap-3 justify-center">
+            <button type="button"
+              class="close-modal-btn w-full sm:w-auto px-5 py-2.5 bg-white border border-gray-300 text-gray-700 font-bold rounded-lg hover:bg-gray-50 transition-colors">Cancel</button>
+            <button type="submit"
+              class="w-full sm:w-auto px-5 py-2.5 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 shadow-sm transition-colors">Yes,
+              Remove</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <script>
-    
-    const cancelModal = document.getElementById('cancelModal');
-    let formToSubmit = null;
-    cancelModal.addEventListener('show.bs.modal', e => formToSubmit = e.relatedTarget.closest('.cancel-form'));
-    document.getElementById('confirmCancelBtn').addEventListener('click', () => formToSubmit?.submit());
+    document.addEventListener('DOMContentLoaded', () => {
+      const tabs = document.querySelectorAll('.tab-btn');
+      const cards = document.querySelectorAll('.booking-card');
 
-    
-    const deleteModal = document.getElementById('deleteModal');
-    let deleteFormToSubmit = null;
-    deleteModal.addEventListener('show.bs.modal', e => deleteFormToSubmit = e.relatedTarget.closest('.delete-form'));
-    document.getElementById('confirmDeleteBtn').addEventListener('click', () => deleteFormToSubmit?.submit());
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('active', 'text-gray-900', 'border-gray-900'));
+          tab.classList.add('active');
 
-    
-    const tabs = document.querySelectorAll('.tab-btn');
-    const cards = document.querySelectorAll('.booking-card');
-    tabs.forEach(tab => tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      const filter = tab.dataset.filter;
-      cards.forEach(c => c.style.display = c.dataset.status === filter ? 'block' : 'none');
-    }));
+          const filter = tab.dataset.filter;
+
+          let visibleCount = 0;
+          cards.forEach(card => {
+            if (card.dataset.status === filter) {
+              card.style.display = 'block';
+              visibleCount++;
+            } else {
+              card.style.display = 'none';
+            }
+          });
+
+          const emptyState = document.getElementById('tab-empty-state');
+          if (emptyState) {
+            if (visibleCount === 0) {
+              emptyState.style.display = 'block';
+            } else {
+              emptyState.style.display = 'none';
+            }
+          }
+        });
+      });
+
+      const initialTab = document.querySelector('.tab-btn.active');
+      if (initialTab) {
+        initialTab.click();
+      }
+
+      const body = document.body;
+      let activeModal = null;
+
+      const openModal = (modalEl) => {
+        if (!modalEl) return;
+        activeModal = modalEl;
+        modalEl.classList.remove('hidden');
+        modalEl.classList.add('flex');
+        body.classList.add('modal-open');
+        setTimeout(() => {
+          modalEl.classList.remove('opacity-0');
+          modalEl.querySelector('.transform').classList.remove('scale-95');
+          modalEl.querySelector('.transform').classList.add('scale-100');
+        }, 10);
+      };
+
+      const closeModal = (modalEl) => {
+        if (!modalEl) return;
+        // Animate out
+        modalEl.classList.add('opacity-0');
+        modalEl.querySelector('.transform').classList.remove('scale-100');
+        modalEl.querySelector('.transform').classList.add('scale-95');
+        setTimeout(() => {
+          modalEl.classList.add('hidden');
+          modalEl.classList.remove('flex');
+          body.classList.remove('modal-open');
+          if (activeModal === modalEl) activeModal = null;
+        }, 300);
+      };
+
+      document.querySelectorAll('.close-modal-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const modal = e.target.closest('.modal-backdrop');
+          closeModal(modal);
+        });
+      });
+
+      document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+        backdrop.addEventListener('click', (e) => {
+          if (e.target === backdrop) {
+            closeModal(backdrop);
+          }
+        });
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && activeModal) {
+          closeModal(activeModal);
+        }
+      });
+
+      document.querySelectorAll('.view-details-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetId = btn.getAttribute('data-modal-target');
+          const modal = document.getElementById(targetId);
+          openModal(modal);
+        });
+      });
+
+      const cancelModalEl = document.getElementById('cancelModal');
+      const cancelForm = document.getElementById('cancelForm');
+      document.querySelectorAll('.cancel-booking-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const bookingId = btn.getAttribute('data-booking-id');
+          cancelForm.action = `/bookings/${bookingId}/cancel`;
+          openModal(cancelModalEl);
+        });
+      });
+
+      const deleteModalEl = document.getElementById('deleteModal');
+      const deleteForm = document.getElementById('deleteForm');
+      document.querySelectorAll('.delete-booking-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const bookingId = btn.getAttribute('data-booking-id');
+          deleteForm.action = `/bookings/${bookingId}/delete`;
+          openModal(deleteModalEl);
+        });
+      });
+
+    });
   </script>
-</body>
-</html>

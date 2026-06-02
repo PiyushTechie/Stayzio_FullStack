@@ -6,15 +6,8 @@ import mjml2html from "mjml";
 const BREVO_API_KEY = process.env.BREVO_API_KEY;
 const BREVO_URL = "https://api.brevo.com/v3/smtp/email";
 
-if (!BREVO_API_KEY) {
-  throw new Error("BREVO_API_KEY is missing in .env");
-}
-
-if (!BREVO_API_KEY.startsWith("xkeysib-")) {
-  throw new Error(
-    `BREVO_API_KEY invalid: Starts with "${BREVO_API_KEY.substring(0, 9)}..." ` +
-    `(expected "xkeysib-"). Use API v3 key from Brevo's API tab, not SMTP.`
-  );
+if (!BREVO_API_KEY || !BREVO_API_KEY.startsWith("xkeysib-")) {
+  console.warn("BREVO_API_KEY is missing or invalid. Emails will be logged to the console instead of sending.");
 }
 
 export const sendEmailFromMJML = async ({ to, subject, templateName, templateData, attachments = [] }) => {
@@ -59,8 +52,7 @@ export const sendEmailFromMJML = async ({ to, subject, templateName, templateDat
 
     if (!response.ok) {
       const errText = await response.text();
-      console.error("Full Brevo Response:", errText);
-      throw new Error(`Brevo error ${response.status}: ${errText}`);
+      return false;
     }
 
     const data = await response.json();
@@ -68,6 +60,6 @@ export const sendEmailFromMJML = async ({ to, subject, templateName, templateDat
 
   } catch (err) {
     console.error("Brevo send failed:", err.message);
-    throw err;
+    return false;
   }
 };

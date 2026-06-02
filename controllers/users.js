@@ -4,8 +4,6 @@ import Listing from "../models/listing.js";
 import Review from "../models/reviews.js";
 import path from "path";
 
-// ====================== SIGNUP & OTP ======================
-
 const renderSignUpForm = (req, res) => {
   if (req.isAuthenticated()) {
     return res.redirect("/listings");
@@ -16,42 +14,30 @@ const renderSignUpForm = (req, res) => {
 const signup = async (req, res) => {
   console.log("SIGNUP CONTROLLER HIT");
   try {
-    const { username, email, password, dob } = req.body;
+    const { username, email, password } = req.body;
 
-    // Age validation
-    const birthDate = new Date(dob);
-    const ageDiffMs = Date.now() - birthDate.getTime();
-    const ageDate = new Date(ageDiffMs);
-    const age = Math.abs(ageDate.getUTCFullYear() - 1970);
-
-    if (age < 18) {
-      req.flash("error", "You must be 18 or older to register.");
-      return res.redirect("/signup");
-    }
-
-    // Check existing user
     const existingUser = await User.findOne({
       $or: [{ username }, { email }],
     });
 
     if (existingUser) {
+      if (req.xhr || req.headers.accept.indexOf('json') > -1) {
+        return res.status(400).json({ success: false, message: "Username or Email already in use!" });
+      }
       req.flash("error", "Username or Email already in use!");
       return res.redirect("/signup");
     }
 
-    // Create user
-    const user = new User({ username, email, dob });
+    const user = new User({ username, email });
     const registeredUser = await User.register(user, password);
 
-    // Generate OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     registeredUser.otp = otp;
-    registeredUser.otpExpiry = Date.now() + 5 * 60 * 1000; 
+    registeredUser.otpExpiry = Date.now() + 5 * 60 * 1000;
     registeredUser.emailVerified = false;
     registeredUser.lastOtpSent = new Date();
     await registeredUser.save();
 
-    // Send Email
     await sendEmailFromMJML({
       to: email,
       subject: "Stayzio: Verify your email",
@@ -63,12 +49,14 @@ const signup = async (req, res) => {
       },
     });
 
-    // Auto Login
     req.login(registeredUser, (loginErr) => {
       if (loginErr) {
         console.error("Auto-login failed:", loginErr);
         req.flash("error", "Account created, but login failed.");
         return res.redirect("/login");
+      }
+      if (req.xhr || req.headers.accept.indexOf('json') > -1) {
+        return res.status(200).json({ success: true, message: "Signup successful! Please check your email for the OTP.", redirect: "/verify-otp" });
       }
       req.flash("success", "Signup successful! Please check your email for the OTP.");
       res.redirect("/verify-otp");
@@ -76,6 +64,9 @@ const signup = async (req, res) => {
 
   } catch (e) {
     console.error("Signup Error:", e);
+    if (req.xhr || req.headers.accept.indexOf('json') > -1) {
+      return res.status(400).json({ success: false, message: e.message || "Something went wrong." });
+    }
     req.flash("error", e.message || "Something went wrong.");
     res.redirect("/signup");
   }
@@ -87,14 +78,17 @@ const verifyOtp = async (req, res, next) => {
     const user = await User.findOne({ email });
 
     if (!user) {
+      if (req.xhr || req.headers.accept.indexOf('json') > -1) return res.status(400).json({ success: false, message: "No account found." });
       req.flash("error", "No account found.");
       return res.redirect("/signup");
     }
     if (user.emailVerified) {
+      if (req.xhr || req.headers.accept.indexOf('json') > -1) return res.status(200).json({ success: true, message: "Email already verified!", redirect: "/login" });
       req.flash("success", "Email already verified!");
       return res.redirect("/login");
     }
-    if (user.otp !== otp || user.otpExpiry < Date.now()) {
+    if (!otp || !user.otp || user.otp !== otp.trim() || user.otpExpiry < Date.now()) {
+      if (req.xhr || req.headers.accept.indexOf('json') > -1) return res.status(400).json({ success: false, message: "Invalid or expired OTP." });
       req.flash("error", "Invalid or expired OTP.");
       return res.redirect("/verify-otp");
     }
@@ -106,41 +100,50 @@ const verifyOtp = async (req, res, next) => {
 
     req.login(user, (err) => {
       if (err) return next(err);
+      if (req.xhr || req.headers.accept.indexOf('json') > -1) {
+        return res.status(200).json({ success: true, message: "Email verified successfully!", redirect: "/listings" });
+      }
       req.flash("success", "Email verified successfully!");
-      res.redirect("/listings"); 
+      res.redirect("/listings");
     });
 
   } catch (e) {
+    if (req.xhr || req.headers.accept.indexOf('json') > -1) return res.status(500).json({ success: false, message: e.message });
     req.flash("error", e.message);
     res.redirect("/verify-otp");
   }
 };
 
 const resendOtp = async (req, res) => {
+  const isJson = req.xhr || (req.headers.accept && req.headers.accept.indexOf('json') > -1);
   try {
     const email = req.body.email || req.user?.email;
 
     if (!email) {
+      if (isJson) return res.status(400).json({ success: false, message: "Email is required" });
       req.flash("error", "Email is required");
       return res.redirect("/verify-otp");
     }
 
     const user = await User.findOne({ email });
     if (!user) {
+      if (isJson) return res.status(404).json({ success: false, message: "No account found." });
       req.flash("error", "No account found.");
       return res.redirect("/verify-otp");
     }
 
     if (user.emailVerified) {
+      if (isJson) return res.status(400).json({ success: false, message: "Email already verified" });
       req.flash("error", "Email already verified");
       return res.redirect("/login");
     }
 
     const now = Date.now();
-    const cooldown = 150000; // 2.5 minutes
+    const cooldown = 120000; // 2 minutes
 
     if (user.lastOtpSent && now - user.lastOtpSent.getTime() < cooldown) {
       const wait = Math.ceil((cooldown - (now - user.lastOtpSent.getTime())) / 1000);
+      if (isJson) return res.status(429).json({ success: false, message: `Please wait ${wait}s before requesting again` });
       req.flash("error", `Please wait ${wait}s before requesting again`);
       return res.redirect("/verify-otp");
     }
@@ -158,16 +161,17 @@ const resendOtp = async (req, res) => {
       templateData: { username: user.username, otp, year: new Date().getFullYear() },
     });
 
+    if (isJson) return res.status(200).json({ success: true, message: "OTP resent successfully!" });
     req.flash("success", "OTP resent successfully!");
     res.redirect("/verify-otp");
   } catch (e) {
     console.log("Resend OTP Error:", e);
+    if (isJson) return res.status(500).json({ success: false, message: "Failed to resend OTP" });
     req.flash("error", "Failed to resend OTP");
     res.redirect("/verify-otp");
   }
 };
 
-// ====================== LOGIN / LOGOUT ======================
 
 const renderLoginForm = (req, res) => {
   if (req.isAuthenticated()) {
@@ -199,44 +203,36 @@ const logout = (req, res, next) => {
   });
 };
 
-// ====================== USER PROFILES ======================
-
-// 1. Public Profile (View others)
-// 1. Public Profile (View others)
 const publicProfile = async (req, res) => {
   const profileUser = await User.findById(req.params.id)
     .populate("listings")
-    .populate({ 
-      path: "reviews", 
-      populate: { 
-        path: "listing", 
-      } 
+    .populate({
+      path: "reviews",
+      populate: {
+        path: "listing",
+      }
     });
 
   const isOwner = req.user && req.user._id.equals(profileUser._id);
   res.render("users/profile", { user: profileUser, isOwner, csrfToken: req.csrfToken() });
 };
 
-// 2. User Profile (View own dashboard) --> THIS WAS MISSING
-// 2. User Profile (View own dashboard)
 const userProfile = async (req, res) => {
-  // WE MUST RE-FETCH THE USER TO POPULATE DATA
-  // req.user only contains basic session info, not the deep database links
-  
+
   const populatedUser = await User.findById(req.user._id)
     .populate("listings")
     .populate({
       path: "reviews",
       populate: {
-        path: "listing", // <--- CRITICAL: This allows <%= review.listing._id %> to work
-        select: "title _id" 
+        path: "listing",
+        select: "title _id"
       }
     });
 
-  res.render("users/profile", { 
-      user: populatedUser, // Pass the fully populated user, not req.user
-      isOwner: true,
-      csrfToken: req.csrfToken() 
+  res.render("users/profile", {
+    user: populatedUser,
+    isOwner: true,
+    csrfToken: req.csrfToken()
   });
 };
 
@@ -271,8 +267,6 @@ const updateProfile = async (req, res, next) => {
 };
 
 
-// ====================== FORGOT PASSWORD ======================
-
 const renderForgotPasswordForm = (req, res) => {
   res.render("users/forgotPassword", { csrfToken: req.csrfToken() });
 };
@@ -283,6 +277,7 @@ const forgotPassword = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
+      if (req.xhr || req.headers.accept.indexOf('json') > -1) return res.status(400).json({ success: false, message: "No account found." });
       req.flash("error", "No account with that email.");
       return res.redirect("/forgot-password");
     }
@@ -303,9 +298,13 @@ const forgotPassword = async (req, res) => {
       },
     });
 
+    if (req.xhr || req.headers.accept.indexOf('json') > -1) {
+      return res.status(200).json({ success: true, message: "OTP sent to your email." });
+    }
     req.flash("success", "OTP sent to your email.");
     res.redirect("/reset-password-otp");
   } catch (e) {
+    if (req.xhr || req.headers.accept.indexOf('json') > -1) return res.status(500).json({ success: false, message: "Something went wrong sending OTP." });
     req.flash("error", "Something went wrong sending OTP.");
     res.redirect("/forgot-password");
   }
@@ -326,14 +325,17 @@ const resetPassword = async (req, res) => {
   const user = await User.findOne({ email });
 
   if (!user) {
+    if (req.xhr || req.headers.accept.indexOf('json') > -1) return res.status(400).json({ success: false, message: "No account found." });
     req.flash("error", "No account found.");
     return res.redirect("/reset-password-otp");
   }
-  if (user.otp !== otp || user.otpExpiry < Date.now()) {
+  if (!otp || !user.otp || user.otp !== otp.trim() || user.otpExpiry < Date.now()) {
+    if (req.xhr || req.headers.accept.indexOf('json') > -1) return res.status(400).json({ success: false, message: "Invalid or expired OTP." });
     req.flash("error", "Invalid or expired OTP.");
     return res.redirect("/reset-password-otp");
   }
   if (password !== confirmPassword) {
+    if (req.xhr || req.headers.accept.indexOf('json') > -1) return res.status(400).json({ success: false, message: "Passwords do not match." });
     req.flash("error", "Passwords do not match.");
     return res.redirect("/reset-password-otp");
   }
@@ -343,6 +345,9 @@ const resetPassword = async (req, res) => {
   user.otpExpiry = undefined;
   await user.save();
 
+  if (req.xhr || req.headers.accept.indexOf('json') > -1) {
+    return res.status(200).json({ success: true, message: "Password reset successfully! Please login.", redirect: "/login" });
+  }
   req.flash("success", "Password reset successfully! Please login.");
   res.redirect("/login");
 };
@@ -357,7 +362,6 @@ const deleteAccount = async (req, res) => {
     req.logout(() => {
       req.flash("success", "Your account has been permanently deleted.");
       res.status(200).json({ redirect: "/" });
-      // If this is called via Form Submit, use: res.redirect("/");
     });
   } catch (err) {
     console.error(err);
@@ -365,15 +369,13 @@ const deleteAccount = async (req, res) => {
   }
 };
 
-// ====================== EXPORT ======================
-// Now userProfile is defined, so this export will work.
 export default {
   renderSignUpForm,
   signup,
   renderLoginForm,
   login,
   logout,
-  userProfile, // <--- Works now!
+  userProfile,
   publicProfile,
   setupPage,
   updateProfile,

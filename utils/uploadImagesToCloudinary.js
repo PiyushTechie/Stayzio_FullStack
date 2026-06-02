@@ -5,22 +5,19 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import { fileURLToPath } from "url";
 import { v2 as cloudinary } from "cloudinary";
-import Listing from "../models/listing.js"; // Adjust if your path is different
+import Listing from "../models/listing.js";
 
 dotenv.config();
 
-// Fix __dirname for ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Cloudinary Config
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Download image locally first
 async function downloadImage(url, localPath) {
   const response = await axios({
     url,
@@ -36,19 +33,15 @@ async function downloadImage(url, localPath) {
   });
 }
 
-// Upload local image to Cloudinary
 async function uploadToCloudinary(localPath, listingId) {
   return cloudinary.uploader.upload(localPath, {
     folder: "stayzio_listings",
-    public_id: listingId, // Optional: saves file using MongoDB _id
+    public_id: listingId,
   });
 }
 
 async function processListings() {
-  // 1. Connect to MongoDB
   await mongoose.connect(process.env.MONGO_URI);
-  console.log("✅ Connected to MongoDB");
-
   const listings = await Listing.find();
 
   for (const listing of listings) {
@@ -58,15 +51,13 @@ async function processListings() {
       continue;
     }
 
-    // Skip if already uploaded to Cloudinary
     if (imageUrl.includes("res.cloudinary.com")) {
-      console.log(`⏩ Already on Cloudinary: ${listing.title}`);
+      console.log(`Already on Cloudinary: ${listing.title}`);
       continue;
     }
 
-    // Skip Google thumbnail / invalid URLs
     if (imageUrl.includes("encrypted-tbn0.gstatic.com")) {
-      console.log(`❌ Skipping low-quality Google thumbnail: ${listing.title}`);
+      console.log(`Skipping low-quality Google thumbnail: ${listing.title}`);
       continue;
     }
 
@@ -79,15 +70,13 @@ async function processListings() {
       console.log(`⬆ Uploading to Cloudinary: ${listing.title}`);
       const uploadRes = await uploadToCloudinary(localPath, listing._id);
 
-      // Update listing
       listing.image.url = uploadRes.secure_url;
       await listing.save();
-      console.log(`✅ Updated: ${listing.title}`);
+      console.log(`Updated: ${listing.title}`);
 
     } catch (err) {
-      console.log(`❌ Error with "${listing.title}": ${err.message}`);
+      console.log(`Error with "${listing.title}": ${err.message}`);
     } finally {
-      // Cleanup temp file
       if (fs.existsSync(localPath)) {
         fs.unlinkSync(localPath);
         console.log(`🗑 Deleted temp file for ${listing.title}`);
@@ -95,7 +84,7 @@ async function processListings() {
     }
   }
 
-  console.log("🎉 All listings processed!");
+  console.log("All listings processed!");
   process.exit();
 }
 

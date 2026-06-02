@@ -7,18 +7,16 @@ const bookingSchema = new mongoose.Schema({
   checkOut: { type: Date, required: true },
   status: { 
     type: String, 
-    enum: ["pending", "otp_verification", "confirmed", "cancelled"], 
+    enum: ["pending", "otp_verification", "payment_pending", "confirmed", "cancelled"], 
     default: "pending" 
   },
   createdAt: { type: Date, default: Date.now },
 
-  // Contact details
   contactNumber: {
     type: String,
     required: true,
   },
 
-  // Guest details
   guests: [
     {
       type: {
@@ -44,7 +42,6 @@ const bookingSchema = new mongoose.Schema({
     },
   ],
 
-  // OTP related fields
   otp: {
     type: String,
   },
@@ -58,13 +55,21 @@ const bookingSchema = new mongoose.Schema({
   },
 
   hiddenFromHost: {
-  type: Boolean,
-  default: false
-}
+    type: Boolean,
+    default: false
+  },
+
+  paymentStatus: {
+    type: String,
+    enum: ["pending", "paid", "failed"],
+    default: "pending"
+  },
+  transactionId: String
 
 });
 
-// Index to prevent overlapping bookings
 bookingSchema.index({ listing: 1, checkIn: 1, checkOut: 1 });
+bookingSchema.index({ listing: 1, status: 1 });
+bookingSchema.index({ user: 1, createdAt: -1 });
 
 export default mongoose.model("Booking", bookingSchema);

@@ -1,205 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms of Service - Stayzio</title>
-    <link rel="stylesheet" href="/css/terms.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/png" href="/images/favicon-removebg-preview.png">
-</head>
-<body>
-    <div class="scroll-indicator">
-        <div class="scroll-progress" id="scrollProgress"></div>
-    </div>
+<% layout('layouts/infoBoilerplate') -%>
 
-    <div class="container">
-        <div class="header">
-            <div class="logo"><i class="fa-solid fa-earth-asia brand-icon"></i>Stayzio</div>
-            <h1>Terms of Service</h1>
-            <div class="last-updated">Last Updated: August 30, 2025</div>
+<div class="bg-gradient-to-r from-gray-900 to-gray-800 pt-20 pb-16 relative overflow-hidden">
+    <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 text-center" data-aos="fade-up">
+        <h1 class="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">
+            <i class="fas fa-file-contract text-[#fe424d] mr-3"></i> Terms of Service
+        </h1>
+        <p class="text-xl text-gray-300 max-w-2xl mx-auto">Please read these terms carefully before using Stayzio.</p>
+        <p class="mt-6 text-sm text-gray-400 font-medium tracking-wider uppercase">Last updated: August 30, 2026</p>
+    </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-6 lg:px-8 py-16">
+    <div class="flex flex-col lg:flex-row gap-12">
+        
+        <div class="lg:w-1/4 hidden lg:block">
+            <div class="sticky top-28 bg-white border border-gray-100 rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                <h3 class="font-bold text-gray-900 mb-4 uppercase tracking-wider text-sm flex items-center gap-2">
+                    <i class="fas fa-list text-[#fe424d]"></i> Contents
+                </h3>
+                <nav class="sticky-nav flex flex-col space-y-1">
+                    <a href="#acceptance" class="px-4 py-2 text-sm text-gray-500 rounded-lg border-l-2 border-transparent hover:bg-gray-50 transition-colors">Acceptance of Terms</a>
+                    <a href="#use" class="px-4 py-2 text-sm text-gray-500 rounded-lg border-l-2 border-transparent hover:bg-gray-50 transition-colors">Use of Service</a>
+                    <a href="#booking" class="px-4 py-2 text-sm text-gray-500 rounded-lg border-l-2 border-transparent hover:bg-gray-50 transition-colors">Booking & Payments</a>
+                    <a href="#cancellation" class="px-4 py-2 text-sm text-gray-500 rounded-lg border-l-2 border-transparent hover:bg-gray-50 transition-colors">Cancellations</a>
+                    <a href="#conduct" class="px-4 py-2 text-sm text-gray-500 rounded-lg border-l-2 border-transparent hover:bg-gray-50 transition-colors">User Conduct</a>
+                    <a href="#liability" class="px-4 py-2 text-sm text-gray-500 rounded-lg border-l-2 border-transparent hover:bg-gray-50 transition-colors">Liability</a>
+                    <a href="#contact" class="px-4 py-2 text-sm text-gray-500 rounded-lg border-l-2 border-transparent hover:bg-gray-50 transition-colors">Contact Us</a>
+                </nav>
+            </div>
         </div>
 
-        <div class="content">
-            <div class="section">
-                <h2>1. Acceptance of Terms</h2>
-                <p>Welcome to Stayzio. By accessing or using our platform, mobile application, or any related services (collectively, the "Service"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, please do not use our Service.</p>
-                <div class="highlight">
-                    <p><strong>Important:</strong> These Terms constitute a legally binding agreement between you and Stayzio. Please read them carefully before using our Service.</p>
+        <div class="lg:w-3/4 prose-content bg-white p-8 md:p-12 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100">
+            
+            <div id="acceptance">
+                <h2><i class="fas fa-handshake"></i> Acceptance of Terms</h2>
+                <p>By accessing or using the Stayzio platform, you agree to comply with and be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
+                
+                <div class="highlight-box">
+                    <h4><i class="fas fa-exclamation-circle"></i> Important Notice</h4>
+                    <p>These terms constitute a legally binding agreement between you and Stayzio governing your access to and use of the Stayzio website and applications.</p>
                 </div>
             </div>
 
-            <div class="section">
-                <h2>2. Description of Service</h2>
-                <p>Stayzio is a hospitality platform that connects guests with accommodation providers, offering booking services, property management tools, and related hospitality services. Our Service includes:</p>
+            <div id="use">
+                <h2><i class="fas fa-laptop"></i> Use of Service</h2>
+                <p>You must be at least 18 years old to create an account and book accommodations. You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account.</p>
+                <p>Stayzio grants you a limited, non-exclusive, non-transferable license to access and use the platform in accordance with these terms.</p>
+            </div>
+
+            <div id="booking">
+                <h2><i class="fas fa-credit-card"></i> Booking & Payments</h2>
+                <p>When you book an accommodation, you agree to pay all charges associated with the booking, including the listing price, applicable fees, and taxes. We utilize secure third-party payment processors to handle all transactions.</p>
                 <ul>
-                    <li>Online booking and reservation system</li>
-                    <li>Property listing and management tools</li>
-                    <li>Payment processing services</li>
-                    <li>Guest communication features</li>
-                    <li>Review and rating system</li>
-                    <li>Customer support services</li>
+                    <li>All payments must be made using a valid payment method.</li>
+                    <li>Hosts are responsible for ensuring their property meets the description provided on the platform.</li>
+                    <li>Stayzio acts as a facilitator and is not a party to the rental agreement between the host and the guest.</li>
                 </ul>
             </div>
 
-            <div class="section">
-                <h2>3. User Accounts and Registration</h2>
-                <h3>Account Creation</h3>
-                <p>To use certain features of our Service, you must create an account. You agree to provide accurate, current, and complete information during registration and to update such information to keep it accurate, current, and complete.</p>
-                
-                <h3>Account Security</h3>
-                <p>You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You must immediately notify us of any unauthorized use of your account.</p>
-                
+            <div id="cancellation">
+                <h2><i class="fas fa-calendar-times"></i> Cancellations and Refunds</h2>
+                <p>Cancellation policies are determined by the individual hosts and clearly displayed on each property listing. Guests are bound by the specific cancellation policy they agreed to at the time of booking.</p>
+                <p>For more details, please review our comprehensive <a href="/cancelPolicy" class="text-[#fe424d] hover:underline">Cancellation Policy</a> page.</p>
             </div>
 
-            <div class="section">
-                <h2>4. Booking Terms and Conditions</h2>
-                <h3>Reservations</h3>
-                <p>When you make a booking through Stayzio, you enter into a direct contractual relationship with the accommodation provider. Stayzio acts as an intermediary platform facilitating this transaction.</p>
-                
-                <h3>Payment Terms</h3>
-                <ul>
-                    <li>Payment is required at the time of booking unless otherwise specified</li>
-                    <li>All prices are subject to availability and may change without notice</li>
-                    <li>Additional fees (taxes, service charges) may apply and will be clearly disclosed</li>
-                </ul>
-                
-                <h3>Cancellation Policy</h3>
-                <p>Cancellation terms are set by individual property owners and will be clearly displayed during the booking process. Stayzio may charge processing fees for cancellations as outlined in our fee schedule.</p>
+            <div id="conduct">
+                <h2><i class="fas fa-users"></i> User Conduct</h2>
+                <p>You agree not to use the platform to:</p>
+                <ol>
+                    <li>Violate any local, state, national, or international laws.</li>
+                    <li>Harass, threaten, or discriminate against any person.</li>
+                    <li>Post false, inaccurate, misleading, defamatory, or libelous content.</li>
+                    <li>Distribute viruses or any other technologies that may harm the platform or the interests of other users.</li>
+                </ol>
             </div>
 
-            <div class="section">
-                <h2>5. Host Responsibilities</h2>
-                <p>If you list properties on Stayzio as a host, you agree to:</p>
+            <div id="liability">
+                <h2><i class="fas fa-gavel"></i> Limitation of Liability</h2>
+                <p>To the maximum extent permitted by law, Stayzio shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses resulting from:</p>
                 <ul>
-                    <li>Provide accurate and up-to-date property information</li>
-                    <li>Maintain your property in safe and habitable condition</li>
-                    <li>Comply with all applicable laws and regulations</li>
-                    <li>Honor confirmed reservations and provide agreed services</li>
-                    <li>Maintain appropriate insurance coverage</li>
-                    <li>Respond promptly to guest inquiries and Stayzio communications</li>
+                    <li>Your access to or use of or inability to access or use the platform.</li>
+                    <li>Any conduct or content of any third party on the platform.</li>
+                    <li>Any unauthorized access, use, or alteration of your transmissions or content.</li>
                 </ul>
             </div>
 
-            <div class="section">
-                <h2>6. Guest Responsibilities</h2>
-                <p>As a guest using Stayzio, you agree to:</p>
-                <ul>
-                    <li>Provide accurate personal and payment information</li>
-                    <li>Use properties respectfully and in accordance with house rules</li>
-                    <li>Report any issues or damages promptly</li>
-                    <li>Leave properties in good condition</li>
-                    <li>Comply with local laws and regulations</li>
-                    <li>Respect other guests and neighbors</li>
-                </ul>
-            </div>
-
-            <div class="section">
-                <h2>7. Prohibited Activities</h2>
-                <p>You may not use Stayzio for any illegal or unauthorized purpose. Prohibited activities include but are not limited to:</p>
-                <ul>
-                    <li>Violating any laws or regulations</li>
-                    <li>Infringing on intellectual property rights</li>
-                    <li>Transmitting harmful or malicious code</li>
-                    <li>Engaging in fraudulent activities</li>
-                    <li>Harassing or threatening other users</li>
-                    <li>Posting false or misleading information</li>
-                    <li>Attempting to circumvent security measures</li>
-                </ul>
-            </div>
-
-            <div class="section">
-                <h2>8. Payment and Fees</h2>
-                <h3>Service Fees</h3>
-                <p>Stayzio charges service fees for using our platform. These fees will be clearly disclosed before completing any transaction.</p>
+            <div id="contact">
+                <h2><i class="fas fa-envelope"></i> Contact Us</h2>
+                <p>If you have any questions about these Terms, please contact our legal team:</p>
                 
-                <h3>Payment Processing</h3>
-                <p>We use third-party payment processors to handle transactions. You agree to comply with their terms and conditions.</p>
-                
-                <h3>Refunds</h3>
-                <p>Refund eligibility depends on the cancellation policy of the specific property and the circumstances of your cancellation.</p>
-            </div>
-
-            <div class="section">
-                <h2>9. Privacy Policy</h2>
-                <p>Your privacy is important to us. Our collection and use of personal information is governed by our Privacy Policy, which is incorporated into these Terms by reference. Please review our Privacy Policy to understand how we collect, use, and protect your information.</p>
-            </div>
-
-            <div class="section">
-                <h2>10. Intellectual Property</h2>
-                <p>The Stayzio platform, including its design, functionality, and content, is protected by copyright, trademark, and other intellectual property laws. You may not copy, modify, distribute, or create derivative works based on our Service without explicit permission.</p>
-            </div>
-
-            <div class="section">
-                <h2>11. Limitation of Liability</h2>
-                <p>To the fullest extent permitted by law, Stayzio shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, data, or use, incurred by you or any third party, whether in an action in contract or tort, even if we have been advised of the possibility of such damages.</p>
-                
-                <div class="highlight">
-                    <p><strong>Note:</strong> Some jurisdictions do not allow the exclusion or limitation of liability for consequential or incidental damages, so the above limitation may not apply to you.</p>
+                <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200 mt-6">
+                    <h4 class="font-bold text-gray-900 mb-2">Stayzio Legal Department</h4>
+                    <p class="mb-1"><strong class="text-gray-900">Email:</strong> <a href="mailto:legal@stayzio.com" class="text-[#fe424d] hover:underline">legal@stayzio.com</a></p>
+                    <p class="mb-1"><strong class="text-gray-900">Address:</strong> Stayzio, Inc., Mumbai, Maharashtra, India</p>
                 </div>
             </div>
 
-            <div class="section">
-                <h2>12. Dispute Resolution</h2>
-                <h3>Mediation</h3>
-                <p>We encourage users to resolve disputes through our internal resolution process first. If issues cannot be resolved directly, we may facilitate mediation between parties.</p>
-                
-                <h3>Arbitration</h3>
-                <p>Any disputes arising from these Terms or your use of Stayzio shall be resolved through binding arbitration rather than in court, except where prohibited by law.</p>
-            </div>
-
-            <div class="section">
-                <h2>13. Termination</h2>
-                <p>We may suspend or terminate your account at any time for violation of these Terms, illegal activity, or other reasons we deem appropriate. Upon termination, your right to use the Service will cease immediately.</p>
-                
-                <p>You may also terminate your account at any time by contacting our support team or using the account deletion feature in your profile settings.</p>
-            </div>
-
-            <div class="section">
-                <h2>14. Changes to Terms</h2>
-                <p>We reserve the right to modify these Terms at any time. We will notify users of significant changes via email or through prominent notices on our platform. Continued use of our Service after changes constitutes acceptance of the updated Terms.</p>
-            </div>
-
-            <div class="section">
-                <h2>15. Governing Law</h2>
-                <p>These Terms shall be interpreted and governed by the laws of the jurisdiction in which Stayzio is incorporated, without regard to its conflict of law provisions.</p>
-            </div>
-
-            <div class="section">
-                <h2>16. Severability</h2>
-                <p>If any provision of these Terms is found to be unenforceable or invalid, that provision shall be limited or eliminated to the minimum extent necessary so that these Terms shall otherwise remain in full force and effect.</p>
-            </div>
-
-            <div class="contact-info">
-                <h3>Contact Information</h3>
-                <p>If you have any questions about these Terms of Service, please contact us:</p>
-                <p><strong>Email:</strong> legal@stayzio.com</p>
-                <p><strong>Address:</strong> Mumbai, Maharashtra, India</p>
-                <p><strong>Phone:</strong> +91 9920694680</p>
-            </div>
         </div>
     </div>
-    <%- include("../includes/footer.ejs") %>
-
-    <script>
-        // Scroll progress indicator
-        window.addEventListener('scroll', function() {
-            const scrollTop = window.pageYOffset;
-            const docHeight = document.body.offsetHeight - window.innerHeight;
-            const scrollPercent = (scrollTop / docHeight) * 100;
-            document.getElementById('scrollProgress').style.width = scrollPercent + '%';
-        });
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
-</body>
-</html>
+</div>

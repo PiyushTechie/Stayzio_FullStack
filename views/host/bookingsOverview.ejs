@@ -1,242 +1,142 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>All Bookings</title>
+<% layout('layouts/hostBoilerplate') -%>
+  <script>
+    window.currentPath = '/host/bookings';
+  </script>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-  <style>
-    :root {
-      --brand-primary: #fe424d;
-      --brand-primary-dark: #e63946;
-      --brand-primary-light: #ff6b74;
-      --text-primary: #1a1a1a;
-      --text-secondary: #6c757d;
-      --bg-light: #f8f9fa;
-      --border-color: #e9ecef;
-    }
-
-    body {
-      background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    }
-
-    .container {
-      padding-top: 2rem;
-      padding-bottom: 2rem;
-    }
-
-    h1 {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 0.5rem;
-      position: relative;
-      padding-bottom: 1rem;
-    }
-
-    h1::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 80px;
-      height: 4px;
-      background: linear-gradient(90deg, var(--brand-primary), var(--brand-primary-light));
-      border-radius: 2px;
-    }
-
-    .table-container {
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(254, 66, 77, 0.08);
-      overflow: hidden;
-      margin-top: 2rem;
-      border: 1px solid var(--border-color);
-      overflow-x: auto; 
-    }
-
-    .table {
-      margin-bottom: 0 !important;
-      min-width: 800px;
-    }
-
-    .table thead {
-      background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark)) !important;
-    }
-
-    .table thead th {
-      color: white !important;
-      font-weight: 600 !important;
-      font-size: 0.875rem !important;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      padding: 1rem 1.25rem !important;
-      border: none !important;
-      white-space: nowrap;
-      background: transparent !important;
-    }
-
-    .table tbody tr {
-      transition: all 0.3s ease;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .table tbody tr:last-child {
-      border-bottom: none;
-    }
-
-    .table tbody tr:hover {
-      background-color: #fff5f5 !important;
-      transform: translateX(4px);
-    }
-
-    .table tbody td {
-      padding: 1.25rem !important;
-      color: var(--text-primary);
-      font-size: 0.95rem;
-      vertical-align: middle;
-      border: none !important;
-      white-space: nowrap;
-    }
-
-    .table tbody td:first-child {
-      white-space: normal;
-    }
-
-    .table tbody td:nth-child(5) {
-      font-weight: 700;
-      color: var(--brand-primary);
-      font-size: 1.05rem;
-    }
-
-    .table-striped tbody tr:nth-of-type(odd) {
-      background-color: rgba(254, 66, 77, 0.02) !important;
-    }
-    
-    .actions-cell {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .btn-sm {
-      padding: 0.5rem 1rem !important;
-      font-size: 0.875rem !important;
-      border-radius: 8px !important;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      border: none !important;
-      text-decoration: none;
-      display: inline-block;
-    }
-
-    .btn-info {
-      background: linear-gradient(135deg, #0dcaf0, #0aa2c0) !important;
-      color: white !important;
-    }
-
-    .btn-info:hover {
-      background: linear-gradient(135deg, #0aa2c0, #088a9f) !important;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(13, 202, 240, 0.3);
-    }
-    
-    /* Added btn-danger style from previous context */
-    .btn-danger {
-      background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark)) !important;
-      color: white !important;
-    }
-    .btn-danger:hover {
-      background: linear-gradient(135deg, var(--brand-primary-dark), #d32f3a) !important;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(254, 66, 77, 0.3);
-    }
-
-    @media (max-width: 768px) {
-      /* ... (all your other media query styles) ... */
-      .table {
-        min-width: auto;
-      }
-      .table tbody tr:hover {
-        transform: none;
-      }
-      .actions-cell {
-        flex-direction: column;
-      }
-      .btn-sm {
-        width: 100%;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <div class="container mt-5">
-    <h1>All Bookings</h1>
-    <div class="table-container">
-      <table class="table table-striped mt-4">
-        <thead>
-          <tr>
-            <th>Listing</th>
-            <th>Guest</th>
-            <th>Check-In</th>
-            <th>Check-Out</th>
-            <th>Amount</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% bookings.forEach(b => { %>
-            <tr>
-              <td><%= b.listing.title %></td>
-              <td><%= b.user.username %></td>
-              <td><%= b.checkIn.toDateString() %></td>
-              <td><%= b.checkOut.toDateString() %></td>
-              <td>₹<%= b.finalTotal %></td>
-              <td><%= b.status %></td>
-              <td class="actions-cell">
-                      <a href="/host/bookings/<%= b._id %>" class="btn btn-sm btn-info">Details</a>
-              
-              <button type="button" class="btn btn-sm btn-danger" onclick="hideFromHost('<%= b._id %>')">
-                Remove
-              </button>
-              </td>
-            </tr>
-          <% }) %>
-        </tbody>
-      </table>
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900 tracking-tight mb-2">Bookings</h1>
+      <p class="text-gray-500">Track and manage reservations across all your properties.</p>
     </div>
   </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  
-    <script>
-  function hideFromHost(bookingId) {
-    Swal.fire({
-      title: "Remove from your view?",
-      text: "This booking will no longer appear in your list, but won’t be deleted.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, remove",
-      cancelButtonText: "Cancel",
-      confirmButtonColor: "#e63946", // Match your brand color
-      cancelButtonColor: "#6c757d"
-    }).then((result) => {
-      if (result.isConfirmed) {
+  <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+    <% if (!bookings || bookings.length===0) { %>
+      <div class="p-12 text-center flex flex-col items-center">
+        <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center text-gray-300 text-3xl mb-4">
+          <i class="fa-solid fa-calendar-xmark"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-2">No bookings yet</h3>
+        <p class="text-gray-500 mb-6 max-w-sm mx-auto">You don't have any reservations right now. Keep your listings
+          updated to attract more guests.</p>
+        <a href="/host/listings"
+          class="bg-gray-900 text-white px-6 py-2.5 rounded-xl font-medium hover:bg-gray-800 transition-colors shadow-sm">
+          View My Listings
+        </a>
+      </div>
+      <% } else { %>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left whitespace-nowrap">
+            <thead>
+              <tr
+                class="bg-gray-50 border-b border-gray-100 text-gray-500 text-xs uppercase tracking-wider font-semibold">
+                <th class="px-6 py-4 rounded-tl-2xl">Guest & Property</th>
+                <th class="px-6 py-4">Dates</th>
+                <th class="px-6 py-4">Amount</th>
+                <th class="px-6 py-4">Status</th>
+                <th class="px-6 py-4 text-right rounded-tr-2xl">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <% bookings.forEach(b=> { %>
+                <tr class="hover:bg-gray-50/50 transition-colors group">
+
+                  <td class="px-6 py-4">
+                    <div class="flex flex-col">
+                      <span class="font-bold text-gray-900 flex items-center gap-2">
+                        <i class="fa-solid fa-user text-gray-400 text-xs"></i>
+                        <%= b.user.username %>
+                      </span>
+                      <span class="text-xs text-gray-500 truncate max-w-[200px] flex items-center gap-1 mt-1">
+                        <i class="fa-solid fa-house-chimney text-[10px]"></i>
+                        <%= b.listing.title %>
+                      </span>
+                    </div>
+                  </td>
+
+                  <td class="px-6 py-4">
+                    <div class="flex items-center gap-3 text-sm">
+                      <div class="flex flex-col">
+                        <span class="font-medium text-gray-900">
+                          <%= new Date(b.checkIn).toLocaleDateString('en-US', { month: 'short' , day: 'numeric' }) %>
+                        </span>
+                        <span class="text-xs text-gray-500">
+                          <%= new Date(b.checkIn).getFullYear() %>
+                        </span>
+                      </div>
+                      <i class="fa-solid fa-arrow-right text-gray-300 text-xs"></i>
+                      <div class="flex flex-col">
+                        <span class="font-medium text-gray-900">
+                          <%= new Date(b.checkOut).toLocaleDateString('en-US', { month: 'short' , day: 'numeric' }) %>
+                        </span>
+                        <span class="text-xs text-gray-500">
+                          <%= new Date(b.checkOut).getFullYear() %>
+                        </span>
+                      </div>
+                    </div>
+                  </td>
+
+                  <td class="px-6 py-4">
+                    <span class="font-bold text-gray-900">₹<%= b.finalTotal.toLocaleString("en-IN") %></span>
+                  </td>
+
+                  <td class="px-6 py-4">
+                    <% if (b.status==='confirmed' || b.paymentStatus==='paid' ) { %>
+                      <span
+                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-100">
+                        <i class="fa-solid fa-circle-check text-[10px]"></i> Confirmed
+                      </span>
+                      <% } else if (b.status==='cancelled' ) { %>
+                        <span
+                          class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-100">
+                          <i class="fa-solid fa-circle-xmark text-[10px]"></i> Cancelled
+                        </span>
+                        <% } else { %>
+                          <span
+                            class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700 border border-yellow-100">
+                            <i class="fa-solid fa-clock text-[10px]"></i>
+                            <%= b.status %>
+                          </span>
+                          <% } %>
+                  </td>
+
+                  <td class="px-6 py-4 text-right">
+                    <div class="flex items-center justify-end gap-2">
+                      <a href="/host/bookings/<%= b._id %>"
+                        class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        title="View Details">
+                        <i class="fa-solid fa-eye"></i>
+                      </a>
+                      <button type="button"
+                        class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Hide Booking" onclick="hideFromHost('<%= b._id %>')">
+                        <i class="fa-solid fa-trash-can"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <% }) %>
+            </tbody>
+          </table>
+        </div>
+        <% } %>
+  </div>
+
+  <script>
+    function hideFromHost(bookingId) {
+      if (confirm("Hide this booking? It will be removed from your view but not deleted.")) {
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = `/host/bookings/${bookingId}/hide?_method=PATCH`;
-//        form.style.display = 'none'; // Hide the form
+
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = '_csrf';
+        csrfInput.value = '<%= typeof csrfToken !== "undefined" ? csrfToken : "" %>';
+        form.appendChild(csrfInput);
+
         document.body.appendChild(form);
         form.submit();
       }
-    });
-  }
-</script>
-
-</body>
-</html>
+    }
+  </script>

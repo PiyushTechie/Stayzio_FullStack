@@ -1,398 +1,158 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy - Stayzio</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/privacy.css">
-    <link rel="icon" type="image/png" href="/images/favicon-removebg-preview.png">
-</head>
-<body>
-    <!-- Header Section -->
-    <div class="privacy-header">
-        <div class="container">
-            <div class="text-center">
-                <h1 class="privacy-title">
-                    <i class="fas fa-shield-alt me-3"></i>
-                    Privacy Policy
-                </h1>
-                <p class="privacy-subtitle">Your privacy is important to us. Learn how we collect, use, and protect your information.</p>
-                <div class="last-updated">
-                    <strong>Last updated:</strong> August 30, 2025
-                </div>
-            </div>
+<% layout('layouts/infoBoilerplate') -%>
+
+    <div class="bg-gradient-to-r from-gray-900 to-gray-800 pt-20 pb-16 relative overflow-hidden">
+        <div
+            class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+        </div>
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 text-center" data-aos="fade-up">
+            <h1 class="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">
+                <i class="fas fa-shield-alt text-[#fe424d] mr-3"></i> Privacy Policy
+            </h1>
+            <p class="text-xl text-gray-300 max-w-2xl mx-auto">Your privacy is important to us. Learn how we collect,
+                use, and protect your information.</p>
+            <p class="mt-6 text-sm text-gray-400 font-medium tracking-wider uppercase">Last updated: August 30, 2026</p>
         </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="container my-5">
-        <div class="row">
-            <!-- Navigation Sidebar -->
-            <div class="col-lg-3">
-                <div class="privacy-nav">
-                    <h5><i class="fas fa-list me-2"></i>Contents</h5>
-                    <ul>
-                        <li><a href="#overview">Overview</a></li>
-                        <li><a href="#information-we-collect">Information We Collect</a></li>
-                        <li><a href="#how-we-use">How We Use Information</a></li>
-                        <li><a href="#information-sharing">Information Sharing</a></li>
-                        <li><a href="#data-security">Data Security</a></li>
-                        <li><a href="#your-rights">Your Rights</a></li>
-                        <li><a href="#cookies">Cookies & Tracking</a></li>
-                        <li><a href="#third-party">Third-Party Services</a></li>
-                        <li><a href="#children">Children's Privacy</a></li>
-                        <li><a href="#international">International Transfers</a></li>
-                        <li><a href="#changes">Policy Changes</a></li>
-                        <li><a href="#contact">Contact Us</a></li>
-                    </ul>
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-16">
+        <div class="flex flex-col lg:flex-row gap-12">
+
+            <div class="lg:w-1/4 hidden lg:block">
+                <div
+                    class="sticky top-28 bg-white border border-gray-100 rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                    <h3 class="font-bold text-gray-900 mb-4 uppercase tracking-wider text-sm flex items-center gap-2">
+                        <i class="fas fa-list text-[#fe424d]"></i> Contents
+                    </h3>
+                    <nav class="sticky-nav flex flex-col space-y-1">
+                        <a href="#overview"
+                            class="px-4 py-2 text-sm text-gray-500 rounded-lg border-l-2 border-transparent hover:bg-gray-50 transition-colors">Overview</a>
+                        <a href="#information-we-collect"
+                            class="px-4 py-2 text-sm text-gray-500 rounded-lg border-l-2 border-transparent hover:bg-gray-50 transition-colors">Information
+                            We Collect</a>
+                        <a href="#how-we-use"
+                            class="px-4 py-2 text-sm text-gray-500 rounded-lg border-l-2 border-transparent hover:bg-gray-50 transition-colors">How
+                            We Use Information</a>
+                        <a href="#information-sharing"
+                            class="px-4 py-2 text-sm text-gray-500 rounded-lg border-l-2 border-transparent hover:bg-gray-50 transition-colors">Information
+                            Sharing</a>
+                        <a href="#data-security"
+                            class="px-4 py-2 text-sm text-gray-500 rounded-lg border-l-2 border-transparent hover:bg-gray-50 transition-colors">Data
+                            Security</a>
+                        <a href="#your-rights"
+                            class="px-4 py-2 text-sm text-gray-500 rounded-lg border-l-2 border-transparent hover:bg-gray-50 transition-colors">Your
+                            Rights</a>
+                        <a href="#contact"
+                            class="px-4 py-2 text-sm text-gray-500 rounded-lg border-l-2 border-transparent hover:bg-gray-50 transition-colors">Contact
+                            Us</a>
+                    </nav>
                 </div>
             </div>
 
-            <!-- Content -->
-            <div class="col-lg-9">
-                <div class="privacy-content">
-                    
-                    <!-- Overview -->
-                    <div id="overview" class="section">
-                        <h2><i class="fas fa-info-circle me-2"></i>Overview</h2>
-                        <p>Welcome to Stayzio! This Privacy Policy explains how Stayzio, Inc. ("we," "us," or "our") collects, uses, discloses, and protects your personal information when you use our website, mobile application, and services (collectively, the "Service").</p>
-                        
-                        <div class="highlight-box">
-                            <h4><i class="fas fa-key me-2"></i>Key Points:</h4>
-                            <ul>
-                                <li>We collect information to provide and improve our accommodation booking services.</li>
-                                <li>We never sell your personal data to third parties.</li>
-                                <li>You have control over your data and can request deletion at any time.</li>
-                                <li>We use industry-standard security measures to protect your information.</li>
-                            </ul>
-                        </div>
-                    </div>
+            <div
+                class="lg:w-3/4 prose-content bg-white p-8 md:p-12 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100">
 
-                    <!-- Information We Collect -->
-                    <div id="information-we-collect" class="section">
-                        <h2><i class="fas fa-database me-2"></i>Information We Collect</h2>
-                        
-                        <h3>Personal Information</h3>
-                        <p>When you create an account or use our services, we may collect:</p>
-                        <ul>
-                            <li><strong>Account Information:</strong> Name, email address, phone number, profile photo.</li>
-                            <li><strong>Payment Information:</strong> Credit card details, billing address (processed securely through third-party payment processors).</li>
-                            <li><strong>Identity Verification:</strong> Government-issued ID, verification photos when required.</li>
-                            <li><strong>Communication Data:</strong> Messages between hosts and guests, customer support interactions.</li>
-                        </ul>
+                <div id="overview">
+                    <h2><i class="fas fa-info-circle"></i> Overview</h2>
+                    <p>Welcome to Stayzio! This Privacy Policy explains how Stayzio, Inc. ("we," "us," or "our")
+                        collects, uses, discloses, and protects your personal information when you use our website,
+                        mobile application, and services (collectively, the "Service").</p>
 
-                        <h3>Usage Information</h3>
-                        <p>We automatically collect information about how you use our Service:</p>
+                    <div class="highlight-box">
+                        <h4><i class="fas fa-key"></i> Key Points:</h4>
                         <ul>
-                            <li><strong>Usage Data:</strong> Pages viewed, search queries, booking history, preferences.</li>
-                            <li><strong>Location Data:</strong> Approximate location based on IP address, precise location if you enable it.</li>
+                            <li>We collect information to provide and improve our accommodation booking services.</li>
+                            <li>We never sell your personal data to third parties.</li>
+                            <li>You have control over your data and can request deletion at any time.</li>
+                            <li>We use industry-standard security measures to protect your information.</li>
                         </ul>
                     </div>
-
-                    <!-- How We Use Information -->
-                    <div id="how-we-use" class="section">
-                        <h2><i class="fas fa-cogs me-2"></i>How We Use Your Information</h2>
-                        <p>We use your information for the following purposes:</p>
-                        <ol>
-                            <li><strong>Service Provision:</strong> Process bookings, facilitate communications between hosts and guests.</li>
-                            <li><strong>Account Management:</strong> Create and maintain your account, provide customer support.</li>
-                            <li><strong>Payment Processing:</strong> Handle transactions, prevent fraud, issue refunds.</li>
-                            <li><strong>Personalization:</strong> Customize your experience, show relevant recommendations.</li>
-                            <li><strong>Safety & Security:</strong> Verify identities, prevent fraud, ensure platform safety.</li>
-                            <li><strong>Legal Compliance:</strong> Meet regulatory requirements, respond to legal requests.</li>
-                            <li><strong>Marketing:</strong> Send promotional materials (with your consent), improve our services.</li>
-                        </ol>
-                    </div>
-
-                    <!-- Information Sharing -->
-                    <div id="information-sharing" class="section">
-                        <h2><i class="fas fa-share-alt me-2"></i>Information Sharing</h2>
-                        <p>We may share your information in the following circumstances:</p>
-                        
-                        <h3>With Other Users</h3>
-                        <ul>
-                            <li>Your public profile information with hosts when you make a booking.</li>
-                            <li>Your contact information with guests when they book your property (if you're a host).</li>
-                            <li>Reviews and ratings you leave or receive.</li>
-                        </ul>
-
-                        <h3>With Service Providers</h3>
-                        <ul>
-                            <li>Payment processors for transaction handling.</li>
-                            <li>Cloud hosting providers for data storage.</li>
-                            <li>Email service providers for communications.</li>
-                            <li>Analytics providers to improve our services.</li>
-                        </ul>
-
-                        <h3>Legal Requirements</h3>
-                        <p>We may disclose information when required by law, court order, or to protect our rights and the safety of our users.</p>
-                    </div>
-
-                    <!-- Data Security -->
-                    <div id="data-security" class="section">
-                        <h2><i class="fas fa-lock me-2"></i>Data Security</h2>
-                        <p>We implement comprehensive security measures to protect your personal information:</p>
-                        <ul>
-                            <li><strong>Encryption:</strong> All data transmission is encrypted using TLS/SSL.</li>
-                            <li><strong>Access Controls:</strong> Strict access controls and authentication for our systems.</li>
-                            <li><strong>Regular Audits:</strong> Periodic security assessments and vulnerability testing.</li>
-                            <li><strong>Data Minimization:</strong> We collect only necessary information and delete it when no longer needed.</li>
-                            <li><strong>Secure Storage:</strong> Data stored in secure, encrypted databases with regular backups.</li>
-                        </ul>
-                        
-                        <div class="highlight-box">
-                            <h4><i class="fas fa-exclamation-triangle me-2"></i>Data Breach Notification</h4>
-                            <p>In the unlikely event of a data breach that affects your personal information, we will notify you and relevant authorities within 72 hours as required by law.</p>
-                        </div>
-                    </div>
-
-                    <!-- Your Rights -->
-                    <div id="your-rights" class="section">
-                        <h2><i class="fas fa-user-shield me-2"></i>Your Rights</h2>
-                        <p>You have several rights regarding your personal information:</p>
-                        <ul>
-                            <li><strong>Access:</strong> Request a copy of the personal information we hold about you.</li>
-                            <li><strong>Correction:</strong> Update or correct inaccurate information in your account.</li>
-                            <li><strong>Deletion:</strong> Request deletion of your personal information (with certain exceptions).</li>
-                            <li><strong>Portability:</strong> Request your data in a portable format.</li>
-                            <li><strong>Opt-out:</strong> Unsubscribe from marketing communications at any time.</li>
-                            <li><strong>Restriction:</strong> Request limitation of how we process your information.</li>
-                        </ul>
-                        
-                        <p>To exercise these rights, please contact us using the information provided at the end of this policy.</p>
-                    </div>
-
-                    <!-- Cookies -->
-                    <div id="cookies" class="section">
-                        <h2><i class="fas fa-cookie-bite me-2"></i>Cookies & Tracking Technologies</h2>
-                        <p>We use cookies and similar tracking technologies to enhance your experience:</p>
-                        
-                        <h3>Types of Cookies We Use</h3>
-                        <ul>
-                            <li><strong>Essential Cookies:</strong> Required for basic site functionality.</li>
-                            <li><strong>Performance Cookies:</strong> Help us understand how users interact with our site.</li>
-                            <li><strong>Functional Cookies:</strong> Remember your preferences and settings.</li>
-                        </ul>
-                        
-                        <p>You can control cookies through your browser settings, but disabling certain cookies may limit site functionality.</p>
-                    </div>
-
-                    <!-- Third Party Services -->
-                    <div id="third-party" class="section">
-                        <h2><i class="fas fa-external-link-alt me-2"></i>Third-Party Services</h2>
-                        <p>Our Service may contain links to third-party websites or integrate with third-party services. We are not responsible for the privacy practices of these external services. Please review their privacy policies before providing any personal information.</p>
-                        
-                        <h3>Third-Party Services We Use</h3>
-                        <ul>
-                            <li><strong>Payment Processors:</strong> Stripe, PayPal for secure payment processing.</li>
-                            <li><strong>Analytics:</strong> Google Analytics for website usage analysis.</li>
-                            <li><strong>Maps:</strong> Google Maps for location services.</li>
-                            <li><strong>Communication:</strong> Email service providers for system notifications.</li>
-                        </ul>
-                    </div>
-
-                    <!-- Children's Privacy -->
-                    <div id="children" class="section">
-                        <h2><i class="fas fa-child me-2"></i>Children's Privacy</h2>
-                        <p>Our Service is not intended for children under 18 years of age. We do not knowingly collect personal information from children under 18. If we become aware that we have collected personal information from a child under 18, we will take steps to delete such information.</p>
-                        
-                        <p>If you are a parent or guardian and believe your child has provided us with personal information, please contact us immediately.</p>
-                    </div>
-
-                    <!-- International Transfers -->
-                    <div id="international" class="section">
-                        <h2><i class="fas fa-globe me-2"></i>International Data Transfers</h2>
-                        <p>Your personal information may be transferred to and processed in countries other than your country of residence. We ensure appropriate safeguards are in place when transferring your data internationally:</p>
-                        <ul>
-                            <li>Adequacy decisions by relevant authorities.</li>
-                            <li>Standard contractual clauses approved by regulatory bodies.</li>
-                            <li>Certification under approved frameworks.</li>
-                        </ul>
-                    </div>
-
-                    <!-- Changes to Policy -->
-                    <div id="changes" class="section">
-                        <h2><i class="fas fa-edit me-2"></i>Changes to This Privacy Policy</h2>
-                        <p>We may update this Privacy Policy from time to time to reflect changes in our practices or legal requirements. When we make significant changes, we will:</p>
-                        <ul>
-                            <li>Notify you via email or through our Service.</li>
-                            <li>Update the "Last updated" date at the top of this policy.</li>
-                            <li>Provide a summary of key changes when appropriate.</li>
-                        </ul>
-                        <p>Your continued use of our Service after changes become effective constitutes acceptance of the updated policy.</p>
-                    </div>
-
-                    <!-- Contact Information -->
-                    <div id="contact" class="section">
-                        <h2><i class="fas fa-envelope me-2"></i>Contact Us</h2>
-                        <p>If you have any questions, concerns, or requests regarding this Privacy Policy or your personal information, please contact us:</p>
-                        
-                        <div class="contact-info">
-                            <h4>Stayzio Privacy Team</h4>
-                            <p><strong>Email:</strong> <a href="mailto:privacy@stayzio.com">privacy@stayzio.com</a></p>
-                            <p><strong>Address:</strong><br>
-                            Stayzio, Inc.<br>
-                            Mumbai, Maharashtra<br>
-                            India</p>
-                            <p><strong>Response Time:</strong> We aim to respond to all privacy-related inquiries within 10 days.</p>
-                        </div>
-                    </div>
-
                 </div>
+
+                <div id="information-we-collect">
+                    <h2><i class="fas fa-database"></i> Information We Collect</h2>
+                    <h3>Personal Information</h3>
+                    <p>When you create an account or use our services, we may collect:</p>
+                    <ul>
+                        <li><strong>Account Information:</strong> Name, email address, phone number, profile photo.</li>
+                        <li><strong>Payment Information:</strong> Credit card details, billing address (processed
+                            securely through third-party payment processors).</li>
+                        <li><strong>Identity Verification:</strong> Government-issued ID, verification photos when
+                            required.</li>
+                    </ul>
+
+                    <h3>Usage Information</h3>
+                    <p>We automatically collect information about how you use our Service:</p>
+                    <ul>
+                        <li><strong>Usage Data:</strong> Pages viewed, search queries, booking history, preferences.
+                        </li>
+                        <li><strong>Location Data:</strong> Approximate location based on IP address.</li>
+                    </ul>
+                </div>
+
+                <div id="how-we-use">
+                    <h2><i class="fas fa-cogs"></i> How We Use Your Information</h2>
+                    <p>We use your information for the following purposes:</p>
+                    <ol>
+                        <li><strong>Service Provision:</strong> Process bookings, facilitate communications between
+                            hosts and guests.</li>
+                        <li><strong>Account Management:</strong> Create and maintain your account, provide customer
+                            support.</li>
+                        <li><strong>Payment Processing:</strong> Handle transactions, prevent fraud, issue refunds.</li>
+                        <li><strong>Safety & Security:</strong> Verify identities, prevent fraud, ensure platform
+                            safety.</li>
+                    </ol>
+                </div>
+
+                <div id="information-sharing">
+                    <h2><i class="fas fa-share-alt"></i> Information Sharing</h2>
+                    <p>We may share your information in the following circumstances:</p>
+                    <ul>
+                        <li>Your public profile information with hosts when you make a booking.</li>
+                        <li>Your contact information with guests when they book your property (if you're a host).</li>
+                        <li>Payment processors for transaction handling.</li>
+                        <li>Cloud hosting providers for data storage.</li>
+                    </ul>
+                </div>
+
+                <div id="data-security">
+                    <h2><i class="fas fa-lock"></i> Data Security</h2>
+                    <p>We implement comprehensive security measures to protect your personal information:</p>
+                    <ul>
+                        <li><strong>Encryption:</strong> All data transmission is encrypted using TLS/SSL.</li>
+                        <li><strong>Access Controls:</strong> Strict access controls and authentication for our systems.
+                        </li>
+                        <li><strong>Secure Storage:</strong> Data stored in secure, encrypted databases with regular
+                            backups.</li>
+                    </ul>
+                </div>
+
+                <div id="your-rights">
+                    <h2><i class="fas fa-user-shield"></i> Your Rights</h2>
+                    <p>You have several rights regarding your personal information:</p>
+                    <ul>
+                        <li><strong>Access:</strong> Request a copy of the personal information we hold about you.</li>
+                        <li><strong>Correction:</strong> Update or correct inaccurate information in your account.</li>
+                        <li><strong>Deletion:</strong> Request deletion of your personal information (with certain
+                            exceptions).</li>
+                        <li><strong>Opt-out:</strong> Unsubscribe from marketing communications at any time.</li>
+                    </ul>
+                </div>
+
+                <div id="contact">
+                    <h2><i class="fas fa-envelope"></i> Contact Us</h2>
+                    <p>If you have any questions, concerns, or requests regarding this Privacy Policy or your personal
+                        information, please contact us:</p>
+
+                    <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200 mt-6">
+                        <h4 class="font-bold text-gray-900 mb-2">Stayzio Privacy Team</h4>
+                        <p class="mb-1"><strong class="text-gray-900">Email:</strong> <a
+                                href="mailto:privacy@stayzio.com"
+                                class="text-[#fe424d] hover:underline">privacy@stayzio.com</a></p>
+                        <p class="mb-1"><strong class="text-gray-900">Address:</strong> Stayzio, Inc., Mumbai,
+                            Maharashtra, India</p>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
-
-    <!-- Back to Top Button -->
-    <button class="back-to-top" id="backToTop">
-        <i class="fas fa-chevron-up"></i>
-    </button>
-    <footer>
-        <div class="footer-content">
-            <div class="footer-grid">
-                <div class="footer-brand">
-                    <div class="logo"><img src="/images/logonobg.png" alt="Stayzio Logo" class="logo-img"></div>
-                    <p>Discover extraordinary accommodations worldwide. From cozy apartments to luxury villas, we help you find the perfect stay for every journey.</p>
-                    <div class="social-links">
-                        <a href="#" title="Facebook">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                            </svg>
-                        </a>
-                        <a href="#" title="Twitter">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-                            </svg>
-                        </a>
-                        <a href="#" title="Instagram">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                            </svg>
-                        </a>
-                        <a href="#" title="LinkedIn">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-                
-                <div class="footer-column">
-                    <h4>Discover</h4>
-                    <ul>
-                        <li><a href="/listings">Top Destinations</a></li>
-                        <li><a href="/listings">Luxury Stays</a></li>
-                        <li><a href="/listings">Budget Options</a></li>
-                        <li><a href="/listings">Unique Properties</a></li>
-                        <li><a href="/listings">Last Minute Deals</a></li>
-                      </ul>
-                </div>
-
-                <div class="footer-column">
-                    <h4>Company</h4>
-                    <ul>
-                        <li><a href="/about">About Us</a></li>
-                        <li><a href="#">Partnerships</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-column">
-                    <h4>Support</h4>
-                    <ul>
-                        <li><a href="/contact">Help Center</a></li>
-                        <li><a href="/contact">Contact Us</a></li>
-                        <li><a href="/safety">Safety Tips</a></li>
-                        <li><a href="/cancelPolicy">Cancellation</a></li>
-                        <li><a href="/insurance">Insurance</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-column">
-                    <h4>Host</h4>
-                    <ul>
-                        <li><a href="/listings/new">Become a Host</a></li>
-                        <li><a href="/host-resources">Host Resources</a></li>
-                        <li><a href="/host-guidelines">Host Guidelines</a></li>
-                        <li><a href="/host-community">Host Community</a></li>
-                        <li><a href="/host-insurance">Host Insurance</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <p>&copy; 2025 Stayzio, Inc. All rights reserved.</p>
-                <div class="footer-legal">
-                    <a href="/privacy">Privacy Policy</a>
-                    <a href="/terms">Terms of Service</a>
-                    <a href="/cookie">Cookie Policy</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Back to top functionality
-        window.addEventListener('scroll', function() {
-            const backToTop = document.getElementById('backToTop');
-            if (window.pageYOffset > 300) {
-                backToTop.classList.add('show');
-            } else {
-                backToTop.classList.remove('show');
-            }
-        });
-
-        document.getElementById('backToTop').addEventListener('click', function() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('.privacy-nav a').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Highlight active section in navigation
-        window.addEventListener('scroll', function() {
-            const sections = document.querySelectorAll('.section');
-            const navLinks = document.querySelectorAll('.privacy-nav a');
-            
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.getBoundingClientRect().top;
-                if (sectionTop <= 100) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === '#' + current) {
-                    link.classList.add('active');
-                }
-            });
-        });
-    </script>
-
-    <style>
-        .privacy-nav a.active {
-            color: var(--primary-color) !important;
-            background-color: rgba(254, 66, 77, 0.1) !important;
-            font-weight: 600;
-        }
-    </style>
-</body>
-</html>

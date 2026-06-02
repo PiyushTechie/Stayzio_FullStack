@@ -1,215 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dynamic Pricing - Stayzio</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
-<style>
-  :root {
-    --brand-primary: #fe424d;
-    --brand-primary-dark: #e63946;
-    --brand-primary-light: #ff6b74;
-    --text-primary: #1a1a1a;
-    --text-secondary: #6c757d;
-    --bg-light: #f8f9fa;
-    --border-color: #e9ecef;
-  }
+<% layout('layouts/hostBoilerplate') -%>
+<script>
+  window.currentPath = '/host/listings';
+</script>
 
-  body {
-    background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  }
+<div class="mb-4 flex items-center gap-2 text-sm text-gray-500 font-medium">
+  <a href="/host/listings" class="hover:text-gray-900 transition-colors">My Listings</a>
+  <i class="fa-solid fa-chevron-right text-[10px]"></i>
+  <a href="/host/listings/<%= listing._id %>" class="hover:text-gray-900 transition-colors truncate max-w-[150px]"><%= listing.title %></a>
+  <i class="fa-solid fa-chevron-right text-[10px]"></i>
+  <span class="text-gray-900">Dynamic Pricing</span>
+</div>
 
-  .container {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-  }
+<div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+  <div>
+    <h1 class="text-3xl font-bold text-gray-900 tracking-tight mb-2">Dynamic Pricing</h1>
+    <p class="text-gray-500">Automated price adjustments based on demand for <strong class="text-gray-700"><%= listing?.title ?? "Listing" %></strong>.</p>
+  </div>
+  <a href="/host/listings/<%= listing._id %>" class="inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 px-5 py-2.5 rounded-xl font-medium transition-colors shadow-sm">
+    <i class="fa-solid fa-arrow-left"></i>
+    <span>Back to Listing</span>
+  </a>
+</div>
 
-  h1 {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-    position: relative;
-    padding-bottom: 1rem;
-  }
-
-  h1::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 80px;
-    height: 4px;
-    background: linear-gradient(90deg, var(--brand-primary), var(--brand-primary-light));
-    border-radius: 2px;
-  }
-
-  .empty-state {
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(254, 66, 77, 0.08);
-    padding: 4rem 2rem;
-    text-align: center;
-    margin-top: 2rem;
-    border: 1px solid var(--border-color);
-  }
-
-  .empty-state-icon {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-    opacity: 0.4;
-  }
-
-  .empty-state p {
-    color: var(--text-secondary);
-    font-size: 1.1rem;
-    margin: 0;
-  }
-
-  .table-container {
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(254, 66, 77, 0.08);
-    overflow: hidden;
-    margin-top: 2rem;
-    border: 1px solid var(--border-color);
-  }
-
-  .table {
-    margin-bottom: 0 !important;
-  }
-
-  .table thead {
-    background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-dark)) !important;
-  }
-
-  .table thead th {
-    color: white !important;
-    font-weight: 600 !important;
-    font-size: 0.875rem !important;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 1rem 1.25rem !important;
-    border: none !important;
-    white-space: nowrap;
-    background: transparent !important;
-  }
-
-  .table tbody tr {
-    transition: all 0.3s ease;
-    border-bottom: 1px solid var(--border-color);
-  }
-
-  .table tbody tr:last-child {
-    border-bottom: none;
-  }
-
-  .table tbody tr:hover {
-    background-color: #fff5f5 !important;
-    transform: translateX(4px);
-  }
-
-  .table tbody td {
-    padding: 1.25rem !important;
-    color: var(--text-primary);
-    font-size: 0.95rem;
-    vertical-align: middle;
-    border: none !important;
-  }
-
-  .table tbody td:first-child {
-    font-weight: 600;
-    color: var(--text-primary);
-  }
-
-  .table tbody td:last-child {
-    font-weight: 700;
-    color: var(--brand-primary);
-    font-size: 1.15rem;
-  }
-
-  .table-bordered tbody tr:nth-child(even) {
-    background-color: rgba(254, 66, 77, 0.02) !important;
-  }
-
-  .table-bordered tbody tr:nth-child(even):hover {
-    background-color: #fff5f5 !important;
-  }
-
-  @media (max-width: 768px) {
-    .container {
-      padding-top: 1rem;
-    }
-
-    h1 {
-      font-size: 1.5rem;
-    }
-
-    .table-container {
-      border-radius: 12px;
-      overflow-x: auto;
-    }
-
-    .table {
-      font-size: 0.85rem;
-    }
-
-    .table thead th,
-    .table tbody td {
-      padding: 0.75rem !important;
-    }
-
-    .table tbody tr:hover {
-      transform: none;
-    }
-
-    .empty-state {
-      padding: 3rem 1.5rem;
-    }
-
-    .empty-state-icon {
-      font-size: 3rem;
-    }
-
-    .empty-state p {
-      font-size: 1rem;
-    }
-  }
-</style>
-
-<div class="container mt-5">
-  <h1>Dynamic Pricing for <%= listing?.title ?? "Listing" %></h1>
-
-  <% if (!dynamicPrices || dynamicPrices.length === 0) { %>
-    <div class="empty-state">
-      <div class="empty-state-icon">💸</div>
-      <p>No pricing data available for this listing.</p>
+<% if (!dynamicPrices || dynamicPrices.length === 0) { %>
+  <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center flex flex-col items-center">
+    <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center text-blue-300 text-3xl mb-4">
+      <i class="fa-solid fa-chart-line"></i>
     </div>
-  <% } else { %>
-    <div class="table-container">
-      <table class="table table-bordered mt-4">
+    <h3 class="text-xl font-bold text-gray-900 mb-2">No Pricing Data Yet</h3>
+    <p class="text-gray-500 mb-6 max-w-sm mx-auto">Dynamic pricing algorithms haven't generated predictions for this property yet. Please check back later.</p>
+  </div>
+<% } else { %>
+  <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+    <div class="px-6 py-5 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
+      <h3 class="font-semibold text-gray-900 flex items-center gap-2">
+        <i class="fa-solid fa-calendar-day text-blue-500"></i>
+        Upcoming Price Forecast
+      </h3>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left whitespace-nowrap">
         <thead>
-          <tr>
-            <th>Date</th>
-            <th>Price (₹)</th>
+          <tr class="bg-white border-b border-gray-100 text-gray-400 text-xs uppercase tracking-wider font-semibold">
+            <th class="px-6 py-4">Date</th>
+            <th class="px-6 py-4 text-right">Optimized Price (₹)</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="divide-y divide-gray-100">
           <% dynamicPrices.forEach(day => { %>
-            <tr>
-              <td><%= day.date.toDateString() %></td>
-              <td>₹<%= day.price.toFixed(2) %></td>
+            <tr class="hover:bg-blue-50/30 transition-colors group">
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-lg bg-gray-50 border border-gray-100 flex flex-col items-center justify-center shrink-0">
+                    <span class="text-[10px] font-bold text-[#fe424d] uppercase leading-none mb-0.5"><%= new Date(day.date).toLocaleString('default', { month: 'short' }) %></span>
+                    <span class="text-sm font-bold text-gray-700 leading-none"><%= new Date(day.date).getDate() %></span>
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-900"><%= new Date(day.date).toLocaleDateString('en-US', { weekday: 'long' }) %></p>
+                    <p class="text-xs text-gray-400"><%= new Date(day.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 text-right">
+                <span class="text-lg font-bold text-green-600 bg-green-50 px-3 py-1 rounded-lg border border-green-100">
+                  ₹<%= day.price.toLocaleString("en-IN") %>
+                </span>
+              </td>
             </tr>
           <% }) %>
         </tbody>
       </table>
     </div>
-  <% } %>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+  </div>
+<% } %>

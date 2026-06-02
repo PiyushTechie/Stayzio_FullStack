@@ -5,7 +5,6 @@ import { authLimiter } from '../utils/rateLimiters.js';
 
 const router = express.Router();
 
-// ✅ Google Login
 router.get("/google", authLimiter, passport.authenticate("google", { scope: ["profile", "email"] }));
 
 router.get(
@@ -20,21 +19,16 @@ router.get(
       return res.redirect("/login");
     }
 
-    // --- START: MODIFIED LOGIC ---
     if (!req.user.profile.name || req.user.profile.name === "") {
-      // Profile is incomplete, redirect to setup
       req.flash("success", "Welcome! Let's finish setting up your profile.");
       res.redirect("/profile/setup");
     } else {
-      // Profile is complete, redirect to listings
       req.flash("success", `Welcome ${req.user.username || "traveler"}!`);
       res.redirect("/listings");
     }
-    // --- END: MODIFIED LOGIC ---
   }
 );
 
-// ✅ Facebook Login
 router.get("/facebook", authLimiter, passport.authenticate("facebook", { scope: ["email"] }));
 
 router.get(
@@ -49,21 +43,16 @@ router.get(
       return res.redirect("/login");
     }
 
-    // --- START: MODIFIED LOGIC ---
     if (!req.user.profile.name || req.user.profile.name === "") {
-      // Profile is incomplete, redirect to setup
       req.flash("success", "Welcome! Let's finish setting up your profile.");
       res.redirect("/profile/setup");
     } else {
-      // Profile is complete, redirect to listings
       req.flash("success", "Welcome back via Facebook!");
       res.redirect("/listings");
     }
-    // --- END: MODIFIED LOGIC ---
   }
 );
 
-// ✅ GitHub Login
 router.get("/github", authLimiter, passport.authenticate("github", { scope: ["user:email"] }));
 
 router.get(
@@ -78,17 +67,13 @@ router.get(
       return res.redirect("/login");
     }
 
-    // --- START: MODIFIED LOGIC ---
     if (!req.user.profile.name || req.user.profile.name === "") {
-      // Profile is incomplete, redirect to setup
       req.flash("success", "Welcome! Let's finish setting up your profile.");
       res.redirect("/profile/setup");
     } else {
-      // Profile is complete, redirect to listings
       req.flash("success", `Welcome ${req.user.username || "traveler"} via GitHub!`);
       res.redirect("/listings");
     }
-    // --- END: MODIFIED LOGIC ---
   }
 );
 

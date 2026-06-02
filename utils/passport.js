@@ -10,26 +10,20 @@ passport.deserializeUser((id, done) => {
   User.findById(id).then(user => done(null, user)).catch(err => done(err));
 });
 
-// ✅ New handler for OAuth: always create new account
 const handleOAuthUser = async (providerIdField, profile, done) => {
   try {
     const email = profile.emails?.[0]?.value;
 
-    // Check if user exists by provider ID
     let user = await User.findOne({ [providerIdField]: profile.id });
 
-    // If user exists and is deleted → block login
     if (user && user.isDeleted) {
       return done(null, false, { message: "This account has been deleted." });
     }
 
-    // If not found by provider, try email
     if (!user && email) {
       user = await User.findOne({ email });
 
-      // If user exists and is deleted → treat as new signup
       if (user && user.isDeleted) {
-        // Delete the old soft-deleted user completely
         await User.findByIdAndDelete(user._id);
         user = null; // so we can create a fresh account below
       }
@@ -41,7 +35,6 @@ const handleOAuthUser = async (providerIdField, profile, done) => {
       }
     }
 
-    // If still no user → create a new one
     if (!user) {
       user = await User.create({
         username: profile.displayName || profile.username || "Traveler",
@@ -57,7 +50,6 @@ const handleOAuthUser = async (providerIdField, profile, done) => {
   }
 };
 
-// Google Strategy
 passport.use(new GoogleStrategy(
   {
     clientID: process.env.GOOGLE_CLIENT_ID,
@@ -67,7 +59,6 @@ passport.use(new GoogleStrategy(
   (accessToken, refreshToken, profile, done) => handleOAuthUser("googleId", profile, done)
 ));
 
-// Facebook Strategy
 passport.use(new FacebookStrategy(
   {
     clientID: process.env.FACEBOOK_APP_ID,
@@ -78,7 +69,6 @@ passport.use(new FacebookStrategy(
   (accessToken, refreshToken, profile, done) => handleOAuthUser("facebookId", profile, done)
 ));
 
-// GitHub Strategy
 passport.use(new GitHubStrategy(
   {
     clientID: process.env.GITHUB_CLIENT_ID,

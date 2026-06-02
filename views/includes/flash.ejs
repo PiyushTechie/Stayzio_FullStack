@@ -1,17 +1,30 @@
-<!-- Success Messages -->
-<% if (success && success.length > 0) { %>
-  <div class="alert alert-success alert-dismissible fade show mt-3 shadow-sm" role="alert" style="max-width: 400px; margin: 0 auto; text-align: center; border-radius: 8px;">
-    <i class="fa-solid fa-circle-check me-2"></i>
-    <%= success.join("<br>") %>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-<% } %>
+<div id="globalFlashMessage" class="hidden fixed top-6 right-6 z-[9999] p-4 rounded-xl text-sm font-bold flex items-center gap-3 shadow-2xl transition-all duration-300 transform -translate-y-2 opacity-0"></div>
 
-<!-- Error Messages -->
-<% if (error && error.length > 0) { %>
-  <div class="alert alert-danger alert-dismissible fade show mt-3 shadow-sm" role="alert" style="max-width: 400px; margin: 0 auto; text-align: center; border-radius: 8px;">
-    <i class="fa-solid fa-circle-exclamation me-2"></i>
-    <%= error.join("<br>") %>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-<% } %>
+<script>
+    window.showFlash = function(message, type = 'error') {
+        const flashMessage = document.getElementById('globalFlashMessage');
+        if (!flashMessage) return;
+        
+        flashMessage.className = `fixed top-6 right-6 z-[9999] p-4 rounded-xl text-sm font-bold flex items-center gap-3 shadow-2xl transition-all duration-300 transform ${type === 'error' ? 'bg-red-50 text-red-600 border border-red-100' : 'bg-green-50 text-green-600 border border-green-100'}`;
+        flashMessage.innerHTML = `<i class="fa-solid ${type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check'} text-lg"></i> ${message}`;
+        flashMessage.classList.remove('hidden', '-translate-y-2', 'opacity-0');
+        
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+            if (!flashMessage.classList.contains('hidden')) {
+                flashMessage.classList.add('-translate-y-2', 'opacity-0');
+                setTimeout(() => flashMessage.classList.add('hidden'), 300);
+            }
+        }, 5000);
+    };
+
+    // Auto-trigger if server passed variables
+    document.addEventListener('DOMContentLoaded', () => {
+        <% if (typeof error !== 'undefined' && error && error.length > 0) { %>
+            window.showFlash("<%= error[0] %>", "error");
+        <% } %>
+        <% if (typeof success !== 'undefined' && success && success.length > 0) { %>
+            window.showFlash("<%= success[0] %>", "success");
+        <% } %>
+    });
+</script>

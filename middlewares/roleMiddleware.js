@@ -12,3 +12,10 @@ export function isHostOrAdmin(req, res, next) {
   return res.redirect("/");
 }
 
+export function isAdmin(req, res, next) {
+  if (req.isAuthenticated() && req.user.role === "admin") {
+    return next();
+  }
+  req.flash("error", "Only admins can access this page.");
+  return res.redirect("/");
+}

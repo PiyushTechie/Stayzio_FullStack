@@ -21,5 +21,7 @@ const reviewSchema = new Schema({
         ref: "Listing"
     }
 });
+reviewSchema.index({ listing: 1, createdAt: -1 });
+reviewSchema.index({ author: 1, createdAt: -1 });
 
 export default mongoose.model("Review", reviewSchema);

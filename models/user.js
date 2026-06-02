@@ -1,30 +1,28 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 import passportLocalMongoose from "passport-local-mongoose";
-import Listing from "../models/listing.js";   // ✅ import Listing
-import Review from "../models/reviews.js";     
-// models/user.js
+import Listing from "../models/listing.js";
+import Review from "../models/reviews.js";
+
 const userSchema = new Schema({
   email: { type: String, required: true, unique: true },
   username: { type: String, required: true, unique: true },
-  
-  profile: {
-  name: { type: String, default: "" },
-  address: { type: String, default: "" },
-  country: { type: String, default: "" },
-  phone: { type: String, default: "" },
-  bio: { type: String, default: "" },
-  photo: {
-    url: { type: String, default: "/images/default-profile.png" },
-    filename: { type: String, default: "" }
-  }
-},
 
-  // Relations
+  profile: {
+    name: { type: String, default: "" },
+    address: { type: String, default: "" },
+    country: { type: String, default: "" },
+    phone: { type: String, default: "" },
+    bio: { type: String, default: "" },
+    photo: {
+      url: { type: String, default: "/images/default-profile.png" },
+      filename: { type: String, default: "" }
+    }
+  },
+
   listings: [{ type: Schema.Types.ObjectId, ref: "Listing" }],
   reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
 
-  // Authentication Fields
   emailVerified: { type: Boolean, default: false },
   googleId: { type: String, unique: true, sparse: true },
   facebookId: { type: String, unique: true, sparse: true },
@@ -35,17 +33,14 @@ const userSchema = new Schema({
   resetTokenExpiry: Date,
   lastOtpSent: Date,
 
-  // Soft delete
   isDeleted: { type: Boolean, default: false },
 
-  // Roles
   role: {
     type: String,
     enum: ["guest", "host", "admin"],
     default: "guest"
   },
 
-  // Host-specific info (unchanged)
   hostDetails: {
     name: String,
     phone: String,

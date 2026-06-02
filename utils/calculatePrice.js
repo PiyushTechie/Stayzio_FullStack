@@ -20,5 +20,5 @@ export function calculateDynamicPrice(listing, date) {
 
   price = price * weekendMultiplier * seasonalMultiplier * demandMultiplier;
 
-  return { price: Number(price) }; // ensure it's a number
+  return { price: Number(price) };
 }
