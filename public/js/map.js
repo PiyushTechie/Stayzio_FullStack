@@ -1,4 +1,13 @@
 function initializeMap() {
+  if (!coordinates || coordinates.length !== 2) {
+    console.error("Map Error: Valid coordinates are not available for this listing.");
+    const mapDiv = document.getElementById('map');
+    if (mapDiv) {
+      mapDiv.innerHTML = "<div class='flex items-center justify-center h-full text-gray-500 font-medium bg-gray-50'>Map data unavailable for this location.</div>";
+    }
+    return;
+  }
+
   mapboxgl.accessToken = mapToken;
 
   const map = new mapboxgl.Map({

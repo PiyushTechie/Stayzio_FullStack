@@ -13,7 +13,7 @@
       form.classList.add('was-validated')
     }, false)
   })
-})
+})();
 
 setTimeout(() => {
   const alerts = document.querySelectorAll('.alert');
@@ -24,4 +24,3 @@ setTimeout(() => {
     }, 500);
   });
 }, 3000);
-
