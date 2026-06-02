@@ -25,8 +25,6 @@ import redisModule from './utils/redisClient.js';
 const { client, connectRedis } = redisModule;
 import helmet from "helmet";
 import compression from "compression";
-import mongoSanitize from "express-mongo-sanitize";
-import xss from "xss-clean";
 import hpp from "hpp";
 import cors from "cors";
 import csurf from "csurf";
@@ -128,9 +126,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use(mongoSanitize());
-app.use(xss());
-app.use(hpp());
 
 const dbUrl = process.env.ATLASDB_URL;
 const localDb = "mongodb://127.0.0.1:27017/wanderlust";
